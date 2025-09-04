@@ -1,5 +1,4 @@
 #include "Modulator.hpp"
-#include <cmath>
 #include <limits>
 #include <numbers>
 #include <QDateTime>
