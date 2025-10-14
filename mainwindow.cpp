@@ -3666,7 +3666,7 @@ bool MainWindow::decodeProcessQueue(qint32 *pSubmode){
     auto const ihr    = t.toString("hh").toInt();
     auto const imin   = t.toString("mm").toInt();
     auto const isec   = t.toString("ss").toInt();
-    
+
     dec_data.params.nutc = code_time(ihr, imin, isec - isec % period_unsigned);
     dec_data.params.nfqso = freq();
     dec_data.params.nfa   = m_wideGraph->filterEnabled() ? m_wideGraph->filterMinimum() : 0;

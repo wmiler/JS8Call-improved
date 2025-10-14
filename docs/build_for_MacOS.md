@@ -18,13 +18,13 @@ been tested to be compatible with a JS8Call build.
 Below are the required libraries and tested versions for a JS8Call build on MacOS along with links to download them.
 
 * [libusb-1.0.29](https://github.com/libusb/libusb/releases/download/v1.0.29/libusb-1.0.29.tar.bz2)
-    
+
 * [Hamlib-4.6.4](https://github.com/Hamlib/Hamlib/releases/download/4.6.4/hamlib-4.6.4.tar.gz)
-    
+
 * [fftw-3.3.10](https://fftw.org/fftw-3.3.10.tar.gz)
-    
+
 * [boost_1_88_0](https://archives.boost.io/release/1.88.0/source/boost_1_88_0.tar.gz)
-    
+
 * Qt-6.6.3 - this one is non-trivial and is a monster. Failed builds are common and will likely discourage you from trying a JS8Call
   build. Recommendations below......
 

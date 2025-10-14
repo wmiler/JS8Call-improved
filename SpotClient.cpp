@@ -96,7 +96,7 @@ public:
         host_ = list.first();
 
         qCDebug(spotclient_js8) << "SpotClient Host:" << name_ << host_.toString();
-        
+
         bind(host_.protocol() == IPv6Protocol ? QHostAddress::AnyIPv6
                                               : QHostAddress::AnyIPv4);
 
@@ -182,7 +182,7 @@ SpotClient::setLocalStation(QString const & callsign,
                             QString const & grid,
                             QString const & info)
 {
-  qCDebug(spotclient_js8) << "SpotClient Set Local Station:" << callsign 
+  qCDebug(spotclient_js8) << "SpotClient Set Local Station:" << callsign
            <<                         "grid:" << grid
            <<                         "info:" << info;
 

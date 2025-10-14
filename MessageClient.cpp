@@ -179,7 +179,7 @@ public:
                    << "multicast:"          << host_.isMulticast();
 
           if (state() != UnconnectedState) close();
-          
+
           bind(host_.protocol() == IPv6Protocol ? QHostAddress::AnyIPv6
                                                 : QHostAddress::AnyIPv4);
 

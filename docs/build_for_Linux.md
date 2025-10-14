@@ -94,7 +94,7 @@ cd $HOME/js8-build/build &&
 
 ### Debian-based systems
 
-Run, 
+Run,
 
 ```bash
 cd $HOME/js8-build/build &&
@@ -174,7 +174,7 @@ sudo dnf build-dep hamlib
 To actually build and install Hamlib to `/opt/hamlib-for-js8call`:
 
 ```bash
-cd $HOME/js8-build/hamlib && 
+cd $HOME/js8-build/hamlib &&
 ./bootstrap &&
 ./configure --prefix=/opt/hamlib-for-js8call &&
 make -j 4 &&

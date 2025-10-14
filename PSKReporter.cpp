@@ -75,7 +75,7 @@ namespace
   // From https://datatracker.ietf.org/doc/rfc7011/
   //
   // 6.1.6.  string and octetArray
-  // 
+  //
   //    The "string" data type represents a finite-length string of valid
   //    characters of the Unicode character encoding set.  The string data
   //    type MUST be encoded in UTF-8 [RFC3629] format.  The string is sent
@@ -96,7 +96,7 @@ namespace
     // of 254 bytes blindly here, but that might land us in the middle of
     // a code point, thus violating 6.1.6. Therefore, if we must truncate,
     // we need to do so at a point where we stay legal.
- 
+
     if (utf.size() > MAX_STRING_LENGTH)
     {
       // Walk back through the UTF-8 data and see where we can truncate.
@@ -238,7 +238,7 @@ namespace
       << quint16 (0x8000 + 9u) // Option 4 Information Element ID (antennaInformation)
       << quint16 (0xffff)      // Option 4 Field Length (variable)
       << quint32 (30351u);     // Option 4 Enterprise Number
-  
+
     set_length(stream, buffer);
     message.writeRawData(buffer, buffer.size());
   }
@@ -288,7 +288,7 @@ public:
   unsigned                        send_descriptors_ = 0u;
   unsigned                        flush_counter_    = 0u;
   bool                            once_             = false;
-  
+
   // Constructor
 
   impl(PSKReporter         * self,
@@ -303,7 +303,7 @@ public:
   {
     // Attempt to load up the eclipse dates. Not a big deal if this fails;
     // just means that we won't bypass the spot cache during eclipse periods.
-  
+
     if (auto file = QFile(":/eclipse.txt");
              file.open(QIODevice::ReadOnly))
     {
@@ -327,7 +327,7 @@ public:
   start()
   {
     // This timer sets the interval to check for spots to send.
-  
+
     connect(&report_timer_,
             &QTimer::timeout,
             [this]()
@@ -639,7 +639,7 @@ public:
 /******************************************************************************/
 // Implementation
 /******************************************************************************/
-  
+
 #include "PSKReporter.moc"
 
 PSKReporter::PSKReporter(Configuration const * config,

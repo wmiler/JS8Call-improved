@@ -687,7 +687,7 @@ private:
   QAudioDevice next_audio_output_device_;
   AudioDevice::Channel audio_output_channel_;
   AudioDevice::Channel next_audio_output_channel_;
-  
+
   QAudioDevice notification_audio_output_device_;
   QAudioDevice next_notification_audio_output_device_;
 
@@ -1199,7 +1199,7 @@ Configuration::impl::impl (Configuration * self, QDir const& temp_directory,
     // copy in any new sample files to the sample directory
     QDir dest_dir {default_save_directory_};
     dest_dir.cd (samples_dir);
-    
+
     QDir source_dir {":/" + samples_dir};
     source_dir.cd (save_dir);
     source_dir.cd (samples_dir);
@@ -1260,7 +1260,7 @@ Configuration::impl::impl (Configuration * self, QDir const& temp_directory,
           [this]()
   {
     QGuiApplication::setOverrideCursor(QCursor {Qt::WaitCursor});
-    
+
     load_audio_devices(QAudioDevice::Output,
                        ui_->notification_sound_output_combo_box,
                        &next_notification_audio_output_device_);
@@ -2678,7 +2678,7 @@ void Configuration::impl::accept ()
     notification_audio_output_device_         = next_notification_audio_output_device_;
     restart_notification_sound_output_device_ = true;
   }
-  
+
   qCDebug (configuration_js8) << "Configure::accept: audio i/p:" << audio_input_device_.description ()
             << "chan:" << audio_input_channel_
             << "o/p:" << audio_output_device_.description ()
@@ -3790,7 +3790,7 @@ Configuration::impl::load_audio_devices(QAudioDevice::Mode const mode,
   for (auto const & p : devices)
   {
     qCDebug(configuration_js8) << "Configuration::impl::load_audio_devices"
-             << Qt::endl << "                      id:" << p.id() 
+             << Qt::endl << "                      id:" << p.id()
              << Qt::endl << "                    name:" << p.description()
              << Qt::endl << "                    mode:" << p.mode()
              << Qt::endl << "    channelConfiguration:" << p.channelConfiguration()
@@ -3811,7 +3811,7 @@ Configuration::impl::load_audio_devices(QAudioDevice::Mode const mode,
                     }))
     {
       combo_box->addItem(p.description(), QVariant::fromValue(p));
-   
+
       if (p == *device)
       {
           current_index = combo_box->count() - 1;

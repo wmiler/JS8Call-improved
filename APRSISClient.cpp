@@ -54,7 +54,7 @@ findall(QRegularExpression re,
 {
     qsizetype          pos = 0;
     QList<QStringList> all;
-    
+
     while(pos < content.length())
     {
         auto match = re.match(content, pos);

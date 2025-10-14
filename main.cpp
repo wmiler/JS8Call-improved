@@ -152,7 +152,7 @@ int main(int argc, char *argv[])
                   std::cerr << "Invalid rig name - \\ & / not allowed" << std::endl;
                   parser.showHelp (-1);
                 }
-                
+
               a.setApplicationName (a.applicationName () + " - " + temp_name);
             }
 
