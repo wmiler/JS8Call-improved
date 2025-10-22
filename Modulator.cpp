@@ -34,7 +34,7 @@ Modulator::start(double        const frequency,
 
   m_quickClose   = false;
   m_frequency    = frequency;
-  m_nsps         = JS8::Submode::symbolSamples(submode);
+  m_nsps         = JS8::Submode::samplesForOneSymbol(submode);
   m_toneSpacing  = JS8::Submode::toneSpacing(submode);
   m_isym0        = std::numeric_limits<unsigned>::max();
   m_amp          = std::numeric_limits<qint16>::max();
