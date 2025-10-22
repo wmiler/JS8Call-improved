@@ -18,6 +18,7 @@ js8call.entitlements
 JS8Call.entitlements
 ## end Xcode patch ##
 #### Qt Creator patch ####
+.qtcreator/
 build/
 CMakeLists.txt.user
 ## end Qt Creator patch ##
