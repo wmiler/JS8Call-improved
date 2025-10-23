@@ -3193,8 +3193,8 @@ MainWindow::isDecodeReady(int    const submode,
         return false;
     }
 
-    qint32 const cycleFrames  = JS8::Submode::framesPerCycle(submode);
-    qint32 const framesNeeded = JS8::Submode::framesNeeded(submode);
+    qint32 const cycleFrames  = JS8::Submode::samplesPerPeriod(submode);
+    qint32 const framesNeeded = JS8::Submode::samplesNeeded(submode);
     qint32 const currentCycle = JS8::Submode::computeCycleForDecode(submode, k);
     qint32 const delta        = qAbs(k - k0);
 
@@ -3508,8 +3508,8 @@ bool MainWindow::decodeEnqueueReadyExperiment(qint32 k, qint32 /*k0*/){
             }
 
             qint32 const cycle             = JS8::Submode::computeAltCycleForDecode(submode, k, alt*oneSecondSamples);
-            qint32 const cycleFrames       = JS8::Submode::framesPerCycle(submode);
-            qint32 const cycleFramesNeeded = JS8::Submode::framesForSymbols(submode); //computeFramesNeededForDecode(submode) - oneSecondSamples;
+            qint32 const cycleFrames       = JS8::Submode::samplesPerPeriod(submode);
+            qint32 const cycleFramesNeeded = JS8::Submode::samplesForSymbols(submode); //computeFramesNeededForDecode(submode) - oneSecondSamples;
             qint32       cycleFramesReady  = k - (cycle * cycleFrames);
             if(cycleFramesReady < 0){
                 cycleFramesReady = k + (maxSamples - (cycle * cycleFrames));
