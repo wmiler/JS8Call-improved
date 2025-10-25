@@ -22,3 +22,5 @@ JS8Call.entitlements
 build/
 CMakeLists.txt.user
 ## end Qt Creator patch ##
+## Doxygen ##
+docs/html/
