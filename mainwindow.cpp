@@ -4782,8 +4782,10 @@ void MainWindow::guiUpdate()
     const QDateTime now = DriftingDateTime::currentDateTimeUtc();
     const qint64 seconds_since_epoch = now.toSecsSinceEpoch();
 
-    refuseToSendIn30mWSPRBand();
-    prepareSending(now.toMSecsSinceEpoch());
+    if (m_transmitting or m_auto or m_tune) {
+        refuseToSendIn30mWSPRBand();
+        prepareSending(now.toMSecsSinceEpoch());
+    }
 
     //Once per second:
     if(seconds_since_epoch != m_sec0) {
