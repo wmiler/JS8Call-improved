@@ -31,12 +31,12 @@ Modulator::start(double        const frequency,
 {
   Q_ASSERT (stream);
 
-  if (m_state != State::Idle) {
+  if (isIdle()) {
       qCDebug(modulator_js8)
           << "Modulator does not find itself in state idle, but"
-          << (m_state == State::Active ? "Active" :
-              m_state == State::Synchronizing ? "Synchronizing" :
-              m_state == State::Idle ? "Idle" : "??What??")
+          << (m_state.load() == State::Active ? "Active" :
+              m_state.load() == State::Synchronizing ? "Synchronizing" :
+              m_state.load() == State::Idle ? "Idle" : "??What??")
           << "so calling stop()";
       stop();
   }
@@ -95,7 +95,7 @@ Modulator::start(double        const frequency,
 
   initialize(QIODevice::ReadOnly, channel);
 
-  m_state = 0 < m_silentFrames ? State::Synchronizing : State::Active;
+  m_state.store(0 < m_silentFrames ? State::Synchronizing : State::Active);
   m_stream = stream;
 
   if (m_stream)
@@ -131,7 +131,7 @@ Modulator::close()
     else              m_stream->stop();
   }
 
-  m_state = State::Idle;
+  m_state.store(State::Idle);
   AudioDevice::close();
 }
 
@@ -149,7 +149,7 @@ Modulator::readData(char * const data,
   qint16       *       samples         = reinterpret_cast<qint16 *>(data);
   qint16 const * const samplesEnd      = samples + maxFrames * (bytesPerFrame() / sizeof(qint16));
 
-  switch (m_state)
+  switch (m_state.load())
   {
     case State::Synchronizing:
     {
@@ -167,7 +167,7 @@ Modulator::readData(char * const data,
 
         if (!m_silentFrames)
         {
-          m_state = State::Active;
+          m_state.store(State::Active);
         }
       }
     }
@@ -207,7 +207,7 @@ Modulator::readData(char * const data,
 
       if (m_amp == 0.0)
       {
-        m_state = State::Idle;
+        m_state.store(State::Idle);
         return framesGenerated * bytesPerFrame();
         m_phi = 0.0;
       }
@@ -231,7 +231,7 @@ Modulator::readData(char * const data,
     break;
   }
 
-  Q_ASSERT (State::Idle == m_state);
+  Q_ASSERT (isIdle());
   return 0;
 }
 

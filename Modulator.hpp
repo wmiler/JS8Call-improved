@@ -7,13 +7,15 @@
 
 class SoundOutput;
 
-//
-// Input device that generates PCM audio frames that encode a message.
-//
-// Output can be muted while underway, preserving waveform timing when
-// transmission is resumed.
-//
-
+/**
+ * Audio device that generates PCM audio frames that encode a message.
+ *
+ * Output can be muted while underway, preserving waveform timing when
+ * transmission is resumed.
+ *
+ * This is intended to run in a thread different from the GUI thread.
+ * It is **not** generally thread-safe, see remarks below.
+*/
 class Modulator final
   : public AudioDevice
 {
@@ -36,16 +38,23 @@ public:
 
   // Inline accessors
 
-  bool   isIdle()         const { return m_state == State::Idle; }
-  bool   isTuning()       const { return m_tuning;               }
-  double audioFrequency() const { return m_audioFrequency;       }
+  /**
+   * Whether the device is idle.
+   *
+   * This method is thread-safe, i.e., can be called from a different thread.
+   */
+  bool isIdle() const { return m_state.load() == State::Idle; }
 
   // Manipulators
 
   void close() override;
 
-  // Inline slots
-
+  /**
+   * Sets the audio frequency.
+   *
+   * This is **not** by itself thread-safe, but ok if fed
+   * via the Qt signalling mechanism.
+   */
   Q_SLOT void setAudioFrequency(double const audioFrequency)
   {
     m_audioFrequency = audioFrequency;
@@ -89,7 +98,7 @@ private:
   // Data members
 
   QPointer<SoundOutput> m_stream;
-  volatile State        m_state      = State::Idle;
+  std::atomic<State>    m_state      = State::Idle;
   bool                  m_quickClose = false;
   bool                  m_tuning     = false;
   double                m_audioFrequency;
