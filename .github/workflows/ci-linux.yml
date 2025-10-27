@@ -23,8 +23,14 @@ env:
 #  appimg_package: libfuse2 imagemagick
 
 jobs:
-  build_amd64_2404:
-    runs-on: ubuntu-24.04
+  build_2404:
+    name: ${{ matrix.config.os }}
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, ubuntu-24.04-arm]
+           
     steps:
     - uses: actions/checkout@v5
 
