@@ -100,14 +100,15 @@ jobs:
           --enable-network --enable-gpl --enable-nonfree --enable-libass --enable-libfreetype --enable-libmp3lame \
           --enable-libx264 --enable-libvorbis
         make -j install
-        ls -lR ${GITHUB_WORKSPACE}/local/ffmpeg
-
-    - name: Save ffmpeg cache
-      if: steps.cache-ffmpeg.outputs.cache-hit != 'true'
-      uses: actions/cache/save@v4
-      with:
-        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-ffmpeg
-        path: /home/runner/work/js8call/js8call/local/ffmpeg
+        ls -lR ${GITHUB_WORKSPACE}/local
+        
+# Check if we need to actually explictly call the save
+#    - name: Save ffmpeg cache
+#      if: steps.cache-ffmpeg.outputs.cache-hit != 'true'
+#      uses: actions/cache/save@v4
+#      with:
+#        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-ffmpeg
+#        path: /home/runner/work/js8call/js8call/local/ffmpeg
 
 ## hamlib
     - name: Cache Check Hamlib 4.6.4
