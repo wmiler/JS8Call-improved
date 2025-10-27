@@ -86,7 +86,7 @@ jobs:
       id: cache-ffmpeg
       uses: actions/cache@v4
       with:
-        path: /home/runner/work/js8call/js8call/local/ffmpeg
+        path: ${GITHUB_WORKSPACE}/local/ffmpeg
         key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-ffmpeg
 
     - name: Install ffmpeg 7.1.1
@@ -100,14 +100,15 @@ jobs:
           --enable-network --enable-gpl --enable-nonfree --enable-libass --enable-libfreetype --enable-libmp3lame \
           --enable-libx264 --enable-libvorbis
         make -j install
-        ls -lR /home/runner/work/js8call/js8call/local/ffmpeg
-
-    - name: Save ffmpeg cache
-      if: steps.cache-ffmpeg.outputs.cache-hit != 'true'
-      uses: actions/cache/save@v4
-      with:
-        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-ffmpeg
-        path: /home/runner/work/js8call/js8call/local/ffmpeg
+        ls -lR ${GITHUB_WORKSPACE}/local
+        
+# Check if we need to actually explictly call the save
+#    - name: Save ffmpeg cache
+#      if: steps.cache-ffmpeg.outputs.cache-hit != 'true'
+#      uses: actions/cache/save@v4
+#      with:
+#        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-ffmpeg
+#        path: /home/runner/work/js8call/js8call/local/ffmpeg
 
 ## hamlib
     - name: Cache Check Hamlib 4.6.4
@@ -193,7 +194,7 @@ jobs:
       id: cache-qt
       uses: actions/cache@v4
       with:
-        path: /home/runner/work/js8call/js8call/local/qt693-install
+        path: ${GITHUB_WORKSPACE}/local/qt693-install
         key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-qt693
 
     # Takes about 1 hour and then will be cached
@@ -207,7 +208,7 @@ jobs:
         mkdir -p qt6/build
         cd qt6/build
         ls -l ..
-        ${GITHUB_WORKSPACE}/qt6/configure -DCMAKE_FIND_DEBUG_MODE=1 -DCMAKE_PREFIX_PATH="/home/runner/work/js8call/js8call/local/ffmpeg" --prefix=${GITHUB_WORKSPACE}/local/qt693-install -init-submodules -submodules qtmultimedia,qtserialport
+        ${GITHUB_WORKSPACE}/qt6/configure -DCMAKE_FIND_DEBUG_MODE=1 -DCMAKE_PREFIX_PATH="${GITHUB_WORKSPACE}/local/ffmpeg" --prefix=${GITHUB_WORKSPACE}/local/qt693-install -init-submodules -submodules qtmultimedia,qtserialport -ffmpeg-dir ${GITHUB_WORKSPACE}/local/ffmpeg
         cmake --build . --parallel
         cmake --install .
 
@@ -216,7 +217,7 @@ jobs:
       uses: actions/cache/save@v4
       with:
         key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-qt693
-        path: /home/runner/work/js8call/js8call/local/qt693-install
+        path: ${GITHUB_WORKSPACE}/local/qt693-install
         
     - name: QT 6.9.3 Summary
       if: steps.cache-qt.outputs.cache-hit != 'true'
