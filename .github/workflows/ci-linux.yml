@@ -40,6 +40,7 @@ jobs:
       shell: bash
     
     - name: Free Disk Space (Ubuntu)
+      if: steps.cache-qt.outputs.cache-hit != 'true'
       uses: jlumbroso/free-disk-space@main
       with:
         tool-cache: false
