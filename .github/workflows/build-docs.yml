@@ -1,25 +1,22 @@
-name: Build and Deploy
+name: Build and Deploy Docs
 on: [push]
 permissions:
   contents: write
 jobs:
-  build-and-deploy:
+  build_and_deploy_docs:
     concurrency: ci-${{ github.ref }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 
         uses: actions/checkout@v4
 
-      - name: Get doxygen and friends
+      - name: Get doxygen and graphviz
         run: |
           sudo apt-get update
           sudo apt-get install -y doxygen graphviz
 
       - name: Build docs
         run: doxygen
-
-      - name: ls
-        run: ls docs/html
         
       - name: Deploy to gh-pages
         uses: JamesIves/github-pages-deploy-action@v4
