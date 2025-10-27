@@ -1,0 +1,230 @@
+permissions:
+  contents: read
+
+name: CI Build for Linux x86_64 and Arm64
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  BUILD_TYPE: Release
+  build_package: build-essential git cmake libusb-1.0-0-dev libxkbcommon-dev libudev-dev yasm libva-dev libpulse-dev
+  opengl_package1: libegl1-mesa-dev libgles2-mesa-dev libgbm-dev libgl1-mesa-dev libxkbcommon-x11-dev 
+  opengl_package2: libxcb-keysyms1-dev libxcb-image0-dev libxcb-icccm4-dev libxcb-render-util0-dev 
+  opengl_package3: libxcb-xfixes0-dev libxcb-sync-dev libxcb-randr0-dev libxrender-dev
+  ffmpeg_build: libass-dev libfreetype6-dev libgnutls28-dev libmp3lame-dev libsdl2-dev libva-dev libvdpau-dev libvorbis-dev libx264-dev
+  
+#  ffmpeg_package: yasm libva-dev ffmpeg libavformat-dev libavcodec-dev libavutil-dev libswresample-dev libpulse-dev
+#  appimg_package: libfuse2 imagemagick
+#  qt_package: qt6-base-dev qt6-multimedia-dev qt6-serialport-dev
+
+
+
+jobs:
+  build_amd64_2404:
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v5
+
+    - name: Create our own var with the ImageOS value for cache use
+      id: which-os
+      run: echo "thisos=$ImageOS" >> $GITHUB_OUTPUT
+      shell: bash
+    
+    - name: Free Disk Space (Ubuntu)
+      uses: jlumbroso/free-disk-space@main
+      with:
+        tool-cache: false
+        android: true
+        dotnet: true
+        haskell: false
+        large-packages: false
+        docker-images: false
+        swap-storage: true
+        
+    - name: Install dependencies (ubuntu)
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ${{ env.build_package }} ${{ env.ffmpeg_build }} ${{ env.opengl_package1 }} ${{ env.opengl_package2 }} ${{ env.opengl_package3 }}
+
+## libusb
+    - name: Cache Check libusb 1.0.29
+      id: cache-usb
+      uses: actions/cache@v4
+      with:
+        path: /home/runner/work/js8call/js8call/local/libusb
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-libusb
+
+    - name: Install libusb 1.0.29
+      if: steps.cache-usb.outputs.cache-hit != 'true'
+      id: install-usb
+      run: |
+        mkdir -p tmp
+        curl --location --output ./tmp/v1.0.29.tar.gz https://github.com/libusb/libusb/archive/refs/tags/v1.0.29.tar.gz
+        cd tmp
+        tar zxf v1.0.29.tar.gz
+        cd libusb-1.0.29
+        ./bootstrap.sh
+        ./configure --prefix=/home/runner/work/js8call/js8call/local/libusb
+        make
+        make install
+
+    - name: Save libusb cache
+      if: steps.cache-usb.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v4
+      with:
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-libusb
+        path: /home/runner/work/js8call/js8call/local/libusb
+        
+## ffmpeg
+    - name: Cache Check ffmpeg 7.1.1
+      id: cache-ffmpeg
+      uses: actions/cache@v4
+      with:
+        path: /home/runner/work/js8call/js8call/local/ffmpeg
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-ffmpeg
+
+    - name: Install ffmpeg 7.1.1
+      if: steps.cache-ffmpeg.outputs.cache-hit != 'true'
+      id: install-ffmpeg
+      run: |
+        git clone --branch n7.1.1 https://git.ffmpeg.org/ffmpeg.git ffmpeg
+        mkdir -p ffmpeg/build
+        cd ffmpeg/build
+        ../configure --prefix=${GITHUB_WORKSPACE}/local/ffmpeg --disable-shared --enable-static --disable-doc \
+          --enable-network --enable-gpl --enable-nonfree --enable-libass --enable-libfreetype --enable-libmp3lame \
+          --enable-libx264 --enable-libvorbis
+        make -j install
+        ls -lR /home/runner/work/js8call/js8call/local/ffmpeg
+
+    - name: Save ffmpeg cache
+      if: steps.cache-ffmpeg.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v4
+      with:
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-ffmpeg
+        path: /home/runner/work/js8call/js8call/local/ffmpeg
+
+## hamlib
+    - name: Cache Check Hamlib 4.6.4
+      id: cache-hamlib
+      uses: actions/cache@v4
+      with:
+        path: /home/runner/work/js8call/js8call/local/hamlib
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-hamlib
+
+    - name: Install Hamlib 4.6.4
+      if: steps.cache-hamlib.outputs.cache-hit != 'true'
+      id: install-hamlib
+      run: |
+        git clone https://github.com/Hamlib/Hamlib.git ~/hamlib
+        cd ~/hamlib
+        git checkout 4.6.4
+        ./bootstrap
+        ./configure --prefix=${GITHUB_WORKSPACE}/local/hamlib
+        make -j 4
+        sudo make install-strip
+        sudo ldconfig
+
+    - name: Save Hamlib cache
+      if: steps.cache-hamlib.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v4
+      with:
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-hamlib
+        path: /home/runner/work/js8call/js8call/local/hamlib
+          
+ ## fftw
+    - name: Cache Check fftw 3.3.10
+      id: cache-fftw
+      uses: actions/cache@v4
+      with:
+        path: /home/runner/work/js8call/js8call/local/fftw
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-fftw
+
+    - name: Install fftw 3.3.10
+      if: steps.cache-fftw.outputs.cache-hit != 'true'
+      id: install-fftw
+      run: |
+        curl --location --output ./fftw-3.3.10.tar.gz https://www.fftw.org/fftw-3.3.10.tar.gz
+        tar zxf fftw-3.3.10.tar.gz
+        cd fftw-3.3.10
+        ./configure --prefix=${GITHUB_WORKSPACE}/local/fftw --enable-threads --enable-shared --enable-sse2 --enable-avx --enable-avx2 --enable-float
+        make
+        sudo make install
+
+    - name: Save fftw 3.3.10 cache
+      if: steps.cache-fftw.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v4
+      with:
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-fftw
+        path: /home/runner/work/js8call/js8call/local/fftw
+        
+## boost
+    - name: Cache Check Boost 1.88
+      id: cache-boost
+      uses: actions/cache@v4
+      with:
+        path: /home/runner/work/js8call/js8call/local/boost
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-boost
+
+    - name: Install Boost 1.88
+      if: steps.cache-boost.outputs.cache-hit != 'true'
+      id: install-boost
+      run: |
+        curl --location --output ./boost-1.88.0.tar.gz https://archives.boost.io/release/1.88.0/source/boost_1_88_0.tar.gz
+        tar zxf boost-1.88.0.tar.gz
+        cd boost_1_88_0
+        ./bootstrap.sh --prefix=${GITHUB_WORKSPACE}/local/boost
+        sudo ./b2 install
+
+    - name: Save Boost 1.88 cache
+      if: steps.cache-boost.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v4
+      with:
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-boost
+        path: /home/runner/work/js8call/js8call/local/boost
+        
+## QT to change between 6.8.3 and 6.9.3 just change the 8 to a 9 everywhere here and at the bottom
+    - name: Cache Check QT 6.9.3
+      id: cache-qt
+      uses: actions/cache@v4
+      with:
+        path: /home/runner/work/js8call/js8call/local/qt693-install
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-qt693
+
+    # Takes about 1 hour and then will be cached
+    - name: Install QT 6.9.3
+      if: steps.cache-qt.outputs.cache-hit != 'true'
+      id: install-qt693
+      run: |
+        git clone https://github.com/qt/qt5.git qt6
+        cd qt6
+        git switch 6.9.3
+        mkdir -p qt6/build
+        cd qt6/build
+        ls -l ..
+        ${GITHUB_WORKSPACE}/qt6/configure -DCMAKE_FIND_DEBUG_MODE=1 -DCMAKE_PREFIX_PATH="/home/runner/work/js8call/js8call/local/ffmpeg" --prefix=${GITHUB_WORKSPACE}/local/qt693-install -init-submodules -submodules qtmultimedia,qtserialport
+        cmake --build . --parallel
+        cmake --install .
+
+    - name: Save QT 6.9.3 cache
+      if: steps.cache-qt.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v4
+      with:
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-qt693
+        path: /home/runner/work/js8call/js8call/local/qt693-install
+        
+    - name: QT 6.9.3 Summary
+      if: steps.cache-qt.outputs.cache-hit != 'true'
+      run: cat ${GITHUB_WORKSPACE}/qt6/qt6/build/config.summary
+      
+    - name: Build JS8Call 
+      run: |
+        pwd
+        mkdir -p build && cd build
+        cmake -DCMAKE_PREFIX_PATH="${GITHUB_WORKSPACE}/local/qt693-install;${GITHUB_WORKSPACE}/local/hamlib;${GITHUB_WORKSPACE}/local/fftw;${GITHUB_WORKSPACE}/local/boost" ..
+        make -j 4
