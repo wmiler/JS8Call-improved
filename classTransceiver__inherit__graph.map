@@ -1,0 +1,19 @@
+<map id="Transceiver" name="Transceiver">
+<area shape="rect" id="Node000001" title=" " alt="" coords="135,79,231,104"/>
+<area shape="rect" id="Node000003" href="$classEmulateSplitTransceiver.html" title=" " alt="" coords="5,152,184,177"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="160,115,111,154,107,150,156,110"/>
+<area shape="rect" id="Node000004" href="$classTransceiverBase.html" title=" " alt="" coords="208,152,336,177"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="209,110,259,150,256,154,206,115"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="145,5,220,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="185,44,185,79,180,79,180,44"/>
+<area shape="rect" id="Node000005" href="$classOmniRigTransceiver.html" title=" " alt="" coords="111,225,263,251"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="250,188,202,227,199,223,246,184"/>
+<area shape="rect" id="Node000006" href="$classPollingTransceiver.html" title=" " alt="" coords="287,225,427,251"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="298,184,345,223,342,227,294,188"/>
+<area shape="rect" id="Node000007" href="$classDXLabSuiteCommanderTransceiver.html" title=" " alt="" coords="20,299,271,324"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="311,257,181,301,179,296,310,252"/>
+<area shape="rect" id="Node000008" href="$classHRDTransceiver.html" title=" " alt="" coords="295,299,420,324"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="360,264,360,299,355,299,355,264"/>
+<area shape="rect" id="Node000009" href="$classHamlibTransceiver.html" title=" " alt="" coords="445,299,587,324"/>
+<area shape="poly" id="edge8_Node000006_Node000009" title=" " alt="" coords="396,254,491,296,489,301,394,259"/>
+</map>

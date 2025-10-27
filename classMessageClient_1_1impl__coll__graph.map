@@ -1,0 +1,9 @@
+<map id="MessageClient::impl" name="MessageClient::impl">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,168,160,193"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="11,80,112,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="70,118,82,167,77,168,65,119"/>
+<area shape="rect" id="Node000003" href="$classMessageClient.html" title=" " alt="" coords="137,80,255,105"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="172,116,100,170,96,166,168,111"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="159,5,233,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="199,45,199,80,193,80,193,45"/>
+</map>

@@ -1,0 +1,17 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,153,80,179"/>
+<area shape="rect" id="Node000001" href="$classCAboutDlg.html" title=" " alt="" coords="162,5,253,31"/>
+<area shape="poly" id="edge9_Node000000_Node000001" title=" " alt="" coords="52,139,81,89,102,63,127,40,161,24,163,28,129,44,106,66,86,92,57,142"/>
+<area shape="rect" id="Node000002" href="$classConfiguration_1_1impl.html" title=" " alt="" coords="134,55,281,80"/>
+<area shape="poly" id="edge10_Node000000_Node000002" title=" " alt="" coords="63,141,91,114,127,89,152,78,155,83,129,94,95,118,66,145"/>
+<area shape="rect" id="Node000003" href="$classFrequencyDialog.html" title=" " alt="" coords="142,104,273,129"/>
+<area shape="poly" id="edge11_Node000000_Node000003" title=" " alt="" coords="92,148,163,127,165,132,94,154"/>
+<area shape="rect" id="Node000004" href="$classLogQSO.html" title=" " alt="" coords="171,153,244,179"/>
+<area shape="poly" id="edge12_Node000000_Node000004" title=" " alt="" coords="94,163,170,163,170,169,94,169"/>
+<area shape="rect" id="Node000005" href="$classMessageReplyDialog.html" title=" " alt="" coords="128,203,287,228"/>
+<area shape="poly" id="edge13_Node000000_Node000005" title=" " alt="" coords="94,178,165,200,163,205,92,184"/>
+<area shape="rect" id="Node000006" href="$classMessageWindow.html" title=" " alt="" coords="141,252,273,277"/>
+<area shape="poly" id="edge14_Node000000_Node000006" title=" " alt="" coords="67,187,95,213,129,237,158,249,155,254,127,242,92,217,63,191"/>
+<area shape="rect" id="Node000007" href="$classStationDialog.html" title=" " alt="" coords="152,301,263,327"/>
+<area shape="poly" id="edge15_Node000000_Node000007" title=" " alt="" coords="57,190,86,239,106,265,130,286,153,299,150,304,126,291,102,268,81,242,53,192"/>
+</map>

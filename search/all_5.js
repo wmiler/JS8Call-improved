@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['caboutdlg_0',['CAboutDlg',['../classCAboutDlg.html',1,'']]],
+  ['calibrationparams_1',['CalibrationParams',['../structConfiguration_1_1CalibrationParams.html',1,'Configuration']]],
+  ['callsignvalidator_2',['CallsignValidator',['../classCallsignValidator.html',1,'']]],
+  ['can_20be_20used_20to_20simply_20do_20tt_20jtbuild_20package_20tt_20after_20the_20source_20has_20been_20updated_3',['3) Unless some requirements of the source change (e.g., a requirement to install a newer version of Qt or Boost), this build system can be used to simply do &lt;tt&gt;jtbuild package&lt;/tt&gt; after the source has been updated',['..//home/runner/work/JS8Call-improved/JS8Call-improved/docs/build_for_Windows.md#autotoc_md27',1,'']]],
+  ['candidatekeyfilter_4',['CandidateKeyFilter',['../classCandidateKeyFilter.html',1,'']]],
+  ['capabilities_5',['Capabilities',['../structTransceiverFactory_1_1Capabilities.html',1,'TransceiverFactory']]],
+  ['change_20e_20g_20a_20requirement_20to_20install_20a_20newer_20version_20of_20qt_20or_20boost_20this_20build_20system_20can_20be_20used_20to_20simply_20do_20tt_20jtbuild_20package_20tt_20after_20the_20source_20has_20been_20updated_6',['3) Unless some requirements of the source change (e.g., a requirement to install a newer version of Qt or Boost), this build system can be used to simply do &lt;tt&gt;jtbuild package&lt;/tt&gt; after the source has been updated',['..//home/runner/work/JS8Call-improved/JS8Call-improved/docs/build_for_Windows.md#autotoc_md27',1,'']]],
+  ['changes_7',['Notable Changes',['../md_README-JS8CALL.html#autotoc_md39',1,'']]],
+  ['choice_20of_20build_20directory_8',['Choice of build directory',['../md_docs_2build__for__Linux.html#autotoc_md5',1,'']]],
+  ['clean_20commit_20history_9',['Creating a clean commit history',['../md_docs_2CONTRIBUTOR__GUIDE.html#autotoc_md31',1,'']]],
+  ['client_10',['client',['../classClient.html',1,'Client'],['../classtcp_1_1Client.html',1,'tcp.Client']]],
+  ['commit_20history_11',['Creating a clean commit history',['../md_docs_2CONTRIBUTOR__GUIDE.html#autotoc_md31',1,'']]],
+  ['compile_20prerequisites_12',['Compile prerequisites',['../md_docs_2build__for__Linux.html#autotoc_md2',1,'']]],
+  ['configuration_13',['Configuration',['../classConfiguration.html',1,'']]],
+  ['const_5fiterator_14',['const_iterator',['../classFrequencyList__v2_1_1const__iterator.html',1,'FrequencyList_v2::const_iterator'],['../classBands_1_1const__iterator.html',1,'Bands::const_iterator']]],
+  ['contributor_20guidelines_15',['JS8Call Developer and Contributor Guidelines',['../md_docs_2CONTRIBUTOR__GUIDE.html',1,'']]],
+  ['countunreadfrom_16',['countUnreadFrom',['../classInbox.html#a153b6940c96476e2619f9cf2149ef065',1,'Inbox']]],
+  ['cplotter_17',['CPlotter',['../classCPlotter.html',1,'']]],
+  ['crafted_20hamlib_20to_20js8call_18',['How to feed my custom-crafted Hamlib to JS8Call?',['../md_docs_2build__for__Linux.html#autotoc_md15',1,'']]],
+  ['creating_20a_20clean_20commit_20history_19',['Creating a clean commit history',['../md_docs_2CONTRIBUTOR__GUIDE.html#autotoc_md31',1,'']]],
+  ['creator_20',['Building JS8Call 2.4 and later with Qt Creator',['..//home/runner/work/JS8Call-improved/JS8Call-improved/docs/build_for_Windows.md#autotoc_md28',1,'']]],
+  ['cross_20building_21',['Cross-building',['../md_docs_2build__for__Linux.html#autotoc_md16',1,'']]],
+  ['custom_20crafted_20hamlib_20to_20js8call_22',['How to feed my custom-crafted Hamlib to JS8Call?',['../md_docs_2build__for__Linux.html#autotoc_md15',1,'']]]
+];

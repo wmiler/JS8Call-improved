@@ -1,0 +1,11 @@
+<map id="DXLabSuiteCommanderTransceiver" name="DXLabSuiteCommanderTransceiver">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,299,256,324"/>
+<area shape="rect" id="Node000002" href="$classPollingTransceiver.html" title=" " alt="" coords="61,225,201,251"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,264,133,299,128,299,128,264"/>
+<area shape="rect" id="Node000003" href="$classTransceiverBase.html" title=" " alt="" coords="67,152,195,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="133,191,133,225,128,225,128,191"/>
+<area shape="rect" id="Node000004" href="$classTransceiver.html" title=" " alt="" coords="83,79,179,104"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="133,118,133,152,128,152,128,118"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="93,5,168,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="133,44,133,79,128,79,128,44"/>
+</map>

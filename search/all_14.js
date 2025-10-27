@@ -1,0 +1,28 @@
+var searchData=
+[
+  ['scale_0',['Scale',['../classSignalMeter_1_1Scale.html',1,'SignalMeter']]],
+  ['selfdestructmessagebox_1',['SelfDestructMessageBox',['../classSelfDestructMessageBox.html',1,'']]],
+  ['server_2',['Server',['../classudp_1_1Server.html',1,'udp']]],
+  ['setprocess_3',['setProcess',['../classProcessThread.html#adf657f76ee5e5be430e7032842efbf30',1,'ProcessThread']]],
+  ['settingsgroup_4',['SettingsGroup',['../classSettingsGroup.html',1,'']]],
+  ['signalmeter_5',['SignalMeter',['../classSignalMeter.html',1,'']]],
+  ['simply_20do_20tt_20jtbuild_20package_20tt_20after_20the_20source_20has_20been_20updated_6',['3) Unless some requirements of the source change (e.g., a requirement to install a newer version of Qt or Boost), this build system can be used to simply do &lt;tt&gt;jtbuild package&lt;/tt&gt; after the source has been updated',['..//home/runner/work/JS8Call-improved/JS8Call-improved/docs/build_for_Windows.md#autotoc_md27',1,'']]],
+  ['sleep_7',['Sleep',['../classSleep.html',1,'']]],
+  ['some_20requirements_20of_20the_20source_20change_20e_20g_20a_20requirement_20to_20install_20a_20newer_20version_20of_20qt_20or_20boost_20this_20build_20system_20can_20be_20used_20to_20simply_20do_20tt_20jtbuild_20package_20tt_20after_20the_20source_20has_20been_20updated_8',['3) Unless some requirements of the source change (e.g., a requirement to install a newer version of Qt or Boost), this build system can be used to simply do &lt;tt&gt;jtbuild package&lt;/tt&gt; after the source has been updated',['..//home/runner/work/JS8Call-improved/JS8Call-improved/docs/build_for_Windows.md#autotoc_md27',1,'']]],
+  ['soundinput_9',['SoundInput',['../classSoundInput.html',1,'']]],
+  ['soundoutput_10',['SoundOutput',['../classSoundOutput.html',1,'']]],
+  ['source_20change_20e_20g_20a_20requirement_20to_20install_20a_20newer_20version_20of_20qt_20or_20boost_20this_20build_20system_20can_20be_20used_20to_20simply_20do_20tt_20jtbuild_20package_20tt_20after_20the_20source_20has_20been_20updated_11',['3) Unless some requirements of the source change (e.g., a requirement to install a newer version of Qt or Boost), this build system can be used to simply do &lt;tt&gt;jtbuild package&lt;/tt&gt; after the source has been updated',['..//home/runner/work/JS8Call-improved/JS8Call-improved/docs/build_for_Windows.md#autotoc_md27',1,'']]],
+  ['sourcecode_12',['Building JS8Call From Sourcecode',['../md_README-JS8CALL.html#autotoc_md35',1,'']]],
+  ['specdata_13',['specData',['../structspecData.html',1,'']]],
+  ['spot_14',['Spot',['../structPSKReporter_1_1impl_1_1Spot.html',1,'PSKReporter::impl']]],
+  ['spotclient_15',['SpotClient',['../classSpotClient.html',1,'']]],
+  ['square_20one_16',['Back to square one',['../md_docs_2build__for__Linux.html#autotoc_md14',1,'']]],
+  ['station_17',['Station',['../structStationList_1_1Station.html',1,'StationList']]],
+  ['stationdialog_18',['StationDialog',['../classStationDialog.html',1,'']]],
+  ['stationlist_19',['StationList',['../classStationList.html',1,'']]],
+  ['submit_20a_20pr_20',['How to submit a PR',['../md_docs_2CONTRIBUTOR__GUIDE.html#autotoc_md30',1,'']]],
+  ['syncstart_21',['SyncStart',['../structJS8_1_1Event_1_1SyncStart.html',1,'JS8::Event']]],
+  ['syncstate_22',['SyncState',['../structJS8_1_1Event_1_1SyncState.html',1,'JS8::Event']]],
+  ['system_20can_20be_20used_20to_20simply_20do_20tt_20jtbuild_20package_20tt_20after_20the_20source_20has_20been_20updated_23',['3) Unless some requirements of the source change (e.g., a requirement to install a newer version of Qt or Boost), this build system can be used to simply do &lt;tt&gt;jtbuild package&lt;/tt&gt; after the source has been updated',['..//home/runner/work/JS8Call-improved/JS8Call-improved/docs/build_for_Windows.md#autotoc_md27',1,'']]],
+  ['systems_24',['Debian-based systems',['../md_docs_2build__for__Linux.html#autotoc_md8',1,'']]]
+];
