@@ -42,7 +42,9 @@ jobs:
             packages: dnf upgrade -y --refresh && dnf install -y gcc git clang which cmake curl wget automake libtool \
               libudev-devel libxkbcommon-devel rpm-build libegl1-mesa-dev libgles2-mesa-dev libgbm-dev libgl1-mesa-dev libxkbcommon-x11-dev
 
-        container: ${{ $matrix.container }}
+        container: 
+          image: ${{ matrix.container }}
+          
     steps:
     - uses: actions/checkout@v5
 
