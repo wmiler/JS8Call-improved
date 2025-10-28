@@ -23,13 +23,13 @@ env:
 #  appimg_package: libfuse2 imagemagick
 
 jobs:
-  build_2404:
+  build_x86_64_2404:
     name: ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-24.04, ubuntu-24.04-arm]
+        os: [ubuntu-24.04, ubuntu-22.04]
            
     steps:
     - uses: actions/checkout@v5
@@ -128,7 +128,7 @@ jobs:
         key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-fftw
 
     - name: Install fftw 3.3.10
-      if: steps.cache-fftw.outputs.cache-hit != 'true'
+      if: steps.cache-fftw.outputs.cache-hit != 'true' && (${{ runner.arch }} 
       id: install-fftw
       run: |
         curl --location --output ./fftw-3.3.10.tar.gz https://www.fftw.org/fftw-3.3.10.tar.gz
