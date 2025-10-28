@@ -1,7 +1,7 @@
 permissions:
   contents: read
 
-name: CI Build for Linux x86_64 and Arm64
+name: CI Build for Linux x86_64
 
 on:
   workflow_dispatch:
