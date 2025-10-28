@@ -15,6 +15,11 @@ env:
   
 #  appimg_package: libfuse2 imagemagick
 
+# TODO: 
+# 1) Add Debian and Fedora container builds
+# 2) Conditionally install apt packages since the 
+#    bulk are for building supporting libs
+
 jobs:
   build_x86_64:
     name: ${{ matrix.os }}
@@ -88,11 +93,16 @@ jobs:
         large-packages: true
         docker-images: true
         swap-storage: true
-        
-    - name: Install dependencies (ubuntu)
+
+    - name: Install minimum required dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y ${{ env.build_package }} ${{ env.ffmpeg_build }} ${{ env.opengl_package1 }} ${{ env.opengl_package2 }} ${{ env.opengl_package3 }}
+        sudo apt-get install -y ${{ env.build_package }}
+        
+    - name: Install dependencies needed to build libs
+      if: steps.cache-qt.outputs.cache-hit != 'true'
+      run: |
+        sudo apt-get install -y $${{ env.ffmpeg_build }} ${{ env.opengl_package1 }} ${{ env.opengl_package2 }} ${{ env.opengl_package3 }}
 
 ## libusb
     - name: Install libusb 1.0.29
