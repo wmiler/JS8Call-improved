@@ -3,14 +3,7 @@ permissions:
 
 name: CI Build for Linux x86_64
 
-on:
-  workflow_dispatch:
-  push:
-    branches: [ "main" ]
-
-  pull_request:
-    branches: 
-    - '**'
+on: [workflow_dispatch, push, pull_request]
 
 env:
   BUILD_TYPE: Release
