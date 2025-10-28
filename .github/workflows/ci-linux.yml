@@ -145,7 +145,7 @@ jobs:
        
  ## fftw
     - name: Install fftw 3.3.10
-      if: steps.cache-fftw.outputs.cache-hit != 'true' && (${{ runner.arch }} 
+      if: steps.cache-fftw.outputs.cache-hit != 'true'
       id: install-fftw
       run: |
         curl --location --output ./fftw-3.3.10.tar.gz https://www.fftw.org/fftw-3.3.10.tar.gz
