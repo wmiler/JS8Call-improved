@@ -97,12 +97,12 @@ jobs:
     - name: Install minimum required dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y ${{ env.build_package }}
+        sudo apt-get install -y ${{ env.build_package }} ${{ env.opengl_package1 }}
         
     - name: Install dependencies needed to build libs
       if: steps.cache-qt.outputs.cache-hit != 'true'
       run: |
-        sudo apt-get install -y $${{ env.ffmpeg_build }} ${{ env.opengl_package1 }} ${{ env.opengl_package2 }} ${{ env.opengl_package3 }}
+        sudo apt-get install -y $${{ env.ffmpeg_build }} ${{ env.opengl_package2 }} ${{ env.opengl_package3 }}
 
 ## libusb
     - name: Install libusb 1.0.29
