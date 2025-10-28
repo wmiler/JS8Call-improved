@@ -45,35 +45,35 @@ jobs:
       uses: actions/cache@v4
       with:
         path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/libusb
-        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-libusb
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-libusb1029
 
     - name: Cache Check ffmpeg 7.1.1
       id: cache-ffmpeg
       uses: actions/cache@v4
       with:
         path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/ffmpeg
-        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-ffmpeg
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-ffmpeg711
 
     - name: Cache Check Hamlib 4.6.4
       id: cache-hamlib
       uses: actions/cache@v4
       with:
-        path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/hamlib
-        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-hamlib
+        path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/hamlib464
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-hamlib464
 
     - name: Cache Check fftw 3.3.10
       id: cache-fftw
       uses: actions/cache@v4
       with:
         path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/fftw
-        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-fftw
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-fftw3310
 
     - name: Cache Check Boost 1.88
       id: cache-boost
       uses: actions/cache@v4
       with:
         path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/boost
-        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-boost
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-boost188
 
     - name: Cache Check QT 6.9.3
       id: cache-qt
