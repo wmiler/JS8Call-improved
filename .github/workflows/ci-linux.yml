@@ -23,7 +23,7 @@ env:
 #  appimg_package: libfuse2 imagemagick
 
 jobs:
-  build_x86_64_2404:
+  build_x86_64:
     name: ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
@@ -165,7 +165,6 @@ jobs:
         ./bootstrap.sh --prefix=/home/runner/work/JS8Call-improved/JS8Call-improved/local/boost
         sudo ./b2 install
         
-## QT to change between 6.8.3 and 6.9.3 just change the 8 to a 9 everywhere here and at the bottom
     # Takes about 1 hour if not cached
     - name: Install QT 6.9.3
       if: steps.cache-qt.outputs.cache-hit != 'true'
