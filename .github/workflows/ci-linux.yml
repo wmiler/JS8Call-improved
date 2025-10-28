@@ -38,7 +38,52 @@ jobs:
       id: which-os
       run: echo "thisos=$ImageOS" >> $GITHUB_OUTPUT
       shell: bash
-    
+
+# Move all of our cache checks here, so we know if we need to free bunches of disk space
+    - name: Cache Check libusb 1.0.29
+      id: cache-usb
+      uses: actions/cache@v4
+      with:
+        path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/libusb
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-libusb
+
+    - name: Cache Check ffmpeg 7.1.1
+      id: cache-ffmpeg
+      uses: actions/cache@v4
+      with:
+        path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/ffmpeg
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-ffmpeg
+
+    - name: Cache Check Hamlib 4.6.4
+      id: cache-hamlib
+      uses: actions/cache@v4
+      with:
+        path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/hamlib
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-hamlib
+
+    - name: Cache Check fftw 3.3.10
+      id: cache-fftw
+      uses: actions/cache@v4
+      with:
+        path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/fftw
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-fftw
+
+    - name: Cache Check Boost 1.88
+      id: cache-boost
+      uses: actions/cache@v4
+      with:
+        path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/boost
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-boost
+
+    - name: Cache Check QT 6.9.3
+      id: cache-qt
+      uses: actions/cache@v4
+      with:
+        path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-qt693
+# End cache checks
+
+# We have to empty the runners to build QT as they are only 50G and upto 78% full
     - name: Free Disk Space (Ubuntu)
       if: steps.cache-qt.outputs.cache-hit != 'true'
       uses: jlumbroso/free-disk-space@main
@@ -46,9 +91,9 @@ jobs:
         tool-cache: false
         android: true
         dotnet: true
-        haskell: false
-        large-packages: false
-        docker-images: false
+        haskell: true
+        large-packages: true
+        docker-images: true
         swap-storage: true
         
     - name: Install dependencies (ubuntu)
@@ -57,13 +102,6 @@ jobs:
         sudo apt-get install -y ${{ env.build_package }} ${{ env.ffmpeg_build }} ${{ env.opengl_package1 }} ${{ env.opengl_package2 }} ${{ env.opengl_package3 }}
 
 ## libusb
-    - name: Cache Check libusb 1.0.29
-      id: cache-usb
-      uses: actions/cache@v4
-      with:
-        path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/libusb
-        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-libusb
-
     - name: Install libusb 1.0.29
       if: steps.cache-usb.outputs.cache-hit != 'true'
       id: install-usb
@@ -79,13 +117,6 @@ jobs:
         make install
 
 ## ffmpeg
-    - name: Cache Check ffmpeg 7.1.1
-      id: cache-ffmpeg
-      uses: actions/cache@v4
-      with:
-        path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/ffmpeg
-        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-ffmpeg
-
     - name: Install ffmpeg 7.1.1
       if: steps.cache-ffmpeg.outputs.cache-hit != 'true'
       id: install-ffmpeg
@@ -99,13 +130,6 @@ jobs:
         make -j install
         
 ## hamlib
-    - name: Cache Check Hamlib 4.6.4
-      id: cache-hamlib
-      uses: actions/cache@v4
-      with:
-        path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/hamlib
-        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-hamlib
-
     - name: Install Hamlib 4.6.4
       if: steps.cache-hamlib.outputs.cache-hit != 'true'
       id: install-hamlib
@@ -120,13 +144,6 @@ jobs:
         sudo ldconfig
        
  ## fftw
-    - name: Cache Check fftw 3.3.10
-      id: cache-fftw
-      uses: actions/cache@v4
-      with:
-        path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/fftw
-        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-fftw
-
     - name: Install fftw 3.3.10
       if: steps.cache-fftw.outputs.cache-hit != 'true' && (${{ runner.arch }} 
       id: install-fftw
@@ -139,13 +156,6 @@ jobs:
         sudo make install
         
 ## boost
-    - name: Cache Check Boost 1.88
-      id: cache-boost
-      uses: actions/cache@v4
-      with:
-        path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/boost
-        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-boost
-
     - name: Install Boost 1.88
       if: steps.cache-boost.outputs.cache-hit != 'true'
       id: install-boost
@@ -157,14 +167,7 @@ jobs:
         sudo ./b2 install
         
 ## QT to change between 6.8.3 and 6.9.3 just change the 8 to a 9 everywhere here and at the bottom
-    - name: Cache Check QT 6.9.3
-      id: cache-qt
-      uses: actions/cache@v4
-      with:
-        path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install
-        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-qt693
-
-    # Takes about 1 hour and then will be cached
+    # Takes about 1 hour if not cached
     - name: Install QT 6.9.3
       if: steps.cache-qt.outputs.cache-hit != 'true'
       id: install-qt693
