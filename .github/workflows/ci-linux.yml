@@ -127,7 +127,7 @@ jobs:
       if: steps.cache-ffmpeg.outputs.cache-hit != 'true'
       id: install-ffmpeg
       run: |
-        git clone --branch n7.1.1 https://git.ffmpeg.org/ffmpeg.git ffmpeg
+        git clone --depth=1 --branch n7.1.1 https://git.ffmpeg.org/ffmpeg.git ffmpeg
         mkdir -p ffmpeg/build
         cd ffmpeg/build
         ../configure --prefix=/home/runner/work/JS8Call-improved/JS8Call-improved/local/ffmpeg --disable-shared --enable-static --disable-doc \
@@ -140,9 +140,8 @@ jobs:
       if: steps.cache-hamlib.outputs.cache-hit != 'true'
       id: install-hamlib
       run: |
-        git clone https://github.com/Hamlib/Hamlib.git ~/hamlib
+        git clone --depth=1 --branch=4.6.4 https://github.com/Hamlib/Hamlib.git ~/hamlib
         cd ~/hamlib
-        git checkout 4.6.4
         ./bootstrap
         ./configure --prefix=/home/runner/work/JS8Call-improved/JS8Call-improved/local/hamlib
         make -j 4
