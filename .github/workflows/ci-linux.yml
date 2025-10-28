@@ -17,8 +17,6 @@ env:
 
 # TODO: 
 # 1) Add Debian and Fedora container builds
-# 2) Conditionally install apt packages since the 
-#    bulk are for building supporting libs
 
 jobs:
   build_x86_64:
@@ -100,7 +98,13 @@ jobs:
         sudo apt-get install -y ${{ env.build_package }} ${{ env.opengl_package1 }}
         
     - name: Install dependencies needed to build libs
-      if: steps.cache-qt.outputs.cache-hit != 'true'
+      if: |
+        steps.cache-usb.outputs.cache-hit != 'true' ||
+        steps.cache-ffmpeg.outputs.cache-hit != 'true' ||
+        steps.cache-hamlib.outputs.cache-hit != 'true' ||
+        steps.cache-fftw.outputs.cache-hit != 'true' ||
+        steps.cache-boost.outputs.cache-hit != 'true' ||
+        steps.cache-qt.outputs.cache-hit != 'true'
       run: |
         sudo apt-get install -y $${{ env.ffmpeg_build }} ${{ env.opengl_package2 }} ${{ env.opengl_package3 }}
 
