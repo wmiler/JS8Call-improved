@@ -106,7 +106,6 @@ jobs:
       if: steps.cache-usb.outputs.cache-hit != 'true'
       id: install-usb
       run: |
-        mkdir -p tmp
         curl --location --output ./tmp/v1.0.29.tar.gz https://github.com/libusb/libusb/archive/refs/tags/v1.0.29.tar.gz
         cd tmp
         tar zxf v1.0.29.tar.gz
