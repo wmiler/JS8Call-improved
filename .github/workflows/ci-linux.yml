@@ -177,9 +177,8 @@ jobs:
       if: steps.cache-qt.outputs.cache-hit != 'true'
       id: install-qt693
       run: |
-        git clone https://github.com/qt/qt5.git qt6
+        git clone --depth=1 --branch=6.9.3 https://github.com/qt/qt5.git qt6
         cd qt6
-        git switch 6.9.3
         mkdir -p qt6/build
         cd qt6/build
         ${GITHUB_WORKSPACE}/qt6/configure -DCMAKE_PREFIX_PATH="/home/runner/work/JS8Call-improved/JS8Call-improved/local/ffmpeg" --prefix=${GITHUB_WORKSPACE}/local/qt693-install -init-submodules -submodules qtmultimedia,qtserialport -ffmpeg-dir /home/runner/work/JS8Call-improved/JS8Call-improved/local/ffmpeg
