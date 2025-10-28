@@ -58,7 +58,7 @@ jobs:
       id: cache-hamlib
       uses: actions/cache@v4
       with:
-        path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/hamlib464
+        path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/hamlib
         key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-hamlib464
 
     - name: Cache Check fftw 3.3.10
