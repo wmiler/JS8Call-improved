@@ -22,14 +22,15 @@ env:
 jobs:
 # This job can only build Debian/Ubuntu type builds. If we need other caches (Windows, MacOS, fedora, etc)
 # tack another job below this.
-  ci_x86_64_linux_ubuntu_libs:
+  ci_linux_ubuntu_libs:
     name: ${{ matrix.os }}
-    runs-on: ubuntu-22.04
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         include: 
-          - {os: ubuntu-22.04, packages: build-essential autoconf curl git cmake libtool libxkbcommon-dev libudev-dev yasm libva-dev libpulse-dev libegl1-mesa-dev libgles2-mesa-dev libgbm-dev libgl1-mesa-dev libxkbcommon-x11-dev}
+          - {os: ubuntu-22.04, arch: X64, packages: build-essential autoconf curl git cmake libtool libxkbcommon-dev libudev-dev yasm libva-dev libpulse-dev libegl1-mesa-dev libgles2-mesa-dev libgbm-dev libgl1-mesa-dev libxkbcommon-x11-dev}
+          - {os: ubuntu-22.04-arm, arch: ARM64, packages: build-essential autoconf curl git cmake libtool libxkbcommon-dev libudev-dev yasm libva-dev libpulse-dev libegl1-mesa-dev libgles2-mesa-dev libgbm-dev libgl1-mesa-dev libxkbcommon-x11-dev}
 
     steps:
     - name: Create our own var with the ImageOS value for cache use
@@ -123,6 +124,7 @@ jobs:
         
  ## fftw
     - name: Install fftw 3.3.10
+      if: runner.arch == 'X64'
       id: install-fftw
       run: |
         cd /tmp
@@ -130,6 +132,19 @@ jobs:
         tar zxf fftw-3.3.10.tar.gz
         cd fftw-3.3.10
         ./configure --prefix=${GITHUB_WORKSPACE}/local/fftw --enable-threads --enable-shared --enable-sse2 --enable-avx --enable-avx2 --enable-float
+        make
+        make install
+
+ ## fftw arm64
+    - name: Install fftw 3.3.10
+      if: runner.arch == 'X64'
+      id: install-fftw-arm64
+      run: |
+        cd /tmp
+        curl --location --output /tmp/fftw-3.3.10.tar.gz https://www.fftw.org/fftw-3.3.10.tar.gz
+        tar zxf fftw-3.3.10.tar.gz
+        cd fftw-3.3.10
+        ./configure --prefix=${GITHUB_WORKSPACE}/local/fftw --enable-threads --enable-shared --enable-neon --enable-float
         make
         make install
 
@@ -174,4 +189,4 @@ jobs:
         
     - name: QT 6.9.3 Summary
       run: cat /tmp/qt6/build/config.summary
-# End ci_x86_64_linux_libs
+# End ci_linux_ubuntu_libs
