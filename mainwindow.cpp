@@ -965,6 +965,10 @@ MainWindow::MainWindow(QString  const & program_info,
   auto logAction = new QAction(QString("Log..."), ui->tableWidgetCalls);
   connect(logAction, &QAction::triggered, this, &MainWindow::on_logQSOButton_clicked);
 
+  // Disable default header mouseover and click behaviors, they are confusing to users because they give the
+  // appearance of allowing sorting by header clicks, which is not actually implemented
+  ui->tableWidgetRXAll->horizontalHeader()->setHighlightSections(false);
+  ui->tableWidgetRXAll->horizontalHeader()->setSectionsClickable(false);
 
   ui->tableWidgetRXAll->horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
   connect(ui->tableWidgetRXAll->horizontalHeader(), &QHeaderView::customContextMenuRequested, this, [this](QPoint const &point){
@@ -1218,6 +1222,11 @@ MainWindow::MainWindow(QString  const & program_info,
 
       addCommandToStorage("STORE", d);
   });
+
+  // Disable default header mouseover and click behaviors, they are confusing to users because they give the
+  // appearance of allowing sorting by header clicks, which is not actually implemented
+  ui->tableWidgetCalls->horizontalHeader()->setHighlightSections(false);
+  ui->tableWidgetCalls->horizontalHeader()->setSectionsClickable(false);
 
   ui->tableWidgetCalls->horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
   connect(ui->tableWidgetCalls->horizontalHeader(), &QHeaderView::customContextMenuRequested, this, [this](QPoint const &point){
