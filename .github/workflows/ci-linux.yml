@@ -20,7 +20,7 @@ env:
 # need to occur elsewhere in this workflow. ie via the steps.which-os.outputs.thisos == 'some other linux OS'
 # Be aware, the global env package vars do not get expanded in the matrix.
 jobs:
-  ci_x86_64_linux:
+  ci_ubuntu_linux:
     name: ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
@@ -28,6 +28,7 @@ jobs:
       matrix:
         include: 
           - {os: ubuntu-22.04, arch: X64, packages: build-essential autoconf curl git cmake libtool libxkbcommon-dev libudev-dev yasm libva-dev libpulse-dev libegl1-mesa-dev libgles2-mesa-dev libgbm-dev libgl1-mesa-dev libxkbcommon-x11-dev}
+          - {os: ubuntu-22.04-arm, arch: ARM64, packages: build-essential autoconf curl git cmake libtool libxkbcommon-dev libudev-dev yasm libva-dev libpulse-dev libegl1-mesa-dev libgles2-mesa-dev libgbm-dev libgl1-mesa-dev libxkbcommon-x11-dev}
           
     steps:
     - uses: actions/checkout@v5
@@ -179,7 +180,7 @@ jobs:
         
  ## fftw
     - name: Install fftw 3.3.10
-      if: steps.cache-fftw.outputs.cache-hit != 'true'
+      if: (steps.cache-fftw.outputs.cache-hit != 'true' && runner.arch == 'X64')
       id: install-fftw
       run: |
         cd /tmp
@@ -187,6 +188,18 @@ jobs:
         tar zxf fftw-3.3.10.tar.gz
         cd fftw-3.3.10
         ./configure --prefix=${GITHUB_WORKSPACE}/local/fftw --enable-threads --enable-shared --enable-sse2 --enable-avx --enable-avx2 --enable-float
+        make
+        make install
+
+    - name: Install fftw 3.3.10 (arm64)
+      if: (steps.cache-fftw.outputs.cache-hit != 'true' && runner.arch == 'ARM64')
+      id: install-fftw-arm64
+      run: |
+        cd /tmp
+        curl --location --output /tmp/fftw-3.3.10.tar.gz https://www.fftw.org/fftw-3.3.10.tar.gz
+        tar zxf fftw-3.3.10.tar.gz
+        cd fftw-3.3.10
+        ./configure --prefix=${GITHUB_WORKSPACE}/local/fftw --enable-threads --enable-shared --enable-neon --enable-float
         make
         make install
 
