@@ -137,7 +137,7 @@ jobs:
 
  ## fftw arm64
     - name: Install fftw 3.3.10
-      if: runner.arch == 'X64'
+      if: runner.arch == 'ARM64'
       id: install-fftw-arm64
       run: |
         cd /tmp
