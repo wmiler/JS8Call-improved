@@ -1,9 +1,5 @@
 name: Build and Deploy Docs
-on:
-  push:
-    branches:
-      - '**' # This wildcard matches all branches
-  workflow_dispatch:
+on: [workflow_dispatch]
 
 permissions:
   contents: write
