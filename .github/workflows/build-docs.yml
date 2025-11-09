@@ -1,10 +1,15 @@
 name: Build and Deploy Docs
-on: [workflow_dispatch, push]
+on: 
+  workflow_dispatch: 
+  pull_request:
+    types: [labeled] # Trigger only if we have labeled the PR or mannual trigger
 
 permissions:
   contents: write
 jobs:
   build_and_deploy_docs:
+    if: (contains(github.event.pull_request.labels.*.name, 'documentation') ||
+      (contains(github.event_name, 'workflow_dispatch')))
     concurrency: ci-${{ github.ref }}
     runs-on: ubuntu-latest
     steps:
