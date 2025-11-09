@@ -3,7 +3,7 @@ permissions:
 
 name: CI Build for MacOS 15 Arm64 (M1 and higher)
 
-on: [workflow_dispatch, push, pull_request]
+on: [workflow_dispatch, pull_request]
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
@@ -13,10 +13,10 @@ jobs:
   build_macos-latest:
     runs-on: macos-15
     permissions: write-all
-    
+
     steps:
     - uses: actions/checkout@v5
-     
+
     - name: Work around for /usr/local perms and grab arch/os info
       run: |
         sudo chown runner:admin /usr/local

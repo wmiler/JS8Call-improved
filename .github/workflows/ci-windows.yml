@@ -1,7 +1,7 @@
 name: Build for Windows 10+ x64
 
-on: [workflow_dispatch, push, pull_request]
-      
+on: [workflow_dispatch, pull_request]
+
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
@@ -55,7 +55,7 @@ jobs:
         tag: 'hamlib-v4.6.4-ci'
         extract: true
         out-file-path: 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464'
-       
+
     - name: Configure JS8Call
       shell: msys2 {0}
       run: |

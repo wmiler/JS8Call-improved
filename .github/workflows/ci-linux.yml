@@ -1,9 +1,9 @@
 permissions:
   contents: read
 
-name: CI Build for Linux x86_64
+name: CI Build for Linux Ubuntu
 
-on: [workflow_dispatch, push, pull_request]
+on: [workflow_dispatch, pull_request]
 
 # The package arrays below are mainly for building the libs, one could add fedora_build_package to include the
 # packages fedora requires, for instance.
@@ -26,10 +26,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include: 
+        include:
           - {os: ubuntu-22.04, arch: X64, packages: build-essential autoconf curl git cmake libtool libxkbcommon-dev libudev-dev yasm libva-dev libpulse-dev libegl1-mesa-dev libgles2-mesa-dev libgbm-dev libgl1-mesa-dev libxkbcommon-x11-dev}
           - {os: ubuntu-22.04-arm, arch: ARM64, packages: build-essential autoconf curl git cmake libtool libxkbcommon-dev libudev-dev yasm libva-dev libpulse-dev libegl1-mesa-dev libgles2-mesa-dev libgbm-dev libgl1-mesa-dev libxkbcommon-x11-dev}
-          
+
     steps:
     - uses: actions/checkout@v5
 
@@ -130,7 +130,7 @@ jobs:
         ./configure --prefix=${GITHUB_WORKSPACE}/local/libusb
         make
         make install
-        
+
     - name: Save libusb cache
       if: steps.cache-usb.outputs.cache-hit != 'true'
       uses: actions/cache/save@v4
@@ -157,7 +157,7 @@ jobs:
       with:
         key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-ffmpeg711
         path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/ffmpeg
-        
+
 ## hamlib
     - name: Install Hamlib 4.6.4
       if: steps.cache-hamlib.outputs.cache-hit != 'true'
@@ -170,14 +170,14 @@ jobs:
         make -j 4
         make install-strip
         sudo ldconfig
- 
+
     - name: Save Hamlib cache
       if: steps.cache-hamlib.outputs.cache-hit != 'true'
       uses: actions/cache/save@v4
       with:
         key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-hamlib464
         path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/hamlib
-        
+
  ## fftw
     - name: Install fftw 3.3.10
       if: (steps.cache-fftw.outputs.cache-hit != 'true' && runner.arch == 'X64')
@@ -209,7 +209,7 @@ jobs:
       with:
         key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-fftw3310
         path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/fftw
-        
+
 ## boost
     - name: Install Boost 1.88
       if: steps.cache-boost.outputs.cache-hit != 'true'
@@ -228,7 +228,7 @@ jobs:
       with:
         key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-boost188
         path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/boost
-        
+
     # Takes about 1 hour if not cached
     - name: Install QT 6.9.3
       if: steps.cache-qt.outputs.cache-hit != 'true'
@@ -240,19 +240,19 @@ jobs:
         /tmp/qt6/configure -DCMAKE_PREFIX_PATH="${GITHUB_WORKSPACE}/local/ffmpeg" --prefix=${GITHUB_WORKSPACE}/local/qt693-install -init-submodules -submodules qtmultimedia,qtserialport -ffmpeg-dir /home/runner/work/JS8Call-improved/JS8Call-improved/local/ffmpeg
         cmake --build . --parallel
         cmake --install .
-        
+
     - name: Save QT 6.9.3 cache
       if: steps.cache-qt.outputs.cache-hit != 'true'
       uses: actions/cache/save@v4
       with:
         key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-qt693
         path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install
-        
+
     - name: QT 6.9.3 Summary
       if: steps.cache-qt.outputs.cache-hit != 'true'
       run: cat /tmp/qt6/build/config.summary
-      
-    - name: Build JS8Call 
+
+    - name: Build JS8Call
       run: |
         mkdir -p build && cd build
         cmake -DCMAKE_PREFIX_PATH="${GITHUB_WORKSPACE}/local/qt693-install;${GITHUB_WORKSPACE}/local/hamlib;${GITHUB_WORKSPACE}/local/fftw;${GITHUB_WORKSPACE}/local/boost;${GITHUB_WORKSPACE}/local/libusb" ..
