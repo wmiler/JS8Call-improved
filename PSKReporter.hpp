@@ -7,6 +7,7 @@
 
 class QString;
 class Configuration;
+class Bands;
 
 class PSKReporter final : public QObject
 {
