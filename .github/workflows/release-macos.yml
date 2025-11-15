@@ -62,8 +62,10 @@ jobs:
             path: js8call
             
         - run: |
-            zip -r js8call-improved_2.4.1-devel_arm64_macos15.app.zip JS8Call-improved/JS8Call-improved.app
-            tar zcf js8call-improved_2.4.1-devel_arm64_macos15.app.tar.gz JS8Call-improved/JS8Call-improved.app
+            pwd
+            ls -l
+            zip -r js8call-improved_2.4.1-devel_arm64_macos15.app.zip JS8Call-improved.app
+            tar zcf js8call-improved_2.4.1-devel_arm64_macos15.app.tar.gz JS8Call-improved.app
 
         - name: Create Changelog
           id: github_release
