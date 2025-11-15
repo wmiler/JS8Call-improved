@@ -49,7 +49,7 @@ jobs:
       uses: actions/upload-artifact@v5
       with:
         name: js8call-improved_2.4.1-devel_arm64_macos15.app
-        path: /Users/runner/work/js8call/js8call/build/
+        path: /Users/runner/work/JS8Call-improved/JS8Call-improved/build/
 
   release:
     runs-on: ubuntu-24.04
@@ -62,8 +62,8 @@ jobs:
             path: js8call
             
         - run: |
-            zip -r js8call-improved_2.4.1-devel_arm64_macos15.app.zip js8call/JS8Call-improved.app
-            tar zcf js8call-improved_2.4.1-devel_arm64_macos15.app.tar.gz js8call/JS8Call-improved.app
+            zip -r js8call-improved_2.4.1-devel_arm64_macos15.app.zip JS8Call-improved/JS8Call-improved.app
+            tar zcf js8call-improved_2.4.1-devel_arm64_macos15.app.tar.gz JS8Call-improved/JS8Call-improved.app
 
         - name: Create Changelog
           id: github_release
