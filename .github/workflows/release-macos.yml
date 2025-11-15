@@ -43,7 +43,9 @@ jobs:
         mkdir -p ./build && cd ./build
         cmake -DCMAKE_PREFIX_PATH="/usr/local/js8lib" ..
         make
-        tar zcf ../js8call_2.3.2-devel_arm64_macos15.app.tar.gz js8call.app
+        ls -l
+        ls -lR
+        tar zcf ../js8call_2.4.1-devel_arm64_macos15.app.tar.gz js8call.app
 
     - name: Upload Artifact (app)
       uses: actions/upload-artifact@v5
