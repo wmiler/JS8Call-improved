@@ -56,9 +56,9 @@ jobs:
     permissions: write-all
     needs: build_macos-latest
     steps: 
-        - uses: actions/checkout@v5
-          with:
-            repository: 'Chris-AC9KH/JS8Call-improved.git'
+    # Needed to get the git commit history. Run a regular checkout on the prime repo
+    #    - uses: actions/checkout@v5
+        - run: git clone https://github.com/Chris-AC9KH/JS8Call-improved.git
 
         - uses: actions/download-artifact@v4
           with:
