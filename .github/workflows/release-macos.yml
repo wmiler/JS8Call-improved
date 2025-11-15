@@ -73,7 +73,7 @@ jobs:
           id: github_release
           uses: mikepenz/release-changelog-builder-action@v6
           with:
-            mode: "COMMIT"
+            mode: "HYBRID"
             fromTag: "02070ccfc3c2133e85cca4f4220a9ced161db15b"
             owner: "Chris-AC9KH"
             repo: "JS8Call-improved"
