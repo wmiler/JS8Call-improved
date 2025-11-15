@@ -1,0 +1,126 @@
+name: Build and Release for MacOS 15 Arm64 (M1 and higher)
+
+on: 
+  workflow_dispatch:
+  release:
+    types: [published]
+    
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Release
+
+jobs:
+  build_macos-latest:
+    runs-on: macos-15
+    permissions: write-all
+    
+    steps:
+    - uses: actions/checkout@v5
+    
+    - name: Work around for /usr/local perms and grab arch/os info
+      run: |
+        sudo chown runner:admin /usr/local
+        arch
+        sw_vers
+      
+    - name: Release AC9KH package
+      uses: robinraju/release-downloader@v1.12
+      with:
+        repository: 'Chris-AC9KH/js8lib'
+        fileName: 'js8lib-2.3_Darwin_arm64_Qt6.9.3.tar.gz'
+        latest: true
+        extract: true
+        out-file-path: '/usr/local/'
+
+    - name: Look for and delete files that break app building
+      run: |
+        find /usr/local/js8lib -type f -name ._* -delete
+      continue-on-error: true
+
+    - name: Build JS8Call and tar.gz the app
+      run: |
+        mkdir -p ./build && cd ./build
+        cmake -DCMAKE_PREFIX_PATH="/usr/local/js8lib" ..
+        make
+        make install
+        tar zcf ../js8call_2.3.2-devel_arm64_macos15.app.tar.gz js8call.app
+
+    - name: CI Release
+      uses: softprops/action-gh-release@v2.4.2
+      with:
+        tag_name: js8call-arm64_macos15
+        name: "JS8Call CI build for MacOS 15"
+        body: |
+          Release 
+          This release is the CI build of JS8Call for MacOS 15 (M1+ cpus), with QT 6.9.3.
+        files: |
+          js8call_2.3.2-devel_arm64_macos15.app.tar.gz
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Upload Artifact (app)
+      uses: actions/upload-artifact@v5
+      with:
+        name: js8call_2.3.2-devel_arm64_macos15.app
+        path: /Users/runner/work/js8call/js8call/build/
+
+  release:
+    runs-on: ubuntu-24.04
+    permissions: write-all
+    needs: build_macos-latest
+    steps: 
+        - uses: actions/download-artifact@v4
+          with:
+            name: js8call_2.3.2-devel_arm64_macos15.app
+            path: js8call
+            
+        - run: |
+            zip -r js8call_2.3.2-devel_arm64_macos15.app.zip js8call/js8call.app
+            tar zcf js8call_2.3.2-devel_arm64_macos15.app.tar.gz js8call/js8call.app
+
+        - name: Create Changelog
+          id: github_release
+          uses: mikepenz/release-changelog-builder-action@v6
+          with:
+            mode: "COMMIT"
+            configurationJson: |
+              {
+                "template": "#{{CHANGELOG}}",
+                "categories": [
+                  {
+                      "title": "## Feature",
+                      "labels": ["feat", "feature"]
+                  },
+                  {
+                      "title": "## Fix",
+                      "labels": ["fix", "bug"]
+                  },
+                  {
+                     "title": "## Other",
+                     "labels": []
+                  }
+                ],
+                "label_extractor": [
+                  {
+                    "pattern": "^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test){1}(\\([\\w\\-\\.]+\\))?(!)?: ([\\w ])+([\\s\\S]*)",
+                    "on_property": "title",
+                    "target": "$1"
+                  }
+                ]
+              }
+          continue-on-error: true
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+        - uses: softprops/action-gh-release@v2.4.2
+          with:
+            tag_name: js8call-arm64_macos15-ci
+            name: "JS8Call CI build for MacOS 15"
+            body: |
+              This is a release of JS8Call-Improved for MacOS 15 (M1+ cpus).
+              ${{steps.github_release.outputs.changelog}}
+            files: |
+              js8call_2.3.2-devel_arm64_macos15.app.zip
+              js8call_2.3.2-devel_arm64_macos15.app.tar.gz
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
