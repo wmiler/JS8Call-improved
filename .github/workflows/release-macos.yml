@@ -57,14 +57,15 @@ jobs:
     needs: build_macos-latest
     steps: 
         - uses: actions/checkout@v5
+          with:
+            repository: 'Chris-AC9KH/JS8Call-improved.git'
+
         - uses: actions/download-artifact@v4
           with:
             name: js8call-improved_2.4.1-devel_arm64_macos15.app
             path: js8call
             
         - run: |
-            pwd
-            ls -l js8call
             zip -r js8call-improved_2.4.1-devel_arm64_macos15.app.zip js8call/JS8Call-improved.app
             tar zcf js8call-improved_2.4.1-devel_arm64_macos15.app.tar.gz js8call/JS8Call-improved.app
 
