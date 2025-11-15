@@ -2,6 +2,7 @@ name: Build and Release for MacOS 15 Arm64 (M1 and higher)
 
 on: 
   workflow_dispatch:
+  pull_request:
   release:
     types: [published]
     
