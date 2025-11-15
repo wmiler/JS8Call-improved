@@ -58,7 +58,7 @@ jobs:
     steps: 
     # Needed to get the git commit history. Run a regular checkout on the prime repo
     #    - uses: actions/checkout@v5
-        - run: git clone https://github.com/Chris-AC9KH/JS8Call-improved.git
+        - run: git clone https://github.com/Chris-AC9KH/JS8Call-improved.git .
 
         - uses: actions/download-artifact@v4
           with:
@@ -75,6 +75,8 @@ jobs:
           with:
             mode: "COMMIT"
             fromTag: "02070ccfc3c2133e85cca4f4220a9ced161db15b"
+            owner: "Chris-AC9KH"
+            repo: "JS8Call-improved.git"
             configurationJson: |
               {
                 "template": "#{{CHANGELOG}}",
