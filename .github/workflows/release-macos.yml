@@ -1,5 +1,6 @@
-name: Build and Release for MacOS 15 Arm64 (M1 and higher)
+name: Release for MacOS 15 Arm64 (M1 and higher)
 
+# Remove pull_request when moved to new repo
 on: 
   workflow_dispatch:
   pull_request:
@@ -71,7 +72,6 @@ jobs:
 
         - name: Create Changelog
           id: github_release
-          if: startsWith(github.ref, 'refs/tags/')
           uses: mikepenz/release-changelog-builder-action@v6
           with:
             mode: "PR"
@@ -79,6 +79,7 @@ jobs:
             repo: "JS8Call-improved"
             fromTag: "2.3.1"
             exportCache: true
+            fetchReleaseInformation: true
             cache: "Changelog"
             configurationJson: |
               {
