@@ -3,6 +3,11 @@ name: Release for MacOS 15 Arm64 (M1 and higher)
 # Remove pull_request when moved to new repo
 on: 
   workflow_dispatch:
+    inputs:
+      release_number:
+        description: 'Release build version number'
+        required: true
+        type: string
   pull_request:
   release:
     types: [published]
