@@ -77,36 +77,35 @@ jobs:
             owner: "Chris-AC9KH"
             repo: "JS8Call-improved"
             fromTag: "release/2.3.1"
-#
-#            configurationJson: |
-#              {
-#                "template": "#{{CHANGELOG}}",
-#                "categories": [
-#                  {
-#                      "title": "## Feature",
-#                      "labels": ["feat", "feature"]
-#                  },
-#                  {
-#                      "title": "## Fix",
-#                      "labels": ["fix", "bug"]
-#                  },
-#                  {
-#                      "title": "## Docs",
-#                      "labels": ["documentation"]
-#                  },
-#                  {
-#                     "title": "## Other",
-#                     "labels": []
-#                  }
-#                ],
-#                "label_extractor": [
-#                  {
-#                    "pattern": "^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test){1}(\\([\\w\\-\\.]+\\))?(!)?: ([\\w ])+([\\s\\S]*)",
-#                    "on_property": "title",
-#                    "target": "$1"
-#                  }
-#                ]
-#              }
+            configurationJson: |
+              {
+                "template": "#Changes: #{{CHANGELOG}}\n\n<details>\n<summary>Uncategorized</summary>\n\n#{{UNCATEGORIZED}}\n</details>",
+                "categories": [
+                  {
+                      "title": "## Feature",
+                      "labels": ["feat", "feature"]
+                  },
+                  {
+                      "title": "## Fix",
+                      "labels": ["fix", "bug"]
+                  },
+                  {
+                      "title": "## Docs",
+                      "labels": ["documentation"]
+                  },
+                  {
+                     "title": "## Other",
+                     "labels": []
+                  }
+                ],
+                "label_extractor": [
+                  {
+                    "pattern": "^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test){1}(\\([\\w\\-\\.]+\\))?(!)?: ([\\w ])+([\\s\\S]*)",
+                    "on_property": "title",
+                    "target": "$1"
+                  }
+                ]
+              }
           continue-on-error: true
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
