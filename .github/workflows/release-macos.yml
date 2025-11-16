@@ -71,13 +71,15 @@ jobs:
 
         - name: Create Changelog
           id: github_release
+          if: startsWith(github.ref, 'refs/tags/')
           uses: mikepenz/release-changelog-builder-action@v6
           with:
             mode: "PR"
             owner: "Chris-AC9KH"
             repo: "JS8Call-improved"
             fromTag: "2.3.1"
-            toTag: "release/2.4.0"
+            exportCache: true
+            cache: "Changelog"
             configurationJson: |
               {
                 "template": "#Changes: #{{CHANGELOG}}\n\n<details>\n<summary>Uncategorized</summary>\n\n#{{UNCATEGORIZED}}\n</details>",
