@@ -73,39 +73,39 @@ jobs:
           id: github_release
           uses: mikepenz/release-changelog-builder-action@v6
           with:
-            mode: "HYBRID"
-            fromTag: "02070ccfc3c2133e85cca4f4220a9ced161db15b"
+            mode: "PR"
             owner: "Chris-AC9KH"
             repo: "JS8Call-improved"
-            configurationJson: |
-              {
-                "template": "#{{CHANGELOG}}",
-                "categories": [
-                  {
-                      "title": "## Feature",
-                      "labels": ["feat", "feature"]
-                  },
-                  {
-                      "title": "## Fix",
-                      "labels": ["fix", "bug"]
-                  },
-                  {
-                      "title": "## Docs",
-                      "labels": ["documentation"]
-                  },
-                  {
-                     "title": "## Other",
-                     "labels": []
-                  }
-                ],
-                "label_extractor": [
-                  {
-                    "pattern": "^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test){1}(\\([\\w\\-\\.]+\\))?(!)?: ([\\w ])+([\\s\\S]*)",
-                    "on_property": "title",
-                    "target": "$1"
-                  }
-                ]
-              }
+#
+#            configurationJson: |
+#              {
+#                "template": "#{{CHANGELOG}}",
+#                "categories": [
+#                  {
+#                      "title": "## Feature",
+#                      "labels": ["feat", "feature"]
+#                  },
+#                  {
+#                      "title": "## Fix",
+#                      "labels": ["fix", "bug"]
+#                  },
+#                  {
+#                      "title": "## Docs",
+#                      "labels": ["documentation"]
+#                  },
+#                  {
+#                     "title": "## Other",
+#                     "labels": []
+#                  }
+#                ],
+#                "label_extractor": [
+#                  {
+#                    "pattern": "^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test){1}(\\([\\w\\-\\.]+\\))?(!)?: ([\\w ])+([\\s\\S]*)",
+#                    "on_property": "title",
+#                    "target": "$1"
+#                  }
+#                ]
+#              }
           continue-on-error: true
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
