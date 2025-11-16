@@ -76,8 +76,8 @@ jobs:
             mode: "PR"
             owner: "Chris-AC9KH"
             repo: "JS8Call-improved"
-            fromTag: "release/2.3.0"
-            toTag: "release/2.3.1"
+            fromTag: "2.3.1"
+            toTag: "release/2.4.0"
             configurationJson: |
               {
                 "template": "#Changes: #{{CHANGELOG}}\n\n<details>\n<summary>Uncategorized</summary>\n\n#{{UNCATEGORIZED}}\n</details>",
