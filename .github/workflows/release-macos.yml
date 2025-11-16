@@ -85,7 +85,7 @@ jobs:
             cache: "Changelog"
             configurationJson: |
               {
-                "template": "#Changes: #{{CHANGELOG}}\n\n<details>\n<summary>Uncategorized</summary>\n\n#{{UNCATEGORIZED}}\n</details>",
+                "template": "#Changes:\n #{{CHANGELOG}}\n\n<details>\n<summary>Uncategorized</summary>\n\n#{{UNCATEGORIZED}}\n</details>",
                 "categories": [
                   {
                       "title": "## Feature",
@@ -119,9 +119,8 @@ jobs:
         - uses: softprops/action-gh-release@v2.4.2
           with:
             tag_name: js8call-improved-arm64_macos15-v2.4.1-devel
-            name: "JS8Call-Improved Release for MacOS 15"
+            name: "JS8Call-Improved Release for MacOS 15 M1+ cpus"
             body: |
-              This is a release of JS8Call-Improved for MacOS 15 (M1+ cpus).
               ${{steps.github_release.outputs.changelog}}
             files: |
               js8call-improved_2.4.1-devel_arm64_macos15.app.zip
