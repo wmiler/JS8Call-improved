@@ -83,7 +83,7 @@ jobs:
             mode: "HYBRID"
             owner: "JS8Call-improved"
             repo: "JS8Call-improved"
-            fromTag: "2.3.1"
+            fromTag: "4a06f800e747907e1c55322410336b2e8027d5f2"
             toTag: "f09d4d4f92bc11d67ff4cfc0957381abd5d6fc1a"
             exportCache: true
             fetchReleaseInformation: true
