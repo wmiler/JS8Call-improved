@@ -83,14 +83,15 @@ jobs:
             mode: "HYBRID"
             owner: "Chris-AC9KH"
             repo: "JS8Call-improved"
-            fromTag: "2.3.1"
+            fromTag: "2.4.0"
             toTag: "release/2.4.0"
             exportCache: true
             fetchReleaseInformation: true
             cache: "Changelog"
             configurationJson: |
               {
-                "template": "#Changes:\n #{{CHANGELOG}}\n\n<details>\n<summary>Uncategorized</summary>\n\n#{{UNCATEGORIZED}}\n</details>",
+                "template": "#{{CHANGELOG}}\n\n<details>\n<summary>Uncategorized</summary>\n\n#{{UNCATEGORIZED}}\n</details>",
+                "pr_template": "- Author: #{{AUTHOR}} #{{TITLE}} - PR: ##{{NUMBER}}",
                 "categories": [
                   {
                       "title": "## Feature",
