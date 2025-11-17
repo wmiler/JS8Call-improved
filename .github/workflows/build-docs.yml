@@ -10,7 +10,7 @@ on:
 permissions:
   contents: write
 jobs:
-  build_and_deploy_docs:
+  build_docs:
     if: (contains(github.event.pull_request.labels.*.name, 'documentation') ||
       (contains(github.event_name, 'workflow_dispatch')) ||
       (contains(github.event_name, 'release')) )
@@ -27,8 +27,25 @@ jobs:
 
       - name: Build docs
         run: doxygen
-        
-      - name: Deploy to gh-pages
-        uses: JamesIves/github-pages-deploy-action@v4
+
+      - name: Upload static files as artifact
+        id: deployment
+        uses: actions/upload-pages-artifact@v3
         with:
-          folder: docs/html
+          path: docs/html
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build_docs
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        
+#      - name: Deploy to gh-pages
+#        uses: JamesIves/github-pages-deploy-action@v4
+#        with:
+#          folder: docs/html
