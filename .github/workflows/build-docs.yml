@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: write
+  id-token: write
 jobs:
   build_docs:
     if: (contains(github.event.pull_request.labels.*.name, 'documentation') ||
