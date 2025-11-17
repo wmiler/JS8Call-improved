@@ -13,7 +13,7 @@ CAboutDlg::CAboutDlg(QWidget *parent) :
                          "<h3>What is JS8Call-improved?</h3>"
                          "<p>It is the result of a team that took JS8Call and added further improvements<br />(hopefully to be integrated into JS8Call proper later).<br />This team includes: <br />Chris AC9KH, Allan W6BAZ, Wyatt KJ4CTD, Joe K0OG, Andreas DJ3EI, Rob Ruchte K4RWR.</p>"
                           "<p>The JS8Call-improved code lives in "
-                                 "<a href=\"https://github.com/Chris-AC9KH/JS8Call-improved\">https://github.com/Chris-AC9KH/JS8Call-improved</a> .</p>"
+                                 "<a href=\"https://github.com/JS8Call-improved/JS8Call-improved\">https://github.com/JS8Call-improved/JS8Call-improved</a> .</p>"
                          "<h3>What is JS8Call?</h3>"
                          "<p>JS8Call is a derivative of the WSJT-X application, "
                          "restructured and redesigned for message passing. <br/>"

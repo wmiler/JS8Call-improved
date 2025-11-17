@@ -7,4 +7,4 @@ JS8Call is a derivative of the WSJT-X application, restructured and redesigned f
 # JS8Call-improved
 JS8Call-improved aims to be upstream development HEAD for the JS8Call project. Most of the same developers work on both projects. With JS8Call-improved we are able to implement bug fixes and features must faster so development can proceed at a faster pace. It is likely that bug fixes and/or features in JS8Call-improved may not be incorporated into the official JS8Call project.
 
-Like JS8Call, JS8Call-improved is licensed under the GPLv3, the Qt libraries used by JS8Call-improved are licensed under the LGPL. See [LICENSE](LICENSE) for the details. All copyrights remain with the original holders. Source code for JS8Call-improved is [here](https://github.com/Chris-AC9KH/JS8Call-improved)
+Like JS8Call, JS8Call-improved is licensed under the GPLv3, the Qt libraries used by JS8Call-improved are licensed under the LGPL. See [LICENSE](LICENSE) for the details. All copyrights remain with the original holders. Source code for JS8Call-improved is [here](https://github.com/JS8Call-improved/JS8Call-improved)
