@@ -95,8 +95,8 @@ jobs:
                 "sort": { "order": "DESC", "on_property": "mergedAt"},
                 "categories": [
                   {
-                      "title": "## Feature",
-                      "labels": ["feat", "feature"]
+                      "title": "## Feature/Enhancement",
+                      "labels": ["feat", "feature", "enhancement"]
                   },
                   {
                       "title": "## Fix",
