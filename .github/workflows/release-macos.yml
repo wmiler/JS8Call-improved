@@ -83,15 +83,16 @@ jobs:
             mode: "HYBRID"
             owner: "JS8Call-improved"
             repo: "JS8Call-improved"
-            fromTag: "02070ccfc3c2133e85cca4f4220a9ced161db15b"
-            toTag: "6d158d8a10de7a05026af67777d1dac8d1e60c14"
+            fromTag: "2.3.1"
+            toTag: "f09d4d4f92bc11d67ff4cfc0957381abd5d6fc1a"
             exportCache: true
             fetchReleaseInformation: true
             cache: "Changelog"
             configurationJson: |
               {
                 "template": "#{{CHANGELOG}}\n\n<details>\n<summary>Uncategorized</summary>\n\n#{{UNCATEGORIZED}}\n</details>",
-                "pr_template": "- Author: #{{AUTHOR}} #{{TITLE}} - PR: ##{{NUMBER}}",
+                "pr_template": "- Author: #{{AUTHOR} PR: ##{{NUMBER}} #{{TITLE}}",
+                "sort": { "order": "ASC", "on_property": "mergedAt"},
                 "categories": [
                   {
                       "title": "## Feature",
