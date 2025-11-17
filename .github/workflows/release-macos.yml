@@ -83,8 +83,8 @@ jobs:
             mode: "HYBRID"
             owner: "Chris-AC9KH"
             repo: "JS8Call-improved"
-            fromTag: "4a06f800e747907e1c55322410336b2e8027d5f2"
-            toTag: "435b66008b5de5d4f307c80c6e8fa65b2881f088"
+            fromTag: "2.3.1"
+            toTag: "release/2.4.0"
             exportCache: true
             fetchReleaseInformation: true
             cache: "Changelog"
