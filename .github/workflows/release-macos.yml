@@ -92,7 +92,7 @@ jobs:
               {
                 "template": "#{{CHANGELOG}}\n\n<details>\n<summary>Uncategorized</summary>\n\n#{{UNCATEGORIZED}}\n</details>",
                 "pr_template": "- Author: #{{AUTHOR}} PR: ##{{NUMBER}} #{{TITLE}}",
-                "sort": { "order": "ASC", "on_property": "mergedAt"},
+                "sort": { "order": "DESC", "on_property": "mergedAt"},
                 "categories": [
                   {
                       "title": "## Feature",
