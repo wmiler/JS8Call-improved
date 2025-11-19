@@ -82,7 +82,7 @@ jobs:
         steps.cache-ffmpeg.outputs.cache-hit != 'true' ||
         steps.cache-hamlib.outputs.cache-hit != 'true' ||
         steps.cache-fftw.outputs.cache-hit != 'true' ||
-        steps.cache-boost.outputs.cache-hit != 'true'
+        steps.cache-boost.outputs.cache-hit != 'true')
 
       run: |
         brew install autoconf
