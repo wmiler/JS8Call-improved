@@ -31,7 +31,9 @@ jobs:
       shell: bash
 
     - name: Install dependencies (MacOS)
-      run: brew install ${{ env.build_packages }}
+      run: |
+        brew update
+        brew install libusb hamlib fftw boost ffmpeg@7
         
     - name: Install Qt 6.9.3
       uses: jurplel/install-qt-action@v3
