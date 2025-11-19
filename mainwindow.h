@@ -419,6 +419,8 @@ private:
   void setFreq(int);
   void transmit();
 
+  bool presentlyWantHBReplies();
+
 
   QString m_nextFreeTextMsg;
 

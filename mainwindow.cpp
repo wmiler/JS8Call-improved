@@ -7951,13 +7951,20 @@ void MainWindow::displayTransmit(){
     update_dynamic_property (ui->monitorTxButton, "transmitting", m_transmitting);
 }
 
-void MainWindow::updateModeButtonText(){
-    auto selectedCallsign = callsignSelected();
+bool MainWindow::presentlyWantHBReplies() {
+    return
+        ui->actionModeAutoreply->isChecked() &&
+            ui->actionHeartbeatAcknowledgements->isChecked() &&
+            // The folloing line is disputed, as it disallows replies to HBs
+            // if there is any (unrelated) activity on the band:
+            m_messageBuffer.isEmpty() &&
+            (!m_config.heartbeat_qso_pause() || m_prevSelectedCallsign.isEmpty());
+}
 
+void MainWindow::updateModeButtonText(){
     auto multi = ui->actionModeMultiDecoder->isChecked();
     auto autoreply = ui->actionModeAutoreply->isChecked();
     auto heartbeat = ui->actionModeJS8HB->isEnabled() && ui->actionModeJS8HB->isChecked();
-    auto ack = autoreply && ui->actionHeartbeatAcknowledgements->isChecked() && m_messageBuffer.isEmpty() && (!m_config.heartbeat_qso_pause() || selectedCallsign.isEmpty());
 
     auto modeText = JS8::Submode::name(m_nSubMode);
     if(multi){
@@ -7973,7 +7980,7 @@ void MainWindow::updateModeButtonText(){
     }
 
     if(heartbeat){
-        if(ack){
+        if(presentlyWantHBReplies()){
             modeText += QString("+HB+ACK");
         } else {
             modeText += QString("+HB");
@@ -8021,15 +8028,7 @@ void MainWindow::updateHBButtonDisplay() {
         QDateTime nextHeartbeat = m_hb_loop->nextActivity();
         long secs = std::lround(now.msecsTo(nextHeartbeat) / 1000.0);
 
-        // qCDebug(mainwindow_js8)
-        //         << "updateHBButtonDisplay, signal due at" << nextHeartbeat
-        //         << "so" << secs << "s to go";
-
-        bool wantAck = ui->actionModeAutoreply->isChecked() &&
-            ui->actionHeartbeatAcknowledgements->isChecked() &&
-            m_messageBuffer.isEmpty() &&
-            (!m_config.heartbeat_qso_pause() || callsignSelected().isEmpty());
-        QString hbBase = wantAck ? "HB + ACK" : "HB";
+        QString hbBase = presentlyWantHBReplies() ? "HB + ACK" : "HB";
 
         if(secs > 0) {
             ui->hbMacroButton->setText(QString("%1 (%2)").arg(hbBase).arg(secs));
@@ -8038,7 +8037,11 @@ void MainWindow::updateHBButtonDisplay() {
             ui->hbMacroButton->setText(QString("%1 (now)").arg(hbBase));
         }
     } else {
-        ui->hbMacroButton->setText("HB");
+        if(presentlyWantHBReplies()) {
+            ui->hbMacroButton->setText("HB + ACK");
+        } else {
+            ui->hbMacroButton->setText("HB");
+        }
     }
 }
 
@@ -8318,12 +8321,12 @@ void MainWindow::callsignSelectedChanged(QString /*old*/, QString selectedCall){
     ui->callDetailTextBrowser->setVisible(!selectedCall.isEmpty() && (!hearing.isEmpty() || !heardby.isEmpty()));
 #endif
 
+    m_prevSelectedCallsign = selectedCall;
+
     // immediately update the display
     updateButtonDisplay();
     updateTextDisplay();
     statusChanged();
-
-    m_prevSelectedCallsign = selectedCall;
 }
 
 void MainWindow::clearCallsignSelected(){
