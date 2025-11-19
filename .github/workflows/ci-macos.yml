@@ -25,14 +25,13 @@ jobs:
     - name: Work around for /usr/local perms and grab arch/os info
       run: |
         sudo chown runner:admin /usr/local
-        uname -m
-        sw_vers
 
     - name: Create our own var with the ImageOS value for cache use
       id: which-os
       run: |
         export ImageOS=$(sw_vers --productName)$(sw_vers --productVersion)
         echo "thisos=$ImageOS" >> $GITHUB_OUTPUT
+        echo "thisos=$ImageOS"
       shell: bash
 
 # Move all of our cache checks here, so we know if we need to free bunches of disk space
@@ -71,18 +70,23 @@ jobs:
         path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/boost
         key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-boost188
 
-    - name: Install dependencies needed to build libs (Ubuntu)
+    - name: Install minimum required dependencies (Ubuntu)
+      if: ${{ steps.which-os.outputs.thisos == 'ubuntu22.04' }}
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ${{ env.build_package }}
+        
+    - name: Install dependencies needed to build libs (MacOS)
       if: |
         (steps.cache-usb.outputs.cache-hit != 'true' ||
         steps.cache-ffmpeg.outputs.cache-hit != 'true' ||
         steps.cache-hamlib.outputs.cache-hit != 'true' ||
         steps.cache-fftw.outputs.cache-hit != 'true' ||
-        steps.cache-boost.outputs.cache-hit != 'true' ||
-        steps.cache-qt.outputs.cache-hit != 'true') &&
-        steps.which-os.outputs.thisos == 'ubuntu22.04'
+        steps.cache-boost.outputs.cache-hit != 'true'
+
       run: |
-        sudo apt-get install -y ${{ env.ffmpeg_build }} ${{ env.opengl_package2 }} ${{ env.opengl_package3 }}
-        sudo apt-get clean
+        brew install autoconf
+        brew install ${{ env.ffmpeg_build }} ${{ env.opengl_package2 }} ${{ env.opengl_package3 }}
         
 ## libusb
     - name: Install libusb 1.0.29
