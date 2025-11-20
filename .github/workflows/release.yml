@@ -1,4 +1,4 @@
-name: Release
+name: Release JS8Call-improved
 
 on:
   pull_request:
@@ -24,21 +24,21 @@ jobs:
   # Call existing CI workflows for each platform
   build-windows:
     name: Build Windows
-    uses: ./.github/workflows/ci-windows.yaml
+    uses: .github/workflows/ci-windows.yaml@latest
     with:
       build-type: Release
     secrets: inherit
 
   build-macos:
     name: Build macOS
-    uses: ./.github/workflows/ci-macos.yaml
+    uses: .github/workflows/ci-macos.yaml@latest
     with:
       build-type: Release
     secrets: inherit
 
   build-linux:
     name: Build Linux
-    uses: ./.github/workflows/ci-linux.yaml
+    uses: .github/workflows/ci-linux.yaml@latest
     with:
       build-type: Release
     secrets: inherit
