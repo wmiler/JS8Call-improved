@@ -22,7 +22,7 @@ on:
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
-  build_package: libusb hamlib fftw boost ffmpeg@7
+  build_package: libusb hamlib fftw boost ffmpeg@7 
 
 jobs:
   build_macos-latest:
@@ -40,7 +40,7 @@ jobs:
     - name: Install dependencies (MacOS)
       run: |
         brew update
-        brew install libusb hamlib fftw boost ffmpeg@7
+        brew install libusb hamlib fftw boost ffmpeg@7 create-dmg
         
     - name: Install Qt 6.9.3
       uses: jurplel/install-qt-action@v3
@@ -59,9 +59,20 @@ jobs:
         mkdir -p ./build && cd ./build
         cmake -DCMAKE_PREFIX_PATH="/usr/local/js8lib" ..
         make
-          
-    - name: Upload Artifact (app)
+
+    - name: Create DMG
+      run: create-dmg "JS8Call-improved.dmg" "build/JS8Call-improved.app"
+      
+    - name: Upload Artifact (Release build)
+      if: ${{ inputs.release-ver }}
       uses: actions/upload-artifact@v5
       with:
         name: "JS8call-improved_${{ inputs.release-ver }}_${{ runner.arch }}_macos15.app"
-        path: /Users/runner/work/JS8Call-improved/JS8Call-improved/build/JS8Call-improved.app
+        path: /Users/runner/work/JS8Call-improved/JS8Call-improved/build/JS8Call-improved.dmg
+
+    - name: Upload Artifact (Other build)
+      if: ${{ !inputs.release-ver }}
+      uses: actions/upload-artifact@v5
+      with:
+        name: "JS8call-improved_devel_${{ runner.arch }}_macos15.app"
+        path: /Users/runner/work/JS8Call-improved/JS8Call-improved/build/JS8Call-improved.dmg
