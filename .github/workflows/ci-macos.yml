@@ -53,14 +53,9 @@ jobs:
         mkdir -p ./build && cd ./build
         cmake -DCMAKE_PREFIX_PATH="/usr/local/js8lib" ..
         make
-
-    - name: Replace slashes in ref_name
-      run: |
-          formatted_ref_name="${{ replace(github.ref_name, '/', '-') }}"
-          echo "FORMATED_REF_NAME=$formatted_ref_name" >> $GITHUB_ENV
           
     - name: Upload Artifact (app)
       uses: actions/upload-artifact@v5
       with:
-        name: JS8call-improved_${{ github.event_name == 'workflow_dispatch' && github.event.inputs.version || github.formatted_ref_name }}_arm64_macos15.app
+        name: JS8call-improved_${{ github.event_name == 'workflow_dispatch' && github.event.inputs.version || github.ref_name }//\//-}_arm64_macos15.app
         path: /Users/runner/work/JS8Call-improved/JS8Call-improved/build/JS8Call-improved.app
