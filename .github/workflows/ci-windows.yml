@@ -80,5 +80,5 @@ jobs:
       uses: actions/upload-artifact@v5
       with:
         name: JS8Call-improved.exe
-        path: /Users/runner/work/JS8Call-improved/JS8Call-improved/build/
+        path: ./build/
         
