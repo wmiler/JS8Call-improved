@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version to release (e.g., v2.4.0)'
+        description: 'Version to release (e.g., v2.4.1)'
         required: true
         type: string
       prerelease:
@@ -49,6 +49,7 @@ jobs:
     uses: ./.github/workflows/ci-macos.yml
     with:
       build-type: Release
+      release-ver: ${{inputs.version}}
     secrets: inherit
 
   build-linux:
