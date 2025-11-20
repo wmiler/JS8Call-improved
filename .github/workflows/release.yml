@@ -29,6 +29,11 @@ permissions:
   repository-projects: write
   statuses: write
   contents: write
+  discussions: write
+  models: read
+  pages: write
+  security-events: write
+  id-token: write
 
 jobs:
   # Call existing CI workflows for each platform
