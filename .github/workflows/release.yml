@@ -66,10 +66,11 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+#      - name: Checkout repository
+#        uses: actions/checkout@v4
+#        with:
+#          fetch-depth: 0
+      - run: git clone https://github.com/JS8Call-improved/JS8Call-improved.git .
       
       - name: Download all artifacts
         uses: actions/download-artifact@v4
@@ -91,6 +92,7 @@ jobs:
             -name "*.msi" -o \
             -name "*.zip" -o \
             -name "*.dmg" -o \
+            -name "*.app" -o \
             -name "*.tar.gz" -o \
             -name "*.deb" -o \
             -name "*.rpm" -o \
