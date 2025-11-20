@@ -9,10 +9,10 @@ on:
   workflow_call:
     inputs:
       build-type:
-      description: 'Build type (Debug/Release)'
-      required: false
-      type: string
-      default: 'Release'
+        description: 'Build type (Debug/Release)'
+        required: false
+        type: string
+        default: 'Release'
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
