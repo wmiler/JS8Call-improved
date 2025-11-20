@@ -67,6 +67,11 @@ jobs:
         codesign -vvv --deep --strict --display JS8Call-improved.app
       continue-on-error: true
 
+    - name: Check files included in app
+      run: |
+        cd build
+        ls -lR JS8Call-improved.app
+
     - name: Upload Artifact (app)
       uses: actions/upload-artifact@v5
       with:
