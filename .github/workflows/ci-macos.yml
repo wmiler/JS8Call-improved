@@ -35,6 +35,7 @@ jobs:
     - name: Work around for /usr/local perms and grab arch/os info
       run: |
         sudo chown runner:admin /usr/local
+        echo "inputs: ${{ inputs.release-ver }}"
 
     - name: Install dependencies (MacOS)
       run: |
