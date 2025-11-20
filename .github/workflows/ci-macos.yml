@@ -22,14 +22,6 @@ jobs:
       run: |
         sudo chown runner:admin /usr/local
 
-    - name: Create our own var with the ImageOS value for cache use
-      id: which-os
-      run: |
-        export ImageOS=$(sw_vers --productName)$(sw_vers --productVersion)
-        echo "thisos=$ImageOS" >> $GITHUB_OUTPUT
-        echo "thisos=$ImageOS"
-      shell: bash
-
     - name: Install dependencies (MacOS)
       run: |
         brew update
@@ -38,6 +30,7 @@ jobs:
     - name: Install Qt 6.9.3
       uses: jurplel/install-qt-action@v3
       with:
+        cache: true
         aqtversion: '==3.1.*'
         version: '6.9.3'
         host: 'mac'
