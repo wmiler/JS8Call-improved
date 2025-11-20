@@ -52,7 +52,18 @@ jobs:
         cmake -DCMAKE_PREFIX_PATH="/usr/local/js8lib" ..
         make
         tar zcf ../js8call-improved_2.4.1-devel_arm64_macos15.app.tar.gz JS8Call-improved.app
+
+    - name: Check a few things
+      run: |
+        echo "*** mdls ***"
         mdls JS8Call-improved.app
+        echo "*** otool ***"
+        otool -L JS8Call-improved.app/Contents/MacOS/JS8Call-improved
+        echo "*** lipo ***"
+        lipo -info JS8Call-improved.app/Contents/MacOS/JS8Call-improved
+        echo "*** codesign ***"
+        codesign -vvv --deep --strict --display ${BUILD}/JS8Call-improved.app
+      continue-on-error: true
 
     - name: Upload Artifact (app)
       uses: actions/upload-artifact@v5
