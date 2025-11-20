@@ -13,6 +13,11 @@ on:
         required: false
         type: string
         default: 'Release'
+      release-ver:
+        description: 'Release Version (v2.4.1)'
+        required: false
+        type: string      
+        default: 'v2.4.1'
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
@@ -57,5 +62,5 @@ jobs:
     - name: Upload Artifact (app)
       uses: actions/upload-artifact@v5
       with:
-        name: "JS8call-improved_Version_${{ runner.arch }}_macos15.app"
+        name: "JS8call-improved_${{ inputs.release-ver }}_${{ runner.arch }}_macos15.app"
         path: /Users/runner/work/JS8Call-improved/JS8Call-improved/build/JS8Call-improved.app
