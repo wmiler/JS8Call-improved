@@ -3,7 +3,16 @@ permissions:
 
 name: CI Build for Linux Ubuntu
 
-on: [workflow_dispatch, pull_request]
+on: 
+  workflow_dispatch: 
+  pull_request:
+  workflow_call:
+    inputs:
+      build-type:
+        description: 'Build type (Debug/Release)'
+        required: false
+        type: string
+        default: 'Release'
 
 # The package arrays below are mainly for building the libs, one could add fedora_build_package to include the
 # packages fedora requires, for instance.
@@ -257,3 +266,10 @@ jobs:
         mkdir -p build && cd build
         cmake -DCMAKE_PREFIX_PATH="${GITHUB_WORKSPACE}/local/qt693-install;${GITHUB_WORKSPACE}/local/hamlib;${GITHUB_WORKSPACE}/local/fftw;${GITHUB_WORKSPACE}/local/boost;${GITHUB_WORKSPACE}/local/libusb" ..
         make -j 4
+        
+    - name: Upload Artifact (app)
+      uses: actions/upload-artifact@v5
+      with:
+        name: js8call-improved
+        path: ./build/
+        
