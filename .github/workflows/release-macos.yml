@@ -27,22 +27,24 @@ jobs:
     - name: Work around for /usr/local perms and grab arch/os info
       run: |
         sudo chown runner:admin /usr/local
-        arch
+        uname -m
         sw_vers
-      
-    - name: Release AC9KH package
-      uses: robinraju/release-downloader@v1.12
-      with:
-        repository: 'Chris-AC9KH/js8lib'
-        fileName: 'js8lib-2.3_Darwin_arm64_Qt6.9.3.tar.gz'
-        latest: true
-        extract: true
-        out-file-path: '/usr/local/'
-
-    - name: Look for and delete files that break app building
+        
+    - name: Install dependencies (MacOS)
       run: |
-        find /usr/local/js8lib -type f -name ._* -delete
-      continue-on-error: true
+        brew update
+        brew install libusb hamlib fftw boost ffmpeg@7
+        
+    - name: Install Qt 6.9.3
+      uses: jurplel/install-qt-action@v3
+      with:
+        aqtversion: '==3.1.*'
+        version: '6.9.3'
+        host: 'mac'
+        target: 'desktop'
+        arch: 'clang_64'
+        modules: 'qtmultimedia qtserialport'
+        archives: 'qtsvg qtdeclarative qtbase'
 
     - name: Build JS8Call and tar.gz the app
       run: |
@@ -50,6 +52,7 @@ jobs:
         cmake -DCMAKE_PREFIX_PATH="/usr/local/js8lib" ..
         make
         tar zcf ../js8call-improved_2.4.1-devel_arm64_macos15.app.tar.gz JS8Call-improved.app
+        mdls JS8Call-improved.app
 
     - name: Upload Artifact (app)
       uses: actions/upload-artifact@v5
@@ -84,7 +87,7 @@ jobs:
             owner: "JS8Call-improved"
             repo: "JS8Call-improved"
             fromTag: "4a06f800e747907e1c55322410336b2e8027d5f2"
-            toTag: "f09d4d4f92bc11d67ff4cfc0957381abd5d6fc1a"
+            toTag: "3668bec8c1853b2ce779746b65a8faefaef3d3f0"
             exportCache: true
             fetchReleaseInformation: true
             cache: "Changelog"
