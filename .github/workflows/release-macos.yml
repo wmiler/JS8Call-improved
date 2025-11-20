@@ -98,7 +98,7 @@ jobs:
 
         - name: Get tag name
           id: get_tag
-          run: echo "tag_name=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          run: echo "tag_name=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
 
         - name: Print tag name
           run: echo "Workflow triggered by tag ${{ steps.get_tag.outputs.tag_name }}"
