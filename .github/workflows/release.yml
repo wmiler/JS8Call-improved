@@ -24,21 +24,21 @@ jobs:
   # Call existing CI workflows for each platform
   build-windows:
     name: Build Windows
-    uses: .github/workflows/ci-windows.yaml@latest
+    uses: ./.github/workflows/ci-windows.yaml
     with:
       build-type: Release
     secrets: inherit
 
   build-macos:
     name: Build macOS
-    uses: .github/workflows/ci-macos.yaml@latest
+    uses: ./.github/workflows/ci-macos.yaml
     with:
       build-type: Release
     secrets: inherit
 
   build-linux:
     name: Build Linux
-    uses: .github/workflows/ci-linux.yaml@latest
+    uses: ./.github/workflows/ci-linux.yaml
     with:
       build-type: Release
     secrets: inherit
