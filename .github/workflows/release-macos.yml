@@ -112,7 +112,7 @@ jobs:
             owner: "JS8Call-improved"
             repo: "JS8Call-improved"
             fromTag: "4a06f800e747907e1c55322410336b2e8027d5f2"
-            toTag: "cecf8026d0623fe20374427a9da70b8140553dec"
+            toTag: "${{ steps.get_tag.outputs.tag_name }}"
             exportCache: true
             fetchReleaseInformation: true
             cache: "Changelog"
