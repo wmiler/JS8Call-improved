@@ -270,6 +270,6 @@ jobs:
     - name: Upload Artifact (app)
       uses: actions/upload-artifact@v5
       with:
-        name: js8call-improved
+        name: js8call-improved-${{ matrix.os }}
         path: ./build/
         
