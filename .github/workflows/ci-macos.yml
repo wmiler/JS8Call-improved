@@ -66,5 +66,5 @@ jobs:
     - name: Upload Artifact (app)
       uses: actions/upload-artifact@v5
       with:
-        name: JS8call-improved_${{ $MY_VERSION || $MY_REF_NAME }}_arm64_macos15.app
+        name: "JS8call-improved_${{ $MY_VERSION || $MY_REF_NAME }}_arm64_macos15.app"
         path: /Users/runner/work/JS8Call-improved/JS8Call-improved/build/JS8Call-improved.app
