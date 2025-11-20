@@ -38,6 +38,7 @@ jobs:
     - name: Install Qt 6.9.3
       uses: jurplel/install-qt-action@v3
       with:
+        cache: true
         aqtversion: '==3.1.*'
         version: '6.9.3'
         host: 'mac'
@@ -55,6 +56,7 @@ jobs:
 
     - name: Check a few things
       run: |
+        cd build
         echo "*** mdls ***"
         mdls JS8Call-improved.app
         echo "*** otool ***"
@@ -62,7 +64,7 @@ jobs:
         echo "*** lipo ***"
         lipo -info JS8Call-improved.app/Contents/MacOS/JS8Call-improved
         echo "*** codesign ***"
-        codesign -vvv --deep --strict --display ${BUILD}/JS8Call-improved.app
+        codesign -vvv --deep --strict --display JS8Call-improved.app
       continue-on-error: true
 
     - name: Upload Artifact (app)
