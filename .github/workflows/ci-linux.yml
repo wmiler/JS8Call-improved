@@ -268,6 +268,8 @@ jobs:
         make -j 4
 
 # AppImage packaging
+# This is broke, no make install
+#        make DESTDIR=/home/runner/work/JS8Call-improved/JS8Call-improved/appimage/AppDir install
     - name: Package JS8Call AppImage (${{ runner.arch }})
       run: |
         mkdir -p /home/runner/work/JS8Call-improved/JS8Call-improved/appimage/AppDir
@@ -280,8 +282,6 @@ jobs:
           && ./linuxdeploy-plugin-qt-x86_64.AppImage --appimage-extract \
           && mv squashfs-root linuxdeploy-plugin-qt \
           && rm *.AppImage
-
-        make DESTDIR=/home/runner/work/JS8Call-improved/JS8Call-improved/appimage/AppDir install
         
         test -f /home/runner/work/JS8Call-improved/JS8Call-improved/appimage/AppDir/usr/share/applications/js8call.desktop || \
           cp /home/runner/work/JS8Call-improved/JS8Call-improved/js8call.desktop /home/runner/work/JS8Call-improved/JS8Call-improved/appimage/AppDir/usr/share/applications/ && \
