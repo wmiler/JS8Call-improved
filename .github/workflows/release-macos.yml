@@ -96,6 +96,13 @@ jobs:
             zip -r js8call-improved_2.4.1-devel_arm64_macos15.app.zip js8call/JS8Call-improved.app
             tar zcf js8call-improved_2.4.1-devel_arm64_macos15.app.tar.gz js8call/JS8Call-improved.app
 
+        - name: Get tag name
+          id: get_tag
+          run: echo "tag_name=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+        - name: Print tag name
+          run: echo "Workflow triggered by tag ${{ steps.get_tag.outputs.tag_name }}"
+
 # fromTag and toTag are commit hashs because of how we are running, change for master repo
         - name: Create Changelog
           id: github_release
@@ -105,7 +112,7 @@ jobs:
             owner: "JS8Call-improved"
             repo: "JS8Call-improved"
             fromTag: "4a06f800e747907e1c55322410336b2e8027d5f2"
-            toTag: "3668bec8c1853b2ce779746b65a8faefaef3d3f0"
+            toTag: "cecf8026d0623fe20374427a9da70b8140553dec"
             exportCache: true
             fetchReleaseInformation: true
             cache: "Changelog"
@@ -116,11 +123,11 @@ jobs:
                 "sort": { "order": "DESC", "on_property": "mergedAt"},
                 "categories": [
                   {
-                      "title": "## Feature/Enhancement",
+                      "title": "## Features and Enhancements",
                       "labels": ["feat", "feature", "enhancement"]
                   },
                   {
-                      "title": "## Fix",
+                      "title": "## Fixes",
                       "labels": ["fix", "bug"]
                   },
                   {
