@@ -1,0 +1,164 @@
+name: Release for MacOS 15 Arm64 (M1 and higher)
+
+# Remove pull_request when moved to new repo
+on: 
+  workflow_dispatch:
+    inputs:
+      release_number:
+        description: 'Release build version number'
+        required: true
+        type: string
+  pull_request:
+  release:
+    types: [published]
+    
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Release
+
+jobs:
+  build_macos-latest:
+    runs-on: macos-15
+    permissions: write-all
+    
+    steps:
+    - uses: actions/checkout@v5
+    
+    - name: Work around for /usr/local perms and grab arch/os info
+      run: |
+        sudo chown runner:admin /usr/local
+        uname -m
+        sw_vers
+        
+    - name: Install dependencies (MacOS)
+      run: |
+        brew update
+        brew install libusb hamlib fftw boost ffmpeg@7
+        
+    - name: Install Qt 6.9.3
+      uses: jurplel/install-qt-action@v3
+      with:
+        cache: true
+        aqtversion: '==3.1.*'
+        version: '6.9.3'
+        host: 'mac'
+        target: 'desktop'
+        arch: 'clang_64'
+        modules: 'qtmultimedia qtserialport'
+        archives: 'qtsvg qtdeclarative qtbase'
+
+    - name: Build JS8Call and tar.gz the app
+      run: |
+        mkdir -p ./build && cd ./build
+        cmake -DCMAKE_PREFIX_PATH="/usr/local/js8lib" ..
+        make
+        tar zcf ../js8call-improved_2.4.1-devel_arm64_macos15.app.tar.gz JS8Call-improved.app
+
+    - name: Check a few things
+      run: |
+        cd build
+        echo "*** mdls ***"
+        mdls JS8Call-improved.app
+        echo "*** otool ***"
+        otool -L JS8Call-improved.app/Contents/MacOS/JS8Call-improved
+        echo "*** lipo ***"
+        lipo -info JS8Call-improved.app/Contents/MacOS/JS8Call-improved
+        echo "*** codesign ***"
+        codesign -vvv --deep --strict --display JS8Call-improved.app
+      continue-on-error: true
+
+    - name: Check files included in app
+      run: |
+        cd build
+        ls -lR JS8Call-improved.app
+
+    - name: Upload Artifact (app)
+      uses: actions/upload-artifact@v5
+      with:
+        name: js8call-improved_2.4.1-devel_arm64_macos15.app
+        path: /Users/runner/work/JS8Call-improved/JS8Call-improved/build/
+
+  release:
+    runs-on: ubuntu-24.04
+    permissions: write-all
+    needs: build_macos-latest
+    steps: 
+    # Needed to get the git commit history. Run a regular checkout on the prime repo
+    #    - uses: actions/checkout@v5
+        - run: git clone https://github.com/JS8Call-improved/JS8Call-improved.git .
+
+        - uses: actions/download-artifact@v4
+          with:
+            name: js8call-improved_2.4.1-devel_arm64_macos15.app
+            path: js8call
+            
+        - run: |
+            zip -r js8call-improved_2.4.1-devel_arm64_macos15.app.zip js8call/JS8Call-improved.app
+            tar zcf js8call-improved_2.4.1-devel_arm64_macos15.app.tar.gz js8call/JS8Call-improved.app
+
+        - name: Get tag name
+          id: get_tag
+          run: echo "tag_name=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+
+        - name: Print tag name
+          run: echo "Workflow triggered by tag ${{ steps.get_tag.outputs.tag_name }}"
+
+# fromTag and toTag are commit hashs because of how we are running, change for master repo
+        - name: Create Changelog
+          id: github_release
+          uses: mikepenz/release-changelog-builder-action@v6
+          with:
+            mode: "HYBRID"
+            owner: "JS8Call-improved"
+            repo: "JS8Call-improved"
+            fromTag: "4a06f800e747907e1c55322410336b2e8027d5f2"
+            toTag: "${{ steps.get_tag.outputs.tag_name }}"
+            exportCache: true
+            fetchReleaseInformation: true
+            cache: "Changelog"
+            configurationJson: |
+              {
+                "template": "#{{CHANGELOG}}\n\n<details>\n<summary>Uncategorized</summary>\n\n#{{UNCATEGORIZED}}\n</details>",
+                "pr_template": "- Author: #{{AUTHOR}} PR: ##{{NUMBER}} #{{TITLE}}",
+                "sort": { "order": "DESC", "on_property": "mergedAt"},
+                "categories": [
+                  {
+                      "title": "## Features and Enhancements",
+                      "labels": ["feat", "feature", "enhancement"]
+                  },
+                  {
+                      "title": "## Fixes",
+                      "labels": ["fix", "bug"]
+                  },
+                  {
+                      "title": "## Docs",
+                      "labels": ["documentation"]
+                  },
+                  {
+                     "title": "## Other",
+                     "labels": []
+                  }
+                ],
+                "label_extractor": [
+                  {
+                    "pattern": "^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test){1}(\\([\\w\\-\\.]+\\))?(!)?: ([\\w ])+([\\s\\S]*)",
+                    "on_property": "title",
+                    "target": "$1"
+                  }
+                ]
+              }
+          continue-on-error: true
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+        - uses: softprops/action-gh-release@v2.4.2
+          with:
+            tag_name: js8call-improved-arm64_macos15-v2.4.1-devel
+            name: "JS8Call-Improved Release for MacOS 15 M1+ cpus"
+            body: |
+              ${{steps.github_release.outputs.changelog}}
+            files: |
+              js8call-improved_2.4.1-devel_arm64_macos15.app.zip
+              js8call-improved_2.4.1-devel_arm64_macos15.app.tar.gz
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
