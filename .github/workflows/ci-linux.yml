@@ -270,8 +270,8 @@ jobs:
 # AppImage packaging
     - name: Package JS8Call AppImage (${{ runner.arch }})
       run: |
-        mkdir -p ~/appimage/AppDir
-        cd ~/js8call/build
+        mkdir -p /home/runner/work/JS8Call-improved/JS8Call-improved/appimage/AppDir
+        cd build
         wget -q https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage \
           && wget -q https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage \
           && chmod +x linuxdeploy*.AppImage \
@@ -281,23 +281,23 @@ jobs:
           && mv squashfs-root linuxdeploy-plugin-qt \
           && rm *.AppImage
 
-        make DESTDIR=~/appimage/AppDir install
+        make DESTDIR=/home/runner/work/JS8Call-improved/JS8Call-improved/appimage/AppDir install
         
-        test -f ~/appimage/AppDir/usr/share/applications/js8call.desktop || \
-          cp ~/js8call/js8call.desktop ~/appimage/AppDir/usr/share/applications/ && \
-        if [ ! -f ~/appimage/AppDir/usr/share/icons/hicolor/128x128/apps/js8call_icon.png ]; then \
-        mkdir -p ~/appimage/AppDir/usr/share/icons/hicolor/128x128/apps && \
-        convert ~/js8call/artwork/js8call_icon.png -resize 128x128 \
-            ~/appimage/AppDir/usr/share/icons/hicolor/128x128/apps/js8call_icon.png; \
+        test -f /home/runner/work/JS8Call-improved/JS8Call-improved/appimage/AppDir/usr/share/applications/js8call.desktop || \
+          cp /home/runner/work/JS8Call-improved/JS8Call-improved/js8call.desktop /home/runner/work/JS8Call-improved/JS8Call-improved/appimage/AppDir/usr/share/applications/ && \
+        if [ ! -f /home/runner/work/JS8Call-improved/JS8Call-improved/appimage/AppDir/usr/share/icons/hicolor/128x128/apps/js8call_icon.png ]; then \
+        mkdir -p /home/runner/work/JS8Call-improved/JS8Call-improved/appimage/AppDir/usr/share/icons/hicolor/128x128/apps && \
+        convert /home/runner/work/JS8Call-improved/JS8Call-improved/artwork/js8call_icon.png -resize 128x128 \
+            /home/runner/work/JS8Call-improved/JS8Call-improved/appimage/AppDir/usr/share/icons/hicolor/128x128/apps/js8call_icon.png; \
         fi
-        cd ~/appimage
+        cd /home/runner/work/JS8Call-improved/JS8Call-improved/appimage
 
-        echo "~/js8call/build/linuxdeploy/usr/bin:~/js8call/build/linuxdeploy-plugin-qt/usr/bin/" >> "$GITHUB_PATH"
-        ln -s ~/js8call/build/linuxdeploy-plugin-qt/usr/bin/linuxdeploy-plugin-qt ~/js8call/build/linuxdeploy/usr/bin/
+        echo "/home/runner/work/JS8Call-improved/JS8Call-improved/build/linuxdeploy/usr/bin:/home/runner/work/JS8Call-improved/JS8Call-improved/build/linuxdeploy-plugin-qt/usr/bin/" >> "$GITHUB_PATH"
+        ln -s /home/runner/work/JS8Call-improved/JS8Call-improved/build/linuxdeploy-plugin-qt/usr/bin/linuxdeploy-plugin-qt /home/runner/work/JS8Call-improved/JS8Call-improved/build/linuxdeploy/usr/bin/
         
         EXEC_PATH=$(find AppDir -type f -name "js8call" -executable | head -1) && \
           echo "Found executable at: $EXEC_PATH" && \
-          ~/js8call/build/linuxdeploy/usr/bin/linuxdeploy --appdir AppDir \
+          /home/runner/work/JS8Call-improved/JS8Call-improved/build/linuxdeploy/usr/bin/linuxdeploy --appdir AppDir \
           --executable "$EXEC_PATH" \
           --plugin qt \
           --output appimage \
