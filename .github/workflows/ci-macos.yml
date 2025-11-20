@@ -58,4 +58,4 @@ jobs:
       uses: actions/upload-artifact@v5
       with:
         name: js8call-improved_2.4.1-devel_arm64_macos15.app
-        path: /Users/runner/work/JS8Call-improved/JS8Call-improved/build/
+        path: /Users/runner/work/JS8Call-improved/JS8Call-improved/build/JS8Call-improved.app
