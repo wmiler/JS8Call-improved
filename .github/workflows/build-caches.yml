@@ -204,7 +204,13 @@ jobs:
       run: |
         export ImageOS=$(sw_vers -productVersion)
         echo "thisos=$ImageOS" >> $GITHUB_OUTPUT
-        
+
+# We have to build all of our dependencies, ugh
+    - name: Install dependencies (MacOS)
+      run: |
+        brew update
+        brew install automake
+
 ## libusb
     - name: Install libusb 1.0.29
       id: install-usb
