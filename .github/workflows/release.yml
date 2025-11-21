@@ -58,7 +58,6 @@ jobs:
     uses: ./.github/workflows/ci-linux.yml
     with:
       build-type: Release
-      release-ver: ${{inputs.version}}
     secrets: inherit
 
   # Create the GitHub release with all artifacts
