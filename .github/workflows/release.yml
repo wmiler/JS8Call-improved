@@ -102,7 +102,6 @@ jobs:
       - name: Print tag name
         run: echo "Workflow triggered by tag ${{ steps.get_tag.outputs.tag_name }}"
 
-#        "template": "#{{CHANGELOG}}\n\n<details>\n<summary>Uncategorized</summary>\n\n#{{UNCATEGORIZED}}\n</details>",
       - name: Create Changelog
         id: github_release
         uses: mikepenz/release-changelog-builder-action@v6
@@ -158,7 +157,7 @@ jobs:
             ${{steps.github_release.outputs.changelog}}
           prerelease: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.prerelease || contains(github.ref_name, 'alpha') || contains(github.ref_name, 'beta') || contains(github.ref_name, 'rc') }}
           files: |
-            release-artifacts/JS8call-improved_devel_ARM64_macos15.app/JS8Call-improved.dmg
+            release-artifacts/JS8call-improved_devel_ARM64_macos15.dmg/JS8Call-improved.dmg
             JS8call-improved_devel_X64_win64.zip
           fail_on_unmatched_files: true
         env:
