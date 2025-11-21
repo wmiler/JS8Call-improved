@@ -80,7 +80,7 @@ jobs:
       - name: Display artifact structure
         run: |
           echo "Downloaded artifacts:"
-          ls -R release-artifacts/
+          ls -lR release-artifacts/
       
       - name: Organize release files
         run: |
@@ -91,7 +91,6 @@ jobs:
             -name "*.msi" -o \
             -name "*.zip" -o \
             -name "*.dmg" -o \
-            -name "*.app" -o \
             -name "*.tar.gz" -o \
             -name "*.deb" -o \
             -name "*.rpm" -o \
@@ -101,7 +100,7 @@ jobs:
       - name: Zip windows back up (other)
         if: ${{ !inputs.version }}
         run: |
-          zip -r release-files/release-artifacts/JS8call-improved_devel_X64_win64.zip . -i release-artifacts/JS8call-improved_devel_X64_win64
+          zip -r release-files/JS8call-improved_devel_X64_win64.zip . -i release-artifacts/JS8call-improved_devel_X64_win64
 
       - name: Zip windows back up (release)
         if: ${{ inputs.version }}
