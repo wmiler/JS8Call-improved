@@ -37,10 +37,54 @@ jobs:
         sudo chown runner:admin /usr/local
         echo "inputs: ${{ inputs.release-ver }}"
 
-    - name: Install dependencies (MacOS)
+# We have to build all of our dependencies, ugh
+#    - name: Install dependencies (MacOS)
+#      run: |
+#        brew update
+#        brew install libusb hamlib fftw boost ffmpeg@7 create-dmg
+
+    - name: Create our own var with the ImageOS value for cache use
+      id: which-os
       run: |
-        brew update
-        brew install libusb hamlib fftw boost ffmpeg@7 create-dmg
+        export ImageOS=$(sw_vers -productVersion)
+        echo "thisos=$ImageOS" >> $GITHUB_OUTPUT
+#      shell: bash
+
+# Move all of our cache checks here, so we know if we need to free bunches of disk space
+    - name: Cache Check libusb 1.0.29
+      id: cache-usb
+      uses: actions/cache/restore@v4
+      with:  
+        path: /Users/runner/work/JS8Call-improved/JS8Call-improved/local/libusb
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-libusb1029
+
+    - name: Cache Check ffmpeg 7.1.1
+      id: cache-ffmpeg
+      uses: actions/cache/restore@v4
+      with:
+        path: /Users/runner/work/JS8Call-improved/JS8Call-improved/local/ffmpeg
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-ffmpeg711
+
+    - name: Cache Check Hamlib 4.6.4
+      id: cache-hamlib
+      uses: actions/cache/restore@v4
+      with:
+        path: /Users/runner/work/JS8Call-improved/JS8Call-improved/local/hamlib
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-hamlib464
+
+    - name: Cache Check fftw 3.3.10
+      id: cache-fftw
+      uses: actions/cache/restore@v4
+      with:
+        path: /Users/runner/work/JS8Call-improved/JS8Call-improved/local/fftw
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-fftw3310
+
+    - name: Cache Check Boost 1.88
+      id: cache-boost
+      uses: actions/cache/restore@v4
+      with:
+        path: /Users/runner/work/JS8Call-improved/JS8Call-improved/local/boost
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-boost188
         
     - name: Install Qt 6.9.3
       uses: jurplel/install-qt-action@v3
@@ -57,7 +101,7 @@ jobs:
     - name: Build JS8Call
       run: |
         mkdir -p ./build && cd ./build
-        cmake -DCMAKE_PREFIX_PATH="/usr/local/js8lib" ..
+        cmake -DCMAKE_PREFIX_PATH="${GITHUB_WORKSPACE}/local/qt693-install;${GITHUB_WORKSPACE}/local/hamlib;${GITHUB_WORKSPACE}/local/fftw;${GITHUB_WORKSPACE}/local/boost;${GITHUB_WORKSPACE}/local/libusb" ..
         make
 
     - name: Create DMG
