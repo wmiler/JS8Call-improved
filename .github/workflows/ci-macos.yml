@@ -68,7 +68,7 @@ jobs:
       uses: actions/upload-artifact@v5
       with:
         name: "JS8call-improved_${{ inputs.release-ver }}_${{ runner.arch }}_macos15.app"
-        path: /Users/runner/work/JS8Call-improved/JS8Call-improved/build/JS8Call-improved.dmg
+        path: /Users/runner/work/JS8Call-improved/JS8Call-improved/JS8Call-improved.dmg
 
     - name: Upload Artifact (Other build)
       if: ${{ !inputs.release-ver }}
