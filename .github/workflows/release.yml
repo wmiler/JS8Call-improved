@@ -42,6 +42,7 @@ jobs:
     uses: ./.github/workflows/ci-windows.yml
     with:
       build-type: Release
+      release-ver: ${{inputs.version}}
     secrets: inherit
 
   build-macos:
@@ -57,6 +58,7 @@ jobs:
     uses: ./.github/workflows/ci-linux.yml
     with:
       build-type: Release
+      release-ver: ${{inputs.version}}
     secrets: inherit
 
   # Create the GitHub release with all artifacts
@@ -66,10 +68,9 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+# Switch back when we are on main repo
 #      - name: Checkout repository
 #        uses: actions/checkout@v4
-#        with:
-#          fetch-depth: 0
       - run: git clone https://github.com/JS8Call-improved/JS8Call-improved.git .
       
       - name: Download all artifacts
@@ -88,7 +89,6 @@ jobs:
           
           # Find all release artifacts and copy to release-files directory
           find release-artifacts -type f \( \
-            -name "*.exe" -o \
             -name "*.msi" -o \
             -name "*.zip" -o \
             -name "*.dmg" -o \
@@ -98,6 +98,7 @@ jobs:
             -name "*.rpm" -o \
             -name "*.AppImage" \
           \) -exec cp {} release-files/ \;
+          zip -r release-files/js8call-improved_X64_win64.zip release-artifacts/JS8call-improved_v2.4.1_X64_win64
           
           echo "Release files prepared:"
           ls -lh release-files/
@@ -108,7 +109,8 @@ jobs:
 
       - name: Print tag name
         run: echo "Workflow triggered by tag ${{ steps.get_tag.outputs.tag_name }}"
-        
+
+#        "template": "#{{CHANGELOG}}\n\n<details>\n<summary>Uncategorized</summary>\n\n#{{UNCATEGORIZED}}\n</details>",
       - name: Create Changelog
         id: github_release
         uses: mikepenz/release-changelog-builder-action@v6
@@ -123,7 +125,7 @@ jobs:
           cache: "Changelog"
           configurationJson: |
               {
-                "template": "#{{CHANGELOG}}\n\n<details>\n<summary>Uncategorized</summary>\n\n#{{UNCATEGORIZED}}\n</details>",
+                "template": "#{{CHANGELOG}}\n\n<details>\n<summary>Uncategorized</summary>\n\n</details>",
                 "pr_template": "- Author: #{{AUTHOR}} PR: ##{{NUMBER}} #{{TITLE}}",
                 "sort": { "order": "DESC", "on_property": "mergedAt"},
                 "categories": [
