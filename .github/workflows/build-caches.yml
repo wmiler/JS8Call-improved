@@ -309,8 +309,7 @@ jobs:
         cd /tmp/ffmpeg/build
         ../configure --prefix=${GITHUB_WORKSPACE}/local/ffmpeg --disable-shared --enable-static --disable-doc \
           --enable-network --enable-gpl --enable-libass --enable-libfreetype --enable-libvorbis
-        make
-#        make -j install
+        make install
 
     - name: Save ffmpeg cache
       uses: actions/cache/save@v4
