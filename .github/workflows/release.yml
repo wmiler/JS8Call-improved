@@ -97,9 +97,19 @@ jobs:
             -name "*.rpm" -o \
             -name "*.AppImage" \
           \) -exec cp {} release-files/ \;
-          
-          zip -r release-files/js8call-improved_X64_win64.zip . -i release-artifacts/JS8call-improved_v2.4.1_X64_win64
-          
+
+      - name: Zip windows back up (other)
+        if: ${{ !inputs.version }}
+        run: |
+          zip -r release-files/release-artifacts/JS8call-improved_devel_X64_win64.zip . -i release-artifacts/JS8call-improved_devel_X64_win64
+
+      - name: Zip windows back up (release)
+        if: ${{ inputs.version }}
+        run: |
+          zip -r release-files/release-artifacts/JS8call-improved_${{ inputs.release-ver }}_X64_win64.zip . -i release-artifacts/JS8call-improved_${{ inputs.release-ver }}_X64_win64
+
+      - name: Release files
+        run: |
           echo "Release files prepared:"
           ls -lh release-files/
           
@@ -125,7 +135,7 @@ jobs:
           cache: "Changelog"
           configurationJson: |
               {
-                "template": "#{{CHANGELOG}}\n\n<details>\n<summary>Uncategorized</summary>\n\n</details>",
+                "template": "#{{CHANGELOG}}\n\n<details>\n\n</details>",
                 "pr_template": "- Author: #{{AUTHOR}} PR: ##{{NUMBER}} #{{TITLE}}",
                 "sort": { "order": "DESC", "on_property": "mergedAt"},
                 "categories": [
