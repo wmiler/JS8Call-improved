@@ -204,6 +204,7 @@ jobs:
       run: |
         export ImageOS=$(sw_vers -productVersion)
         echo "thisos=$ImageOS" >> $GITHUB_OUTPUT
+        df -h
 
 # We have to build all of our dependencies, ugh
     - name: Install dependencies (MacOS)
