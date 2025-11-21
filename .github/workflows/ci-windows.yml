@@ -10,6 +10,11 @@ on:
         required: false
         type: string
         default: 'Release'
+      release-ver:
+        description: 'Release Version (v2.4.1)'
+        required: false
+        type: string      
+        default: 'v2.4.1'        
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
@@ -75,10 +80,17 @@ jobs:
       run: |
         cd ./build
         cmake --build . --config Release
-
-    - name: Upload Artifact (app)
+        
+    - name: Upload Artifact (Release build)
+      if: ${{ inputs.release-ver }}
       uses: actions/upload-artifact@v5
       with:
-        name: JS8Call-improved.exe
-        path: ./build/JS8Call-improved.exe
-        
+        name: "JS8call-improved_${{ inputs.release-ver }}_${{ runner.arch }}_win64"
+        path: ./build/JS8Call-improved
+
+    - name: Upload Artifact (Other build)
+      if: ${{ !inputs.release-ver }}
+      uses: actions/upload-artifact@v5
+      with:
+        name: "JS8call-improved_devel_${{ runner.arch }}_win64"
+        path: ./build/JS8Call-improved
