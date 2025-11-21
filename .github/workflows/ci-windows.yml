@@ -86,11 +86,15 @@ jobs:
       uses: actions/upload-artifact@v5
       with:
         name: "JS8call-improved_${{ inputs.release-ver }}_${{ runner.arch }}_win64"
-        path: ./build/JS8Call-improved
+        path: |
+          ./build/JS8Call-improved.exe
+          ./build/JS8Call-improved/
 
     - name: Upload Artifact (Other build)
       if: ${{ !inputs.release-ver }}
       uses: actions/upload-artifact@v5
       with:
         name: "JS8call-improved_devel_${{ runner.arch }}_win64"
-        path: ./build/JS8Call-improved
+        path: |
+          ./build/JS8Call-improved.exe
+          ./build/JS8Call-improved/
