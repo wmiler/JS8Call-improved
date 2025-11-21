@@ -86,7 +86,7 @@ jobs:
         if: ${{ !inputs.version }}
         run: |
           mv release-artifacts/JS8call-improved_devel_X64_win64/JS8Call-improved.exe release-artifacts/JS8call-improved_devel_X64_win64/JS8Call-improved/JS8Call-improved.exe
-          zip -r JS8call-improved_devel_X64_win64.zip -i release-artifacts/JS8call-improved_devel_X64_win64/JS8Call-improved
+          zip -r JS8call-improved_devel_X64_win64.zip . -i release-artifacts/JS8call-improved_devel_X64_win64/JS8Call-improved
         continue-on-error: true
 
       - name: Zip windows back up (release)
