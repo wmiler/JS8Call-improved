@@ -209,7 +209,8 @@ jobs:
     - name: Install dependencies (MacOS)
       run: |
         brew update
-        brew install autoconf automake libtool pkgconf
+        brew install autoconf automake libtool pkgconf fdk-aac git lame libass libtool libvorbis
+        brew install libvpx opus sdl shtool texi2html theora wget x264 x265 xvid nasm
 
 ## libusb
     - name: Install libusb 1.0.29
