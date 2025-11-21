@@ -240,8 +240,7 @@ jobs:
         mkdir -p /tmp/ffmpeg/build
         cd /tmp/ffmpeg/build
         ../configure --prefix=${GITHUB_WORKSPACE}/local/ffmpeg --disable-shared --enable-static --disable-doc \
-          --enable-network --enable-gpl --enable-nonfree --enable-libass --enable-libfreetype --enable-libmp3lame \
-          --enable-libvorbis
+          --enable-network --enable-gpl --enable-nonfree --enable-libass --enable-libfreetype --enable-libvorbis
         make -j install
 
     - name: Save ffmpeg cache
