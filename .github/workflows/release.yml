@@ -97,7 +97,8 @@ jobs:
             -name "*.rpm" -o \
             -name "*.AppImage" \
           \) -exec cp {} release-files/ \;
-          zip -r release-files/js8call-improved_X64_win64.zip release-artifacts/JS8call-improved_v2.4.1_X64_win64
+          
+          zip -r release-files/js8call-improved_X64_win64.zip . -i release-artifacts/JS8call-improved_v2.4.1_X64_win64
           
           echo "Release files prepared:"
           ls -lh release-files/
