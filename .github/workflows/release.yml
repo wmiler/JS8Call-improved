@@ -101,11 +101,13 @@ jobs:
         if: ${{ !inputs.version }}
         run: |
           zip -r release-files/JS8call-improved_devel_X64_win64.zip . -i release-artifacts/JS8call-improved_devel_X64_win64
+        continue-on-error: true
 
       - name: Zip windows back up (release)
         if: ${{ inputs.version }}
         run: |
-          zip -r release-files/release-artifacts/JS8call-improved_${{ inputs.release-ver }}_X64_win64.zip . -i release-artifacts/JS8call-improved_${{ inputs.release-ver }}_X64_win64
+          zip -r release-files/JS8call-improved_${{ inputs.release-ver }}_X64_win64.zip . -i release-artifacts/JS8call-improved_${{ inputs.release-ver }}_X64_win64
+        continue-on-error: true
 
       - name: Release files
         run: |
