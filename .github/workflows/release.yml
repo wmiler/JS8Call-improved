@@ -156,7 +156,11 @@ jobs:
           body: |
             ${{steps.github_release.outputs.changelog}}
           prerelease: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.prerelease || contains(github.ref_name, 'alpha') || contains(github.ref_name, 'beta') || contains(github.ref_name, 'rc') }}
-          files: release-artifacts/*
+          files: |
+            release-artifacts/JS8call-improved_devel_ARM64_macos15.app/*
+            release-artifacts/JS8call-improved_devel_X64_win64/*
+            release-artifacts/js8call-improved-ubuntu-22.04/*
+            release-artifacts/js8call-improved-ubuntu-22.04-arm/*
           fail_on_unmatched_files: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
