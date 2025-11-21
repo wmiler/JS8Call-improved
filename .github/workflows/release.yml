@@ -85,7 +85,8 @@ jobs:
       - name: Zip windows back up (other)
         if: ${{ !inputs.version }}
         run: |
-          zip -r release-files/JS8call-improved_devel_X64_win64.zip . -i release-artifacts/JS8call-improved_devel_X64_win64
+          mv release-artifacts/JS8call-improved_devel_X64_win64/JS8Call-improved.exe release-artifacts/JS8call-improved_devel_X64_win64/JS8Call-improved/JS8Call-improved.exe
+          zip -r JS8call-improved_devel_X64_win64.zip -i release-artifacts/JS8call-improved_devel_X64_win64/JS8Call-improved
         continue-on-error: true
 
       - name: Zip windows back up (release)
@@ -157,10 +158,8 @@ jobs:
             ${{steps.github_release.outputs.changelog}}
           prerelease: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.prerelease || contains(github.ref_name, 'alpha') || contains(github.ref_name, 'beta') || contains(github.ref_name, 'rc') }}
           files: |
-            release-artifacts/JS8call-improved_devel_ARM64_macos15.app/*
-            release-artifacts/JS8call-improved_devel_X64_win64/*
-            release-artifacts/js8call-improved-ubuntu-22.04/*
-            release-artifacts/js8call-improved-ubuntu-22.04-arm/*
+            release-artifacts/JS8call-improved_devel_ARM64_macos15.app/JS8Call-improved.dmg
+            JS8call-improved_devel_X64_win64.zip
           fail_on_unmatched_files: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
