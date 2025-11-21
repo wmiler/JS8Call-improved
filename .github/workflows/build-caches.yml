@@ -209,7 +209,7 @@ jobs:
     - name: Install dependencies (MacOS)
       run: |
         brew update
-        brew install automake
+        brew install autoconf automake libtool pkgconf
 
 ## libusb
     - name: Install libusb 1.0.29
