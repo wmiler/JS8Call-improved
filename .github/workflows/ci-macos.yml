@@ -3,12 +3,26 @@ permissions:
 
 name: CI Build for MacOS 15 Arm64 (M1 and higher)
 
-on: [workflow_dispatch, pull_request]
+on: 
+  workflow_dispatch: 
+  pull_request:
+  workflow_call:
+    inputs:
+      build-type:
+        description: 'Build type (Debug/Release)'
+        required: false
+        type: string
+        default: 'Release'
+      release-ver:
+        description: 'Release Version (v2.4.1)'
+        required: false
+        type: string      
+        default: 'v2.4.1'
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
-  build_package: libusb hamlib fftw boost ffmpeg@7
+  build_package: libusb hamlib fftw boost ffmpeg@7 
 
 jobs:
   build_macos-latest:
@@ -21,11 +35,54 @@ jobs:
     - name: Work around for /usr/local perms and grab arch/os info
       run: |
         sudo chown runner:admin /usr/local
-
+        echo "inputs: ${{ inputs.release-ver }}"
+        
     - name: Install dependencies (MacOS)
       run: |
         brew update
-        brew install libusb hamlib fftw boost ffmpeg@7
+        brew install autoconf automake libtool pkgconf fdk-aac git lame libass libtool libvorbis
+        brew install libvpx opus sdl shtool texi2html theora wget x264 x265 xvid nasm
+
+    - name: Create our own var with the ImageOS value for cache use
+      id: which-os
+      run: |
+        export ImageOS=$(sw_vers -productVersion)
+        echo "thisos=$ImageOS" >> $GITHUB_OUTPUT
+
+    - name: Cache Check libusb 1.0.29
+      id: cache-usb
+      uses: actions/cache/restore@v4
+      with:  
+        path: /Users/runner/work/JS8Call-improved/JS8Call-improved/local/libusb
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-libusb1029
+
+    - name: Cache Check ffmpeg 7.1.1
+      id: cache-ffmpeg
+      uses: actions/cache/restore@v4
+      with:
+        path: /Users/runner/work/JS8Call-improved/JS8Call-improved/local/ffmpeg
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-ffmpeg711
+
+    - name: Cache Check Hamlib 4.6.4
+      id: cache-hamlib
+      uses: actions/cache/restore@v4
+      with:
+        path: /Users/runner/work/JS8Call-improved/JS8Call-improved/local/hamlib
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-hamlib464
+
+    - name: Cache Check fftw 3.3.10
+      id: cache-fftw
+      uses: actions/cache/restore@v4
+      with:
+        path: /Users/runner/work/JS8Call-improved/JS8Call-improved/local/fftw
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-fftw3310
+
+    - name: Cache Check Boost 1.88
+      id: cache-boost
+      uses: actions/cache/restore@v4
+      with:
+        path: /Users/runner/work/JS8Call-improved/JS8Call-improved/local/boost
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-boost188
         
     - name: Install Qt 6.9.3
       uses: jurplel/install-qt-action@v3
@@ -42,5 +99,22 @@ jobs:
     - name: Build JS8Call
       run: |
         mkdir -p ./build && cd ./build
-        cmake -DCMAKE_PREFIX_PATH="/usr/local/js8lib" ..
+        cmake -DCMAKE_PREFIX_PATH="${GITHUB_WORKSPACE}/local/qt693-install;${GITHUB_WORKSPACE}/local/hamlib;${GITHUB_WORKSPACE}/local/fftw;${GITHUB_WORKSPACE}/local/boost;${GITHUB_WORKSPACE}/local/libusb" ..
         make
+
+    - name: Create DMG
+      run: create-dmg "JS8Call-improved.dmg" "build/JS8Call-improved.app"
+      
+    - name: Upload Artifact (Release build)
+      if: ${{ inputs.release-ver }}
+      uses: actions/upload-artifact@v5
+      with:
+        name: "JS8call-improved_${{ inputs.release-ver }}_${{ runner.arch }}_macos15.dmg"
+        path: /Users/runner/work/JS8Call-improved/JS8Call-improved/JS8Call-improved.dmg
+
+    - name: Upload Artifact (Other build)
+      if: ${{ !inputs.release-ver }}
+      uses: actions/upload-artifact@v5
+      with:
+        name: "JS8call-improved_devel_${{ runner.arch }}_macos15.dmg"
+        path: /Users/runner/work/JS8Call-improved/JS8Call-improved/JS8Call-improved.dmg
