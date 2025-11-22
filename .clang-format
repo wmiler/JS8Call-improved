@@ -182,7 +182,9 @@ PointerAlignment: Left
 PPIndentWidth:   -1
 QualifierAlignment: Leave
 ReferenceAlignment: Pointer
-ReflowComments:  IndentOnly
+# IdentOnly is available only in 19+
+#ReflowComments:  IndentOnly
+ReflowComments:  false
 RemoveBracesLLVM: false
 RemoveParentheses: Leave
 RemoveSemicolon: false
