@@ -277,16 +277,14 @@ jobs:
     - name: AppImage tools (x86_64)
       if: (runner.arch == 'X64')
       run: |
-        cd ${GITHUB_WORKSPACE}/AppImage/
-        curl -O https://github.com/probonopd/go-appimage/releases/download/continuous/appimagetool-911-x86_64.AppImage
-        chmod a+x appimagetool-911-x86_64.AppImage
+        curl --location --output /tmp/linuxdeployqt-continuous-x86_64.AppImage https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
+        chmod a+x linuxdeployqt-continuous-x86_64.AppImage
 
     - name: AppImage tools (arm64)
       if: (runner.arch == 'ARM64')
       run: |
-        cd ${GITHUB_WORKSPACE}/AppImage/
-        curl -O https://github.com/probonopd/go-appimage/releases/download/continuous/appimagetool-911-aarch64.AppImage
-        chmod a+x appimagetool-911-aarch64.AppImage
+        curl --location --output /tmp/linuxdeployqt-continuous-aarch64.AppImage https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-aarch64.AppImage
+        chmod a+x /tmp/linuxdeployqt-continuous-aarch64.AppImage
 
     - name: AppImage Copy Files
       run: |
@@ -298,15 +296,13 @@ jobs:
       if: (runner.arch == 'X64')
       run: |
         cd ${GITHUB_WORKSPACE}/AppImage/
-        ./appimagetool-911-x86_64.AppImage -s deploy AppDir/usr/share/applications/js8call.desktop      
-        ./appimagetool-911-x86_64.AppImage AppDir
+        /tmp/linuxdeployqt-continuous-x86_64.AppImage AppDir/usr/share/applications/js8call.desktop -appimage -verbose=2
 
     - name: AppImage deploy (arm64)
       if: (runner.arch == 'ARM64')
       run: |
         cd ${GITHUB_WORKSPACE}/AppImage/
-        ./appimagetool-911-aarch64.AppImage -s deploy AppDir/usr/share/applications/js8call.desktop      
-        ./appimagetool-911-aarch64.AppImage AppDir
+        /tmp/linuxdeployqt-continuous-aarch64.AppImage AppDir/usr/share/applications/js8call.desktop -appimage -verbose=2
 
     - name: Upload Artifact (app)
       uses: actions/upload-artifact@v5
