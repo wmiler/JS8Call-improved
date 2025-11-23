@@ -279,12 +279,14 @@ jobs:
       run: |
         cd ${GITHUB_WORKSPACE}/AppImage/
         curl -O https://github.com/probonopd/go-appimage/releases/download/continuous/appimagetool-911-x86_64.AppImage
+        chmod a+x appimagetool-911-x86_64.AppImage
 
     - name: AppImage tools (arm64)
       if: (runner.arch == 'ARM64')
       run: |
         cd ${GITHUB_WORKSPACE}/AppImage/
         curl -O https://github.com/probonopd/go-appimage/releases/download/continuous/appimagetool-911-aarch64.AppImage
+        chmod a+x appimagetool-911-aarch64.AppImage
 
     - name: AppImage Copy Files
       run: |
