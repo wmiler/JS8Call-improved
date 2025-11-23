@@ -296,8 +296,9 @@ jobs:
       run: |
         sed -i '/Exec=js8call/c\Exec=JS8Call-improved' ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/js8call.desktop
         find ~ -name qmake -print
+        sudo find / -name libmp3lame.so.0
 
-# Remove above line when we resync repos
+# Remove above section when we resync repos
 
     - name: AppImage deploy (x86_64)
       if: (runner.arch == 'X64')
@@ -305,9 +306,9 @@ jobs:
         cd ${GITHUB_WORKSPACE}/AppImage/
         ls -lR
         pwd
-        /tmp/linuxdeployqt-continuous-x86_64.AppImage AppDir/usr/bin/JS8Call-improved -appimage -verbose=3 \
+        /tmp/linuxdeployqt-continuous-x86_64.AppImage AppDir/usr/bin/JS8Call-improved -appimage -verbose=2 \
           -qmake=/home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install/bin/qmake \
-          -no-translations -exclude-libs=libpulsecommon-15.99.so
+          -no-translations
 #          AppDir/usr/share/applications/js8call.desktop          
 
 #    - name: AppImage deploy (arm64)
