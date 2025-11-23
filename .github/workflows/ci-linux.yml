@@ -13,7 +13,12 @@ on:
         required: false
         type: string
         default: 'Release'
-
+      release-ver:
+        description: 'Release Version (v2.4.1)'
+        required: false
+        type: string      
+        default: 'v2.4.1'
+        
 # The package arrays below are mainly for building the libs, one could add fedora_build_package to include the
 # packages fedora requires, for instance.
 env:
@@ -49,6 +54,14 @@ jobs:
         echo "thisos=$ImageOS" >> $GITHUB_OUTPUT
       shell: bash
 
+    - name: Set our version tag for AppImage
+      if: ${{ inputs.release-ver }}
+      run: export VERSION=${{ inputs.release-ver }}
+      
+    - name: Set our version tag for AppImage
+      if: ${{ !inputs.release-ver }}
+      run: export VERSION=-devel-
+      
 # Move all of our cache checks here, so we know if we need to free bunches of disk space
     - name: Cache Check libusb 1.0.29
       id: cache-usb
@@ -291,16 +304,14 @@ jobs:
 
     - name: AppImage Copy Files
       run: |
-        cp js8call.desktop ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/
+        cp js8call.desktop ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/JS8Call-improved.desktop
         cp build/JS8Call-improved ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/bin/
         cp icons/Unix/js8call_icon.png ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/icons/hicolor/256x256/apps/
 
     - name: AppImage debug actions
       run: |
-        sed -i '/Exec=js8call/c\Exec=JS8Call-improved' ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/js8call.desktop
+        sed -i '/Exec=js8call/c\Exec=JS8Call-improved' ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/JS8Call-improved.desktop
         sudo ldconfig
-        sudo find / -name libmp3lame.so.0 -print
-        sudo find /home/runner/work/JS8Call-improved/JS8Call-improved/local/ -name libmp3lame.so.0 -print
 
 # Remove above section when we resync repos
 
@@ -310,10 +321,9 @@ jobs:
         cd ${GITHUB_WORKSPACE}/AppImage/
         ls -lR
         pwd
-        /tmp/linuxdeployqt-continuous-x86_64.AppImage AppDir/usr/bin/JS8Call-improved -appimage -verbose=2 \
+        /tmp/linuxdeployqt-continuous-x86_64.AppImage AppDir/usr/bin/JS8Call-improved AppDir/usr/share/applications/js8call.desktop \
+          -appimage -verbose=2 -no-translations \
           -qmake=/home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install/bin/qmake \
-          -no-translations
-#          AppDir/usr/share/applications/js8call.desktop          
 
 #    - name: AppImage deploy (arm64)
 #      if: (runner.arch == 'ARM64')
