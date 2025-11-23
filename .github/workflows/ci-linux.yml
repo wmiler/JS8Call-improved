@@ -321,9 +321,9 @@ jobs:
         cd ${GITHUB_WORKSPACE}/AppImage/
         ls -lR
         pwd
-        /tmp/linuxdeployqt-continuous-x86_64.AppImage AppDir/usr/bin/JS8Call-improved AppDir/usr/share/applications/js8call.desktop \
-          -appimage -verbose=2 -no-translations \
+        /tmp/linuxdeployqt-continuous-x86_64.AppImage AppDir/usr/bin/JS8Call-improved \
           -qmake=/home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install/bin/qmake \
+          -appimage -verbose=2 -no-translations
 
 #    - name: AppImage deploy (arm64)
 #      if: (runner.arch == 'ARM64')
