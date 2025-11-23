@@ -296,17 +296,19 @@ jobs:
       if: (runner.arch == 'X64')
       run: |
         cd ${GITHUB_WORKSPACE}/AppImage/
+        ls -lR
         /tmp/linuxdeployqt-continuous-x86_64.AppImage --help
-        /tmp/linuxdeployqt-continuous-x86_64.AppImage -executable=AppDir/usr/bin/JS8Call-improved -appimage -verbose=2 \
-          AppDir/usr/share/applications/js8call.desktop          
+        pwd
+        /tmp/linuxdeployqt-continuous-x86_64.AppImage AppDir/usr/bin/JS8Call-improved -appimage -verbose=2 
+#          AppDir/usr/share/applications/js8call.desktop          
 
-    - name: AppImage deploy (arm64)
-      if: (runner.arch == 'ARM64')
-      run: |
-        cd ${GITHUB_WORKSPACE}/AppImage/
-        /tmp/linuxdeployqt-continuous-x86_64.AppImage --help
-        /tmp/linuxdeployqt-continuous-aarch64.AppImage -executable=AppDir/usr/bin/JS8Call-improved -appimage -verbose=2 \
-          AppDir/usr/share/applications/js8call.desktop
+#    - name: AppImage deploy (arm64)
+#      if: (runner.arch == 'ARM64')
+#      run: |
+#        cd ${GITHUB_WORKSPACE}/AppImage/
+#        /tmp/linuxdeployqt-continuous-x86_64.AppImage --help
+#        /tmp/linuxdeployqt-continuous-aarch64.AppImage -executable=AppDir/usr/bin/JS8Call-improved -appimage -verbose=2 \
+#          AppDir/usr/share/applications/js8call.desktop
 
     - name: Upload Artifact (app)
       uses: actions/upload-artifact@v5
