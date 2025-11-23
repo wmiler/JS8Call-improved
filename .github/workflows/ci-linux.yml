@@ -238,6 +238,7 @@ jobs:
         key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-boost188
         path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/boost
 
+# QT6.9.3
     # Takes about 1 hour if not cached
     - name: Install QT 6.9.3
       if: steps.cache-qt.outputs.cache-hit != 'true'
@@ -295,8 +296,9 @@ jobs:
     - name: AppImage debug actions
       run: |
         sed -i '/Exec=js8call/c\Exec=JS8Call-improved' ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/js8call.desktop
-        find ~ -name qmake -print
-        sudo find / -name libmp3lame.so.0
+        sudo ldconfig
+        sudo find / -name libmp3lame.so.0 -print
+        sudo find /home/runner/work/JS8Call-improved/JS8Call-improved/local/ -name libmp3lame.so.0 -print
 
 # Remove above section when we resync repos
 
