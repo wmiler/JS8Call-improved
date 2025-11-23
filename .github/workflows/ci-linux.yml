@@ -305,7 +305,9 @@ jobs:
         cd ${GITHUB_WORKSPACE}/AppImage/
         ls -lR
         pwd
-        /tmp/linuxdeployqt-continuous-x86_64.AppImage AppDir/usr/bin/JS8Call-improved -appimage -verbose=3
+        /tmp/linuxdeployqt-continuous-x86_64.AppImage AppDir/usr/bin/JS8Call-improved -appimage -verbose=3 \
+          -qmake=/home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install/bin/qmake \
+          -no-translations -exclude-libs=libpulsecommon-15.99.so
 #          AppDir/usr/share/applications/js8call.desktop          
 
 #    - name: AppImage deploy (arm64)
