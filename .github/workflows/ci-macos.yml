@@ -183,7 +183,7 @@ jobs:
 
 # QT 6.9.3 via installer
     - name: Install Qt 6.9.3
-      uses: jurplel/install-qt-action@v3
+      uses: jurplel/install-qt-action@v4
       with:
         cache: true
         aqtversion: '==3.1.*'
