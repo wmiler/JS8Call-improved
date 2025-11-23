@@ -278,7 +278,7 @@ jobs:
       if: (runner.arch == 'X64')
       run: |
         curl --location --output /tmp/linuxdeployqt-continuous-x86_64.AppImage https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
-        chmod a+x linuxdeployqt-continuous-x86_64.AppImage
+        chmod a+x /tmp/linuxdeployqt-continuous-x86_64.AppImage
 
     - name: AppImage tools (arm64)
       if: (runner.arch == 'ARM64')
@@ -296,13 +296,15 @@ jobs:
       if: (runner.arch == 'X64')
       run: |
         cd ${GITHUB_WORKSPACE}/AppImage/
-        /tmp/linuxdeployqt-continuous-x86_64.AppImage AppDir/usr/share/applications/js8call.desktop -appimage -verbose=2
+        /tmp/linuxdeployqt-continuous-x86_64.AppImage AppDir/usr/share/applications/js8call.desktop \
+          -executable=AppDir/usr/bin/JS8Call-improved -appimage -verbose=2
 
     - name: AppImage deploy (arm64)
       if: (runner.arch == 'ARM64')
       run: |
         cd ${GITHUB_WORKSPACE}/AppImage/
-        /tmp/linuxdeployqt-continuous-aarch64.AppImage AppDir/usr/share/applications/js8call.desktop -appimage -verbose=2
+        /tmp/linuxdeployqt-continuous-aarch64.AppImage AppDir/usr/share/applications/js8call.desktop \
+          -executable=AppDir/usr/bin/JS8Call-improved -appimage -verbose=2
 
     - name: Upload Artifact (app)
       uses: actions/upload-artifact@v5
