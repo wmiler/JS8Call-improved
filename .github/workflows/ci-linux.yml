@@ -267,9 +267,47 @@ jobs:
         cmake -DCMAKE_PREFIX_PATH="${GITHUB_WORKSPACE}/local/qt693-install;${GITHUB_WORKSPACE}/local/hamlib;${GITHUB_WORKSPACE}/local/fftw;${GITHUB_WORKSPACE}/local/boost;${GITHUB_WORKSPACE}/local/libusb" ..
         make -j 4
 
+# AppImage
+    - name: AppImage Directory Setup
+      run: |
+        mkdir -p ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/icons/hicolor/256x256/apps/
+        mkdir -p ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/
+        mkdir -p ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/bin/
+        
+    - name: AppImage tools (x86_64)
+      if: (runner.arch == 'X64')
+      run: |
+        cd ${GITHUB_WORKSPACE}/AppImage/
+        curl -O https://github.com/probonopd/go-appimage/releases/download/continuous/appimagetool-911-x86_64.AppImage
+
+    - name: AppImage tools (arm64)
+      if: (runner.arch == 'ARM64')
+      run: |
+        cd ${GITHUB_WORKSPACE}/AppImage/
+        curl -O https://github.com/probonopd/go-appimage/releases/download/continuous/appimagetool-911-aarch64.AppImage
+
+    - name: AppImage Copy Files
+      run: |
+        cp js8call.desktop ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/
+        cp build/JS8Call-improved ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/bin/
+        cp icons/Unix/js8call_icon.png ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/icons/hicolor/256x256/apps/
+        
+    - name: AppImage deploy (x86_64)
+      if: (runner.arch == 'X64')
+      run: |
+        cd ${GITHUB_WORKSPACE}/AppImage/
+        ./appimagetool-911-x86_64.AppImage -s deploy AppDir/usr/share/applications/js8call.desktop      
+        ./appimagetool-911-x86_64.AppImage AppDir
+
+    - name: AppImage deploy (arm64)
+      if: (runner.arch == 'ARM64')
+      run: |
+        cd ${GITHUB_WORKSPACE}/AppImage/
+        ./appimagetool-911-aarch64.AppImage -s deploy AppDir/usr/share/applications/js8call.desktop      
+        ./appimagetool-911-aarch64.AppImage AppDir
+
     - name: Upload Artifact (app)
       uses: actions/upload-artifact@v5
       with:
         name: js8call-improved-${{ matrix.os }}
-        path: ./build/
-        
+        path: ${GITHUB_WORKSPACE}/AppImage/
