@@ -80,6 +80,8 @@ jobs:
       
       - name: Display artifact structure
         run: |
+          echo "Current directory:"
+          pwd
           echo "Downloaded artifacts:"
           ls -lR release-artifacts
           
