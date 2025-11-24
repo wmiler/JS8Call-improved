@@ -311,8 +311,9 @@ jobs:
     - name: AppImage debug actions
       run: |
         sed -i '/Exec=js8call/c\Exec=JS8Call-improved' ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/JS8Call-improved.desktop
+        sed -i '/Name=js8call/c\Name=JS8Call-improved' ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/JS8Call-improved.desktop
 
-# Remove above section when we resync repos
+# Remove above debug action when we resync repos
 
     - name: AppImage deploy (x86_64)
       if: (runner.arch == 'X64')
@@ -320,7 +321,8 @@ jobs:
         cd ${GITHUB_WORKSPACE}/AppImage/
         ls -lR
         pwd
-        /tmp/linuxdeployqt-continuous-x86_64.AppImage AppDir/usr/bin/JS8Call-improved \
+        /tmp/linuxdeployqt-continuous-x86_64.AppImage AppDir/usr/share/applications/JS8Call-improved.desktop \
+          -executable=AppDir/usr/bin/JS8Call-improved \
           -qmake=/home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install/bin/qmake \
           -appimage -verbose=3 -no-translations
       continue-on-error: true
