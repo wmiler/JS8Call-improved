@@ -86,7 +86,7 @@ jobs:
         if: ${{ !inputs.version }}
         run: |
           mv release-artifacts/JS8call-improved_devel_X64_win64/JS8Call-improved.exe release-artifacts/JS8call-improved_devel_X64_win64/JS8Call-improved/JS8Call-improved.exe
-          zip -r JS8call-improved_devel_X64_win64.zip . -i release-artifacts/JS8call-improved_devel_X64_win64/JS8Call-improved
+          zip -r release-artifacts/JS8call-improved_devel_X64_win64.zip . -i release-artifacts/JS8call-improved_devel_X64_win64/JS8Call-improved
         continue-on-error: true
 
       - name: Zip windows back up (release)
@@ -158,8 +158,10 @@ jobs:
           prerelease: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.prerelease || contains(github.ref_name, 'alpha') || contains(github.ref_name, 'beta') || contains(github.ref_name, 'rc') }}
           files: |
             release-artifacts/JS8call-improved_devel_ARM64_macos15.dmg/JS8Call-improved.dmg
-            JS8call-improved_devel_X64_win64.zip
-          fail_on_unmatched_files: true
+            release-artifacts/JS8call-improved_devel_X64_win64.zip
+            release-artifacts/js8call-improved-ubuntu-22.04
+            release-artifacts/js8call-improved-ubuntu-22.04-arm
+          fail_on_unmatched_files: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
@@ -168,9 +170,9 @@ jobs:
           echo "## Release Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Version:** ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.version || github.ref_name }}" >> $GITHUB_STEP_SUMMARY
-          echo "**Pre-release:** ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.prerelease || contains(github.ref_name, 'alpha') || contains(github.ref_name, 'beta') || contains(github.ref_name, 'rc') }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Pre-release:** ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.prerelease }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Release Assets" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
-          ls -lh release-files/ >> $GITHUB_STEP_SUMMARY
+          ls -lh release-artifacts/ >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
