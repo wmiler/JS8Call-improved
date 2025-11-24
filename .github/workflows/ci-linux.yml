@@ -323,7 +323,7 @@ jobs:
         pwd
         /tmp/linuxdeployqt-continuous-x86_64.AppImage AppDir/usr/bin/JS8Call-improved \
           -qmake=/home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install/bin/qmake \
-          -appimage -verbose=2 -no-translations
+          -appimage -verbose=3 -no-translations
 
 #    - name: AppImage deploy (arm64)
 #      if: (runner.arch == 'ARM64')
