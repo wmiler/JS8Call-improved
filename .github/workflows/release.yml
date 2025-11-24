@@ -90,9 +90,9 @@ jobs:
         run: |
           mv release-artifacts/JS8call-improved_devel_X64_win64/JS8Call-improved.exe release-artifacts/JS8call-improved_devel_X64_win64/JS8Call-improved/JS8Call-improved.exe
           cd release-artifacts/JS8call-improved_devel_X64_win64/
-          zip -r ~/release-artifacts/JS8call-improved_devel_X64_win64.zip JS8Call-improved
+          zip -r /home/runner/work/JS8Call-improved/JS8Call-improved/release-artifacts/JS8call-improved_devel_X64_win64.zip JS8Call-improved
 
-          cd ~/release-artifacts/
+          cd /home/runner/work/JS8Call-improved/JS8Call-improved/release-artifacts/
           tar zcf js8call-improved-devel-ubuntu-22.04.tar.gz js8call-improved-ubuntu-22.04
           tar zcf js8call-improved-devel-ubuntu-22.04-arm.tar.gz js8call-improved-ubuntu-22.04-arm
         continue-on-error: true
@@ -102,9 +102,9 @@ jobs:
         run: |
           mv release-artifacts/JS8call-improved_${{ inputs.release-ver }}_X64_win64/JS8Call-improved.exe release-artifacts/JS8call-improved_${{ inputs.release-ver }}_X64_win64/JS8Call-improved/JS8Call-improved.exe
           cd release-artifacts/JS8call-improved_devel_X64_win64/
-          zip -r ~/release-artifacts/JS8call-improved_${{ inputs.release-ver }}_X64_win64.zip JS8Call-improved
+          zip -r /home/runner/work/JS8Call-improved/JS8Call-improved/release-artifacts/JS8call-improved_${{ inputs.release-ver }}_X64_win64.zip JS8Call-improved
 
-          cd ~/release-artifacts/
+          cd /home/runner/work/JS8Call-improved/JS8Call-improved/release-artifacts/
           tar zcf js8call-improved-${{ inputs.release-ver }}-ubuntu-22.04.tar.gz js8call-improved-ubuntu-22.04
           tar zcf js8call-improved-${{ inputs.release-ver }}-ubuntu-22.04-arm.tar.gz js8call-improved-ubuntu-22.04-arm
         continue-on-error: true
