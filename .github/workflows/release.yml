@@ -94,6 +94,11 @@ jobs:
         run: |
           zip -r release-files/JS8call-improved_${{ inputs.release-ver }}_X64_win64.zip . -i release-artifacts/JS8call-improved_${{ inputs.release-ver }}_X64_win64
         continue-on-error: true
+      
+      - name: Display artifact structure
+        run: |
+          echo "Downloaded artifacts:"
+          ls -lR release-artifacts
           
       - name: Get tag name
         id: get_tag
