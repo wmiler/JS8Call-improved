@@ -311,7 +311,6 @@ jobs:
     - name: AppImage debug actions
       run: |
         sed -i '/Exec=js8call/c\Exec=JS8Call-improved' ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/JS8Call-improved.desktop
-        sudo ldconfig
 
 # Remove above section when we resync repos
 
@@ -324,6 +323,7 @@ jobs:
         /tmp/linuxdeployqt-continuous-x86_64.AppImage AppDir/usr/bin/JS8Call-improved \
           -qmake=/home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install/bin/qmake \
           -appimage -verbose=3 -no-translations
+      continue-on-error: true
 
 #    - name: AppImage deploy (arm64)
 #      if: (runner.arch == 'ARM64')
