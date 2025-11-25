@@ -326,9 +326,12 @@ jobs:
         /tmp/linuxdeployqt-continuous-x86_64.AppImage AppDir/usr/share/applications/JS8Call-improved.desktop \
           -executable=AppDir/usr/bin/JS8Call-improved \
           -qmake=/home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install/bin/qmake \
-          -appimage -verbose=3 -no-translations
+          -appimage -verbose=2 -no-translations
+        chmod a+x *.AppImage
       continue-on-error: true
-
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
     - name: AppImage deploy (arm64)
       if: (runner.arch == 'ARM64')
       run: |
@@ -336,8 +339,11 @@ jobs:
         /tmp/linuxdeployqt-continuous-aarch64.AppImage AppDir/usr/share/applications/JS8Call-improved.desktop \
           -executable=AppDir/usr/bin/JS8Call-improved \
           -qmake=/home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install/bin/qmake \
-          -appimage -verbose=3 -no-translations
-
+          -appimage -verbose=2 -no-translations
+        chmod a+x *.AppImage
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
     - name: Upload Artifact (app)
       uses: actions/upload-artifact@v5
       with:
