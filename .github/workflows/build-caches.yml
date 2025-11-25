@@ -64,6 +64,7 @@ jobs:
       if: steps.which-os.outputs.thisos == 'ubuntu22.04'
       run: |
         sudo apt-get install -y ${{ env.ffmpeg_build }} ${{ env.opengl_package2 }} ${{ env.opengl_package3 }}
+        sudo apt-get install -y libxcb*
         sudo apt-get clean
 
 ## libusb
