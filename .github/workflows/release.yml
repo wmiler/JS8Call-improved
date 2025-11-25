@@ -43,7 +43,7 @@ jobs:
     uses: ./.github/workflows/ci-windows.yml
     with:
       build-type: Release
-      release-ver: ${{inputs.version}}
+      release-ver: ${{inputs.release-ver}}
     secrets: inherit
 
   build-macos:
@@ -51,7 +51,7 @@ jobs:
     uses: ./.github/workflows/ci-macos.yml
     with:
       build-type: Release
-      release-ver: ${{inputs.version}}
+      release-ver: ${{inputs.release-ver}}
     secrets: inherit
 
   build-linux:
@@ -59,6 +59,7 @@ jobs:
     uses: ./.github/workflows/ci-linux.yml
     with:
       build-type: Release
+      release-ver: ${{inputs.release-ver}}
     secrets: inherit
 
   # Create the GitHub release with all artifacts
@@ -77,16 +78,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: release-artifacts
-      
-      - name: Display artifact structure
-        run: |
-          echo "Current directory:"
-          pwd
-          echo "Downloaded artifacts:"
-          ls -lR release-artifacts
           
       - name: tar.gz or zip artifacts back up (devel)
-        if: ${{ !inputs.version }}
+        if: ${{ !inputs.release-ver }}
         run: |
           mv release-artifacts/JS8call-improved_devel_X64_win64/JS8Call-improved.exe release-artifacts/JS8call-improved_devel_X64_win64/JS8Call-improved/JS8Call-improved.exe
           cd release-artifacts/JS8call-improved_devel_X64_win64/
@@ -97,8 +91,8 @@ jobs:
           tar zcf js8call-improved-devel-ubuntu-22.04-arm.tar.gz js8call-improved-ubuntu-22.04-arm
         continue-on-error: true
 
-      - name: Zip windows back up (release)
-        if: ${{ inputs.version }}
+      - name: tar.gz or zip artifacts back up (release)
+        if: ${{ inputs.release-ver }}
         run: |
           mv release-artifacts/JS8call-improved_${{ inputs.release-ver }}_X64_win64/JS8Call-improved.exe release-artifacts/JS8call-improved_${{ inputs.release-ver }}_X64_win64/JS8Call-improved/JS8Call-improved.exe
           cd release-artifacts/JS8call-improved_devel_X64_win64/
@@ -112,7 +106,7 @@ jobs:
       - name: Display artifact structure
         run: |
           echo "Downloaded artifacts:"
-          ls -lR release-artifacts
+          ls -lhR release-artifacts
           
       - name: Get tag name
         id: get_tag
@@ -174,7 +168,7 @@ jobs:
           name: JS8Call-Improved Release ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.version || github.ref_name }}
           body: |
             ${{steps.github_release.outputs.changelog}}
-          prerelease: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.prerelease || contains(github.ref_name, 'alpha') || contains(github.ref_name, 'beta') || contains(github.ref_name, 'rc') }}
+          prerelease: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.prerelease }}
           files: |
             release-artifacts/JS8call-improved_devel_ARM64_macos15.dmg/JS8Call-improved.dmg
             release-artifacts/JS8call-improved_devel_X64_win64.zip
