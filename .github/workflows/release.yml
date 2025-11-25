@@ -87,8 +87,8 @@ jobs:
           zip -r /home/runner/work/JS8Call-improved/JS8Call-improved/release-artifacts/JS8call-improved_devel_X64_win64.zip JS8Call-improved
 
           cd /home/runner/work/JS8Call-improved/JS8Call-improved/release-artifacts/
-          tar zcf js8call-improved-devel-ubuntu-22.04.tar.gz js8call-improved-ubuntu-22.04
-          tar zcf js8call-improved-devel-ubuntu-22.04-arm.tar.gz js8call-improved-ubuntu-22.04-arm
+          tar zcf JS8Call-improved-devel-ubuntu-22.04.tar.gz js8call-improved-ubuntu-22.04
+          tar zcf JS8Call-improved-devel-ubuntu-22.04-arm.tar.gz js8call-improved-ubuntu-22.04-arm
         continue-on-error: true
 
       - name: tar.gz or zip artifacts back up (release)
@@ -99,8 +99,8 @@ jobs:
           zip -r /home/runner/work/JS8Call-improved/JS8Call-improved/release-artifacts/JS8call-improved_${{ inputs.release-ver }}_X64_win64.zip JS8Call-improved
 
           cd /home/runner/work/JS8Call-improved/JS8Call-improved/release-artifacts/
-          tar zcf js8call-improved-${{ inputs.release-ver }}-ubuntu-22.04.tar.gz js8call-improved-ubuntu-22.04
-          tar zcf js8call-improved-${{ inputs.release-ver }}-ubuntu-22.04-arm.tar.gz js8call-improved-ubuntu-22.04-arm
+          tar zcf JS8Call-improved-${{ inputs.release-ver }}-ubuntu-22.04.tar.gz js8call-improved-ubuntu-22.04
+          tar zcf JS8Call-improved-${{ inputs.release-ver }}-ubuntu-22.04-arm.tar.gz js8call-improved-ubuntu-22.04-arm
         continue-on-error: true
       
       - name: Display artifact structure
@@ -172,8 +172,8 @@ jobs:
           files: |
             release-artifacts/JS8call-improved_devel_ARM64_macos15.dmg/JS8Call-improved.dmg
             release-artifacts/JS8call-improved_devel_X64_win64.zip
-            release-artifacts/js8call-improved-devel-ubuntu-22.04.tar.gz
-            release-artifacts/js8call-improved-devel-ubuntu-22.04-arm.tar.gz
+            release-artifacts/JS8Call-improved-devel-ubuntu-22.04.tar.gz
+            release-artifacts/JS8Call-improved-devel-ubuntu-22.04-arm.tar.gz
           fail_on_unmatched_files: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
