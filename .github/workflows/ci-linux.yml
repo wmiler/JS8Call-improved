@@ -294,7 +294,7 @@ jobs:
       run: |
         curl --location --output /tmp/linuxdeployqt-continuous-x86_64.AppImage https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
         chmod a+x /tmp/linuxdeployqt-continuous-x86_64.AppImage
-        sudo apt-get install -y ${{ env.ffmpeg_build }} ${{ env.opengl_package2 }} ${{ env.opengl_package3 }}
+        sudo apt-get install -y ${{ env.ffmpeg_build }} ${{ env.opengl_package1 }} ${{ env.opengl_package2 }} ${{ env.opengl_package3 }}
 # Above needed for packaging, should move these up to the top
 
     - name: AppImage tools (arm64)
@@ -302,7 +302,7 @@ jobs:
       run: |
         curl --location --output /tmp/linuxdeployqt-continuous-aarch64.AppImage https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-aarch64.AppImage
         chmod a+x /tmp/linuxdeployqt-continuous-aarch64.AppImage
-        sudo apt-get install -y ${{ env.ffmpeg_build }} ${{ env.opengl_package2 }} ${{ env.opengl_package3 }}
+        sudo apt-get install -y ${{ env.ffmpeg_build }} ${{ env.opengl_package1 }} ${{ env.opengl_package2 }} ${{ env.opengl_package3 }}
 # Above needed for packaging
 
     - name: AppImage Copy Files
