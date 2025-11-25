@@ -286,6 +286,7 @@ jobs:
       run: |
         mkdir -p ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/icons/hicolor/256x256/apps/
         mkdir -p ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/
+        mkdir -p ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/plugins/platforms/
         mkdir -p ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/bin/
         
     - name: AppImage tools (x86_64)
@@ -314,6 +315,7 @@ jobs:
       run: |
         sed -i '/Exec=js8call/c\Exec=JS8Call-improved' ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/JS8Call-improved.desktop
         sed -i '/Name=js8call/c\Name=JS8Call-improved' ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/JS8Call-improved.desktop
+        cp ${GITHUB_WORKSPACE}/local/qt693-install/plugins/platforms/*.so ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/plugins/platforms/
 
 # Remove above debug action when we resync repos
 
@@ -321,8 +323,6 @@ jobs:
       if: (runner.arch == 'X64')
       run: |
         cd ${GITHUB_WORKSPACE}/AppImage/
-        ls -lR
-        pwd
         /tmp/linuxdeployqt-continuous-x86_64.AppImage AppDir/usr/share/applications/JS8Call-improved.desktop \
           -executable=AppDir/usr/bin/JS8Call-improved \
           -qmake=/home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install/bin/qmake \
