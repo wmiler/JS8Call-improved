@@ -73,12 +73,13 @@ jobs:
       shell: msys2 {0}
       run: |
         cd ./build/
-        ls -l /mingw64/lib/
-        ls -l 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464'
-        cp /mingw64/lib/libfftw3f-3.dll .
+        ls -l 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464/bin'
+        ls -l 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464/lib'
+        ls -l 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464/share'
+        ls -l 'D:/a/JS8Call-improved/JS8Call-improved/local/
         cp /mingw64/lib/libusb-1.0.dll .
-        cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464/lib/libhamlib-4.dll' .
-        cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464/bin/libwinpthread-1.dll' .
+#        cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464/lib/libhamlib-4.dll' .
+#        cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464/bin/libwinpthread-1.dll' .
       continue-on-error: true
       
     - name: Configure JS8Call
@@ -93,19 +94,24 @@ jobs:
         cd ./build
         cmake --build . --config Release
 
-    - name: Copy some dlls from system paths
+    - name: Move exe into install directory
+      shell: msys2 {0}
+      run: |
+        cp ./build/JS8Call-improved.exe ./build/JS8Call-improved/
+        
+    - name: Check build directory
       shell: msys2 {0}
       run: |
         cd ./build/
-        ls -l
-
+        cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464/lib/libhamlib-4.dll' JS8Call-improved/
+        cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464/bin/libwinpthread-1.dll' JS8Call-improved/
+        
     - name: Upload Artifact (Release build)
       if: ${{ inputs.release-ver }}
       uses: actions/upload-artifact@v5
       with:
         name: "JS8call-improved_${{ inputs.release-ver }}_${{ runner.arch }}_win64"
         path: |
-          ./build/JS8Call-improved.exe
           ./build/JS8Call-improved/
 
     - name: Upload Artifact (Other build)
@@ -114,5 +120,4 @@ jobs:
       with:
         name: "JS8call-improved_devel_${{ runner.arch }}_win64"
         path: |
-          ./build/JS8Call-improved.exe
           ./build/JS8Call-improved/
