@@ -69,6 +69,17 @@ jobs:
         extract: true
         out-file-path: 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464'
 
+    - name: Copy some dlls from system paths
+      shell: msys2 {0}
+      run: |
+        cd ./build/
+        ls -l /mingw64/lib/
+        cp /mingw64/lib/fftw/libfftw3f-3.dll .
+        cp /mingw64/lib/usb/libusb-1.0.dll .
+        cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464/lib/libhamlib-4.dll' .
+        cp /mingw64/bin/libwinpthread-1.dll .
+      continue-on-error: true
+      
     - name: Configure JS8Call
       shell: msys2 {0}
       run: |
