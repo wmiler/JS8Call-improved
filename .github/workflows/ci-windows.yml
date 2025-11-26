@@ -41,7 +41,7 @@ jobs:
           libusb:p
           wget:p
           boost:p
-          mingw-w64-fftw:p
+          fftw:p
           sqlite3:p
           nsis:p
           python:p
@@ -92,7 +92,13 @@ jobs:
       run: |
         cd ./build
         cmake --build . --config Release
-        
+
+    - name: Copy some dlls from system paths
+      shell: msys2 {0}
+      run: |
+        cd ./build/
+        ls -l
+
     - name: Upload Artifact (Release build)
       if: ${{ inputs.release-ver }}
       uses: actions/upload-artifact@v5
