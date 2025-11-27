@@ -83,6 +83,7 @@ jobs:
         if: ${{ !inputs.release-ver }}
         run: |
           cd release-artifacts/JS8call-improved_devel_X64_win64/
+          ls -l
           zip -r /home/runner/work/JS8Call-improved/JS8Call-improved/release-artifacts/JS8call-improved_devel_X64_win64.zip JS8Call-improved
 
           cd /home/runner/work/JS8Call-improved/JS8Call-improved/release-artifacts/
