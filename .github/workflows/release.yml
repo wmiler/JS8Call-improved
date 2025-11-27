@@ -82,7 +82,6 @@ jobs:
       - name: tar.gz or zip artifacts back up (devel)
         if: ${{ !inputs.release-ver }}
         run: |
-          mv release-artifacts/JS8call-improved_devel_X64_win64/JS8Call-improved.exe release-artifacts/JS8call-improved_devel_X64_win64/JS8Call-improved/JS8Call-improved.exe
           cd release-artifacts/JS8call-improved_devel_X64_win64/
           zip -r /home/runner/work/JS8Call-improved/JS8Call-improved/release-artifacts/JS8call-improved_devel_X64_win64.zip JS8Call-improved
 
@@ -94,7 +93,6 @@ jobs:
       - name: tar.gz or zip artifacts back up (release)
         if: ${{ inputs.release-ver }}
         run: |
-          mv release-artifacts/JS8call-improved_${{ inputs.release-ver }}_X64_win64/JS8Call-improved.exe release-artifacts/JS8call-improved_${{ inputs.release-ver }}_X64_win64/JS8Call-improved/JS8Call-improved.exe
           cd release-artifacts/JS8call-improved_devel_X64_win64/
           zip -r /home/runner/work/JS8Call-improved/JS8Call-improved/release-artifacts/JS8call-improved_${{ inputs.release-ver }}_X64_win64.zip JS8Call-improved
 
