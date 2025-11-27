@@ -1,5 +1,11 @@
 name: Release JS8Call-improved
 
+# Signing notes
+# Possible code cert for Windows: https://signpath.org/
+# See https://github.com/AlbrechtL/welle.io/blob/master/.github/workflows/windows.yml for example
+# Possible code cert for Linux: https://docs.sigstore.dev/quickstart/quickstart-ci/
+# For MacOS we are stuck with their Developer Program
+
 on:
   pull_request:
   push:
@@ -8,10 +14,10 @@ on:
   workflow_dispatch:
     inputs:
       release-ver:
-        description: 'Version to release (e.g., v2.4.1)'
+        description: 'Version to release (e.g., v2.5.0)'
         required: true
         type: string
-        default: 'v2.4.1'
+        default: 'v2.5.0'
       prerelease:
         description: 'Mark as pre-release'
         required: false
@@ -78,7 +84,8 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: release-artifacts
-          
+
+# Rework needed to setup for Inno installer for Windows
       - name: tar.gz or zip artifacts back up (devel)
         if: ${{ !inputs.release-ver }}
         run: |
@@ -100,7 +107,8 @@ jobs:
           tar zcf JS8Call-improved-${{ inputs.release-ver }}-ubuntu-22.04.tar.gz js8call-improved-ubuntu-22.04
           tar zcf JS8Call-improved-${{ inputs.release-ver }}-ubuntu-22.04-arm.tar.gz js8call-improved-ubuntu-22.04-arm
         continue-on-error: true
-      
+# End rework
+
       - name: Display artifact structure
         run: |
           echo "Downloaded artifacts:"
