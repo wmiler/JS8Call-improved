@@ -60,15 +60,24 @@ jobs:
         cache: true
         dir: 'D:/a/JS8Call-improved/JS8Call-improved/local/qt693'
 
-    - name: Release download for hamlib
+    - name: Release download from hamlib
       uses: robinraju/release-downloader@v1.12
       with:
-        repository: 'wmiler/js8call'
-        fileName: 'hamlib-windows-msys2-binaries*.zip'
-        tag: 'hamlib-v4.6.4-ci'
+        repository: 'hamlib/hamlib'
+        fileName: 'hamlib-w64-4.6.4.zip'
+        tag: '4.6.4'
         extract: true
         out-file-path: 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464'
-      
+
+#    - name: Release download for hamlib
+#      uses: robinraju/release-downloader@v1.12
+#      with:
+#        repository: 'wmiler/js8call'
+#        fileName: 'hamlib-windows-msys2-binaries*.zip'
+#        tag: 'hamlib-v4.6.4-ci'
+#        extract: true
+#        out-file-path: 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464'
+
     - name: Configure JS8Call
       shell: msys2 {0}
       run: |
