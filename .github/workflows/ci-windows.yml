@@ -60,6 +60,16 @@ jobs:
         cache: true
         dir: 'D:/a/JS8Call-improved/JS8Call-improved/local/qt693'
 
+
+    - name: Release download for hamlib
+      uses: robinraju/release-downloader@v1.12
+      with:
+        repository: 'wmiler/js8call'
+        fileName: 'hamlib-windows-msys2-binaries*.zip'
+        tag: 'hamlib-v4.6.4-ci'
+        extract: true
+        out-file-path: 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464'
+
     - name: Release download from hamlib
       uses: robinraju/release-downloader@v1.12
       with:
@@ -69,14 +79,6 @@ jobs:
         extract: true
         out-file-path: 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464'
 
-#    - name: Release download for hamlib
-#      uses: robinraju/release-downloader@v1.12
-#      with:
-#        repository: 'wmiler/js8call'
-#        fileName: 'hamlib-windows-msys2-binaries*.zip'
-#        tag: 'hamlib-v4.6.4-ci'
-#        extract: true
-#        out-file-path: 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464'
 
     - name: Configure JS8Call
       shell: msys2 {0}
@@ -95,15 +97,14 @@ jobs:
       run: |
         cp ./build/JS8Call-improved.exe ./build/JS8Call-improved/
         
-    - name: Check build directory
-      shell: msys2 {0}
-      run: |
-        cd ./build/
-        cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464/bin/libhamlib-4.dll' JS8Call-improved/
-        cp /mingw64/lib/libwinpthread-1.dll JS8Call-improved/
-        cp /mingw64/lib/libusb-1.0.dll JS8Call-improved/
-        cp /mingw64/bin/libfftw3f-3.dll JS8Call-improved/
-      continue-on-error: true
+#    - name: Check build directory
+#      shell: msys2 {0}
+#      run: |
+#        cd ./build/
+#        cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464/bin/libhamlib-4.dll' JS8Call-improved/
+#        cp /mingw64/lib/libusb-1.0.dll JS8Call-improved/
+#        cp /mingw64/bin/libfftw3f-3.dll JS8Call-improved/
+#      continue-on-error: true
       
     - name: Upload Artifact (Release build)
       if: ${{ inputs.release-ver }}
