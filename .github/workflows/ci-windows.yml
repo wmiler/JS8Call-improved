@@ -101,7 +101,8 @@ jobs:
       shell: msys2 {0}
       run: |
         cd ./build/
-        ls -l 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464-bin/bin/'
+        ls -l 'D:/a/JS8Call-improved/JS8Call-improved/local/'
+        ls -l 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464-bin/'
         cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464-bin/bin/libhamlib-4.dll' JS8Call-improved/
         cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464-bin/bin/libusb-1.0.dll' JS8Call-improved/
         cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464-bin/bin/libwinpthread-1.dll' JS8Call-improved/
