@@ -68,17 +68,6 @@ jobs:
         tag: 'hamlib-v4.6.4-ci'
         extract: true
         out-file-path: 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464'
-
-    - name: Copy some dlls from system paths
-      shell: msys2 {0}
-      run: |
-        cd ./build/
-        ls -l 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464/bin'
-        ls -l 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464/lib'
-        ls -l 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464/share'
-        ls -l 'D:/a/JS8Call-improved/JS8Call-improved/local/'
-#        cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464/bin/libwinpthread-1.dll' .
-      continue-on-error: true
       
     - name: Configure JS8Call
       shell: msys2 {0}
@@ -102,10 +91,11 @@ jobs:
       run: |
         cd ./build/
         cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464/bin/libhamlib-4.dll' JS8Call-improved/
-        cp /mingw64/lib/libwinpthread-1.dll' JS8Call-improved/
+        cp /mingw64/lib/libwinpthread-1.dll JS8Call-improved/
         cp /mingw64/lib/libusb-1.0.dll JS8Call-improved/
         cp /mingw64/bin/libfftw3f-3.dll JS8Call-improved/
-        
+      continue-on-error: true
+      
     - name: Upload Artifact (Release build)
       if: ${{ inputs.release-ver }}
       uses: actions/upload-artifact@v5
