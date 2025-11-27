@@ -96,15 +96,15 @@ jobs:
       shell: msys2 {0}
       run: |
         cp ./build/JS8Call-improved.exe ./build/JS8Call-improved/
-        cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464/bin/libhamlib-4.dll' ./build/JS8Call-improved/
         
     - name: Check build directory
       shell: msys2 {0}
       run: |
         cd ./build/
-        cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464/lib/libhamlib-4.dll' JS8Call-improved/
-        cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464/bin/libwinpthread-1.dll' JS8Call-improved/
+        cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464/bin/libhamlib-4.dll' JS8Call-improved/
+        cp /mingw64/lib/libwinpthread-1.dll' JS8Call-improved/
         cp /mingw64/lib/libusb-1.0.dll JS8Call-improved/
+        cp /mingw64/bin/libfftw3f-3.dll JS8Call-improved/
         
     - name: Upload Artifact (Release build)
       if: ${{ inputs.release-ver }}
