@@ -101,11 +101,10 @@ jobs:
       shell: msys2 {0}
       run: |
         cd ./build/
-        ls -l 'D:/a/JS8Call-improved/JS8Call-improved/local/'
-        ls -l 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464-bin/'
-        cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464-bin/bin/libhamlib-4.dll' JS8Call-improved/
-        cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464-bin/bin/libusb-1.0.dll' JS8Call-improved/
-        cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464-bin/bin/libwinpthread-1.dll' JS8Call-improved/
+        ls -l 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464-bin/hamlib-w64-4.6.4/'
+        cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464-bin/hamlib-w64-4.6.4/bin/libhamlib-4.dll' JS8Call-improved/
+        cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464-bin/hamlib-w64-4.6.4/bin/libusb-1.0.dll' JS8Call-improved/
+        cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464-bin/hamlib-w64-4.6.4/bin/libwinpthread-1.dll' JS8Call-improved/
         cp /mingw64/bin/libfftw3f-3.dll JS8Call-improved/
       continue-on-error: true
       
