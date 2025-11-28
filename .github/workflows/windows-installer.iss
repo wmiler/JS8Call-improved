@@ -45,34 +45,34 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Users\kj4ct\Downloads\JS8call-improved_devel_X64_win64\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\kj4ct\Downloads\JS8call-improved_devel_X64_win64\generic\*"; DestDir: "{app}\generic"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Users\kj4ct\Downloads\JS8call-improved_devel_X64_win64\iconengines\*"; DestDir: "{app}\iconengines"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Users\kj4ct\Downloads\JS8call-improved_devel_X64_win64\imageformats\*"; DestDir: "{app}\imageformats"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Users\kj4ct\Downloads\JS8call-improved_devel_X64_win64\multimedia\*"; DestDir: "{app}\multimedia"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Users\kj4ct\Downloads\JS8call-improved_devel_X64_win64\networkinformation\*"; DestDir: "{app}\networkinformation"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Users\kj4ct\Downloads\JS8call-improved_devel_X64_win64\platforms\*"; DestDir: "{app}\platforms"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Users\kj4ct\Downloads\JS8call-improved_devel_X64_win64\styles\*"; DestDir: "{app}\styles"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Users\kj4ct\Downloads\JS8call-improved_devel_X64_win64\tls\*"; DestDir: "{app}\tls"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Users\kj4ct\Downloads\JS8call-improved_devel_X64_win64\avcodec-61.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\kj4ct\Downloads\JS8call-improved_devel_X64_win64\avformat-61.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\kj4ct\Downloads\JS8call-improved_devel_X64_win64\avutil-59.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\kj4ct\Downloads\JS8call-improved_devel_X64_win64\D3Dcompiler_47.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\kj4ct\Downloads\JS8call-improved_devel_X64_win64\libgcc_s_seh-1.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\kj4ct\Downloads\JS8call-improved_devel_X64_win64\libhamlib-4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\kj4ct\Downloads\JS8call-improved_devel_X64_win64\libstdc++-6.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\kj4ct\Downloads\JS8call-improved_devel_X64_win64\libusb-1.0.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\kj4ct\Downloads\JS8call-improved_devel_X64_win64\libwinpthread-1.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\kj4ct\Downloads\JS8call-improved_devel_X64_win64\opengl32sw.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\kj4ct\Downloads\JS8call-improved_devel_X64_win64\Qt6Core.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\kj4ct\Downloads\JS8call-improved_devel_X64_win64\Qt6Gui.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\kj4ct\Downloads\JS8call-improved_devel_X64_win64\Qt6Multimedia.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\kj4ct\Downloads\JS8call-improved_devel_X64_win64\Qt6Network.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\kj4ct\Downloads\JS8call-improved_devel_X64_win64\Qt6SerialPort.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\kj4ct\Downloads\JS8call-improved_devel_X64_win64\Qt6Svg.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\kj4ct\Downloads\JS8call-improved_devel_X64_win64\Qt6Widgets.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\kj4ct\Downloads\JS8call-improved_devel_X64_win64\swresample-5.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\kj4ct\Downloads\JS8call-improved_devel_X64_win64\swscale-8.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\generic\*"; DestDir: "{app}\generic"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\iconengines\*"; DestDir: "{app}\iconengines"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\imageformats\*"; DestDir: "{app}\imageformats"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\multimedia\*"; DestDir: "{app}\multimedia"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\networkinformation\*"; DestDir: "{app}\networkinformation"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\platforms\*"; DestDir: "{app}\platforms"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\styles\*"; DestDir: "{app}\styles"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\tls\*"; DestDir: "{app}\tls"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\avcodec-61.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\avformat-61.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\avutil-59.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\D3Dcompiler_47.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\libgcc_s_seh-1.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\libhamlib-4.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\libstdc++-6.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\libusb-1.0.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\libwinpthread-1.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\opengl32sw.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\Qt6Core.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\Qt6Gui.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\Qt6Multimedia.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\Qt6Network.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\Qt6SerialPort.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\Qt6Svg.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\Qt6Widgets.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\swresample-5.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\swscale-8.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
@@ -81,5 +81,6 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: de
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+
 
 
