@@ -106,6 +106,15 @@ jobs:
         cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464-bin/hamlib-w64-4.6.4/bin/libwinpthread-1.dll' JS8Call-improved/
         cp /mingw64/bin/libfftw3f-3.dll JS8Call-improved/
 
+    - name: INNO Setup
+      shell: msys2 {0}
+      run: |
+        cd ./build/
+        issc ../.github/workflows/windows-installer.iss
+
+    - name: Look for installer output
+      run: ls -lR build
+      
     - name: Upload Artifact (Release build)
       if: ${{ inputs.release-ver }}
       uses: actions/upload-artifact@v5
