@@ -106,7 +106,7 @@ jobs:
 #      if: ${{ inputs.release-ver }}
       run: |
         cd ./build/
-        & 'C:/Program Files (x86)/Inno Setup 6/ISCC.exe' /F"JS8Call-improved-${{ inputs.release-ver }}_${{ runner.arch }}" ../.github/workflows/windows-installer.iss
+        & 'C:/Program Files (x86)/Inno Setup 6/ISCC.exe' /F"JS8Call-improved-installer-${{ inputs.release-ver }}_${{ runner.arch }}" ../.github/workflows/windows-installer.iss
       continue-on-error: true
 
     - name: Look for installer output
