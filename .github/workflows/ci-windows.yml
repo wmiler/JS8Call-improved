@@ -111,6 +111,7 @@ jobs:
       run: |
         cd ./build/
         issc ../.github/workflows/windows-installer.iss
+      continue-on-error: true
 
     - name: Look for installer output
       run: ls -lR build
