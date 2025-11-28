@@ -106,12 +106,10 @@ jobs:
         cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464-bin/hamlib-w64-4.6.4/bin/libwinpthread-1.dll' JS8Call-improved/
         cp /mingw64/bin/libfftw3f-3.dll JS8Call-improved/
 
-    - name: INNO Setup
-      
+    - name: INNO Setup    
       run: |
         cd ./build/
-        ls 'C:/Program Files (x86)/'
-        'C:/Program Files (x86)/Inno Setup 6/iscc.exe ../.github/workflows/windows-installer.iss'
+        & 'C:/Program Files (x86)/Inno Setup 6/ISCC.exe' ../.github/workflows/windows-installer.iss
       continue-on-error: true
 
     - name: Look for installer output
