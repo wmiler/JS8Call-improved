@@ -81,7 +81,9 @@ jobs:
 
     - name: Move hamlib directory to the right spot
       shell: msys2 {0}
-      run: mv 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464-bin/hamlib-w64-4.6.4' 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464'
+      run: |
+        mv 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464-bin/hamlib-w64-4.6.4' 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464'
+        mv 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464/lib/gcc/libhamlib.dll.a' 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464/lib/libhamlib.dll.a'
         
     - name: Configure JS8Call
       shell: msys2 {0}
