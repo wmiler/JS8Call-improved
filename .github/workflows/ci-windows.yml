@@ -110,12 +110,12 @@ jobs:
       
       run: |
         cd ./build/
-        ls 'C:/'
-        'C:/ProgramFiles(x86)/Inno Setup 6/iscc.exe ../.github/workflows/windows-installer.iss'
+        ls 'C:/Program Files (x86)/'
+        'C:/Program Files (x86)/Inno Setup 6/iscc.exe ../.github/workflows/windows-installer.iss'
       continue-on-error: true
 
     - name: Look for installer output
-      run: ls -l build
+      run: ls -l build/JS8Call-improved/
       
     - name: Upload Artifact (Release build)
       if: ${{ inputs.release-ver }}
