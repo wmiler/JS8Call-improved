@@ -107,10 +107,10 @@ jobs:
         cp /mingw64/bin/libfftw3f-3.dll JS8Call-improved/
 
     - name: INNO Setup
-      shell: msys2 {0}
+      
       run: |
         cd ./build/
-        iscc ../.github/workflows/windows-installer.iss
+        "\\ProgramFiles(x86)\\Inno Setup 6\\iscc.exe" ../.github/workflows/windows-installer.iss
       continue-on-error: true
 
     - name: Look for installer output
