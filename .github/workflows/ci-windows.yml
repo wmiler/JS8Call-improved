@@ -82,9 +82,8 @@ jobs:
     - name: Reconfig the paths from hamlib/hamlib
       shell: msys2 {0}
       run: |
-        ls -lR 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464-bin/'
-        mv 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464-bin/hamlib-w64-4.6.4/*' 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464-bin/'
-        ls -l 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464-bin/'
+        mv 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464-bin/hamlib-w64-4.6.4' 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464-new'
+        ls -lR 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464-new'
         
     - name: Configure JS8Call
       shell: msys2 {0}
