@@ -14,10 +14,10 @@ on:
         type: string
         default: 'Release'
       release-ver:
-        description: 'Release Version (v2.4.1)'
+        description: 'Release Version (v2.5.0)'
         required: false
         type: string      
-        default: 'v2.4.1'
+        default: 'v2.5.0'
         
 # The package arrays below are mainly for building the libs, one could add fedora_build_package to include the
 # packages fedora requires, for instance.
@@ -70,12 +70,12 @@ jobs:
         path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/libusb
         key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-libusb1029
 
-    - name: Cache Check ffmpeg 7.1.1
+    - name: Cache Check ffmpeg 7.1.3
       id: cache-ffmpeg
       uses: actions/cache/restore@v4
       with:
         path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/ffmpeg
-        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-ffmpeg711
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-ffmpeg713
 
     - name: Cache Check Hamlib 4.6.4
       id: cache-hamlib
@@ -127,14 +127,14 @@ jobs:
         sudo apt-get install -y ${{ matrix.packages }}
 
     - name: Install dependencies needed to build libs (Ubuntu)
-#      if: |
-#        (steps.cache-usb.outputs.cache-hit != 'true' ||
-#        steps.cache-ffmpeg.outputs.cache-hit != 'true' ||
-#        steps.cache-hamlib.outputs.cache-hit != 'true' ||
-#        steps.cache-fftw.outputs.cache-hit != 'true' ||
-#        steps.cache-boost.outputs.cache-hit != 'true' ||
-#        steps.cache-qt.outputs.cache-hit != 'true') &&
-#        steps.which-os.outputs.thisos == 'ubuntu22.04'
+      if: |
+        (steps.cache-usb.outputs.cache-hit != 'true' ||
+        steps.cache-ffmpeg.outputs.cache-hit != 'true' ||
+        steps.cache-hamlib.outputs.cache-hit != 'true' ||
+        steps.cache-fftw.outputs.cache-hit != 'true' ||
+        steps.cache-boost.outputs.cache-hit != 'true' ||
+        steps.cache-qt.outputs.cache-hit != 'true') &&
+        steps.which-os.outputs.thisos == 'ubuntu22.04'
       run: |
         sudo apt-get install -y ${{ env.ffmpeg_build }} ${{ env.opengl_package2 }} ${{ env.opengl_package3 }}
         sudo apt-get clean
@@ -162,10 +162,10 @@ jobs:
 
 ## ffmpeg
     - name: Install ffmpeg 7.1.3
-#      if: steps.cache-ffmpeg.outputs.cache-hit != 'true'
+      if: steps.cache-ffmpeg.outputs.cache-hit != 'true'
       id: install-ffmpeg
       run: |
-        git clone --depth=1 --branch n7.1.1 https://git.ffmpeg.org/ffmpeg.git /tmp/ffmpeg
+        git clone --depth=1 --branch n7.1.3 https://git.ffmpeg.org/ffmpeg.git /tmp/ffmpeg
         mkdir -p /tmp/ffmpeg/build
         cd /tmp/ffmpeg/build
         ../configure --prefix=${GITHUB_WORKSPACE}/local/ffmpeg --disable-shared --enable-static --disable-doc \
@@ -177,7 +177,7 @@ jobs:
       if: steps.cache-ffmpeg.outputs.cache-hit != 'true'
       uses: actions/cache/save@v4
       with:
-        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-ffmpeg711
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-ffmpeg713
         path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/ffmpeg
 
 ## hamlib
@@ -275,6 +275,9 @@ jobs:
       if: steps.cache-qt.outputs.cache-hit != 'true'
       run: cat /tmp/qt6/build/config.summary
 
+    - name: QT directory
+      run: ls -lhR /home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install
+
     - name: Build JS8Call
       run: |
         mkdir -p build && cd build
@@ -315,7 +318,6 @@ jobs:
       run: |
         sed -i '/Exec=js8call/c\Exec=JS8Call-improved' ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/JS8Call-improved.desktop
         sed -i '/Name=js8call/c\Name=JS8Call-improved' ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/JS8Call-improved.desktop
-        ls -lh ${GITHUB_WORKSPACE}/local/qt693-install/plugins/platforms/
         cp ${GITHUB_WORKSPACE}/local/qt693-install/plugins/platforms/*.so ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/plugins/platforms/
 
 # Remove above debug action when we resync repos
