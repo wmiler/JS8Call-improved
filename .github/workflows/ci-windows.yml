@@ -110,11 +110,11 @@ jobs:
       shell: msys2 {0}
       run: |
         cd ./build/
-        issc ../.github/workflows/windows-installer.iss
+        iscc ../.github/workflows/windows-installer.iss
       continue-on-error: true
 
     - name: Look for installer output
-      run: ls -lR build
+      run: ls -l build
       
     - name: Upload Artifact (Release build)
       if: ${{ inputs.release-ver }}
