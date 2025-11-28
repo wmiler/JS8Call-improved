@@ -14,6 +14,7 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
+LicenseFile=LICENSE
 DefaultDirName={autopf}\{#MyAppName}
 UninstallDisplayIcon={app}\{#MyAppExeName}
 ; "ArchitecturesAllowed=x64compatible" specifies that Setup cannot run
@@ -55,6 +56,7 @@ Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\avcodec-6
 Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\avformat-61.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\avutil-59.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\D3Dcompiler_47.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\libfftw3f-3.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\libgcc_s_seh-1.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\libhamlib-4.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved\libstdc++-6.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -78,4 +80,5 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: de
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+
 
