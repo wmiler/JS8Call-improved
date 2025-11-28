@@ -11,10 +11,10 @@ on:
         type: string
         default: 'Release'
       release-ver:
-        description: 'Release Version (v2.4.1)'
+        description: 'Release Version (v2.5.0'
         required: false
         type: string      
-        default: 'v2.4.1'        
+        default: 'v2.5.0'        
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
@@ -60,16 +60,6 @@ jobs:
         cache: true
         dir: 'D:/a/JS8Call-improved/JS8Call-improved/local/qt693'
 
-# Need to rework this and just grab it from hamlib/hamlib, but paths need adjusting for that to happen
-#    - name: Release download for hamlib
-#      uses: robinraju/release-downloader@v1.12
-#      with:
-#        repository: 'wmiler/js8call'
-#        fileName: 'hamlib-windows-msys2-binaries*.zip'
-#        tag: 'hamlib-v4.6.4-ci'
-#        extract: true
-#        out-file-path: 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464'
-
     - name: hamlib/hamlib release
       uses: robinraju/release-downloader@v1.12
       with:
@@ -84,7 +74,6 @@ jobs:
       run: |
         mv 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464-bin/hamlib-w64-4.6.4' 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464'
         mv 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464/lib/gcc/libhamlib.dll.a' 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464/lib/libhamlib.dll.a'
-# End rework
 
     - name: Configure JS8Call
       shell: msys2 {0}
