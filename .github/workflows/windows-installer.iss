@@ -28,9 +28,11 @@ DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only).
 ;PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
-OutputBaseFilename=JS8Call-improved-250
+OutputDir=D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call-improved
+; This can be changed from the ci-windows.yml for release builds
+OutputBaseFilename=JS8Call-improved-installer-250
 SolidCompression=yes
-; WizardStyle introduced in 6.6.x, Github has 6.5.4
+; WizardStyle introduced in 6.6.0, Github has 6.5.4
 ;WizardStyle=modern dynamic
 
 [Languages]
@@ -76,3 +78,4 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: de
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+
