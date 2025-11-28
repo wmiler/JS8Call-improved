@@ -97,10 +97,11 @@ jobs:
       run: |
         cp ./build/JS8Call-improved.exe ./build/JS8Call-improved/
         
-    - name: Move libraries to install directory
+    - name: Move libraries and License to install directory
       shell: msys2 {0}
       run: |
         cd ./build/
+        cp 'D:/a/JS8Call-improved/JS8Call-improved/LICENSE' JS8Call-improved/
         cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464-bin/hamlib-w64-4.6.4/bin/libhamlib-4.dll' JS8Call-improved/
         cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464-bin/hamlib-w64-4.6.4/bin/libusb-1.0.dll' JS8Call-improved/
         cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib464-bin/hamlib-w64-4.6.4/bin/libwinpthread-1.dll' JS8Call-improved/
