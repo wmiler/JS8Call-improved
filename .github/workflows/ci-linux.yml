@@ -275,12 +275,6 @@ jobs:
       if: steps.cache-qt.outputs.cache-hit != 'true'
       run: cat /tmp/qt6/build/config.summary
 
-    - name: QT directory
-      run: |
-        ls -lhR /home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install/lib*
-        ls -lhR /home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install/mod*
-        ls -lhR /home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install/plug*
-
     - name: Build JS8Call
       run: |
         mkdir -p build && cd build
@@ -322,6 +316,10 @@ jobs:
         sed -i '/Exec=js8call/c\Exec=JS8Call-improved' ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/JS8Call-improved.desktop
         sed -i '/Name=js8call/c\Name=JS8Call-improved' ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/JS8Call-improved.desktop
         cp ${GITHUB_WORKSPACE}/local/qt693-install/plugins/platforms/*.so ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/plugins/platforms/
+        cp ${GITHUB_WORKSPACE}/local/qt693-install/plugins/wayland-decoration-client ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/plugins/
+        cp ${GITHUB_WORKSPACE}/local/qt693-install/plugins/wayland-graphics-integration-client ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/plugins/
+        cp ${GITHUB_WORKSPACE}/local/qt693-install/plugins/wayland-shell-integration ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/plugins/
+        cp ${GITHUB_WORKSPACE}/local/qt693-install/plugins/xcbglintegrations ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/plugins/
 
 # Remove above debug action when we resync repos
 
