@@ -35,7 +35,8 @@ DisableProgramGroupPage=yes
 PrivilegesRequiredOverridesAllowed=dialog
 OutputBaseFilename=JS8Call-improved-250
 SolidCompression=yes
-WizardStyle=modern dynamic
+; WizardStyle introduced in 6.6.x, Github has 6.5.4
+;WizardStyle=modern dynamic
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -80,4 +81,5 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: de
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+
 
