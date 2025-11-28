@@ -110,7 +110,8 @@ jobs:
       
       run: |
         cd ./build/
-        "\\ProgramFiles(x86)\\Inno Setup 6\\iscc.exe" ../.github/workflows/windows-installer.iss
+        ls 'C:/'
+        'C:/ProgramFiles(x86)/Inno Setup 6/iscc.exe ../.github/workflows/windows-installer.iss'
       continue-on-error: true
 
     - name: Look for installer output
