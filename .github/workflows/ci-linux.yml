@@ -276,7 +276,10 @@ jobs:
       run: cat /tmp/qt6/build/config.summary
 
     - name: QT directory
-      run: ls -lhR /home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install
+      run: |
+        ls -lhR /home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install/lib*
+        ls -lhR /home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install/mod*
+        ls -lhR /home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install/plug*
 
     - name: Build JS8Call
       run: |
