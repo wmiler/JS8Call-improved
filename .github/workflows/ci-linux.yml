@@ -139,6 +139,20 @@ jobs:
         sudo apt-get install -y ${{ env.ffmpeg_build }} ${{ env.opengl_package2 }} ${{ env.opengl_package3 }}
         sudo apt-get clean
 
+    - name: AppImage tools (x86_64)
+      if: (runner.arch == 'X64')
+      run: |
+        curl --location --output /tmp/linuxdeployqt-continuous-x86_64.AppImage https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
+        chmod a+x /tmp/linuxdeployqt-continuous-x86_64.AppImage
+        sudo apt-get install -y ${{ env.ffmpeg_build }} ${{ env.opengl_package1 }} ${{ env.opengl_package2 }} ${{ env.opengl_package3 }}
+
+    - name: AppImage tools (arm64)
+      if: (runner.arch == 'ARM64')
+      run: |
+        curl --location --output /tmp/linuxdeployqt-continuous-aarch64.AppImage https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-aarch64.AppImage
+        chmod a+x /tmp/linuxdeployqt-continuous-aarch64.AppImage
+        sudo apt-get install -y ${{ env.ffmpeg_build }} ${{ env.opengl_package1 }} ${{ env.opengl_package2 }} ${{ env.opengl_package3 }}
+
 ## libusb
     - name: Install libusb 1.0.29
       if: steps.cache-usb.outputs.cache-hit != 'true'
@@ -282,44 +296,30 @@ jobs:
         make -j 4
 
 # AppImage
-    - name: AppImage Directory Setup
+    - name: AppImage Directory Setup and File Copy
       run: |
         mkdir -p ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/icons/hicolor/256x256/apps/
         mkdir -p ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/
         mkdir -p ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/plugins/platforms/
         mkdir -p ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/bin/
         
-    - name: AppImage tools (x86_64)
-      if: (runner.arch == 'X64')
-      run: |
-        curl --location --output /tmp/linuxdeployqt-continuous-x86_64.AppImage https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
-        chmod a+x /tmp/linuxdeployqt-continuous-x86_64.AppImage
-        sudo apt-get install -y ${{ env.ffmpeg_build }} ${{ env.opengl_package1 }} ${{ env.opengl_package2 }} ${{ env.opengl_package3 }}
-# Above needed for packaging, should move these up to the top
-
-    - name: AppImage tools (arm64)
-      if: (runner.arch == 'ARM64')
-      run: |
-        curl --location --output /tmp/linuxdeployqt-continuous-aarch64.AppImage https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-aarch64.AppImage
-        chmod a+x /tmp/linuxdeployqt-continuous-aarch64.AppImage
-        sudo apt-get install -y ${{ env.ffmpeg_build }} ${{ env.opengl_package1 }} ${{ env.opengl_package2 }} ${{ env.opengl_package3 }}
-# Above needed for packaging
-
-    - name: AppImage Copy Files
-      run: |
-        cp js8call.desktop ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/JS8Call-improved.desktop
         cp build/JS8Call-improved ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/bin/
         cp icons/Unix/js8call_icon.png ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/icons/hicolor/256x256/apps/
-
-    - name: AppImage debug actions
-      run: |
-        sed -i '/Exec=js8call/c\Exec=JS8Call-improved' ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/JS8Call-improved.desktop
-        sed -i '/Name=js8call/c\Name=JS8Call-improved' ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/JS8Call-improved.desktop
         cp ${GITHUB_WORKSPACE}/local/qt693-install/plugins/platforms/*.so ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/plugins/platforms/
         cp -R ${GITHUB_WORKSPACE}/local/qt693-install/plugins/wayland-decoration-client ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/plugins/
         cp -R ${GITHUB_WORKSPACE}/local/qt693-install/plugins/wayland-graphics-integration-client ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/plugins/
         cp -R ${GITHUB_WORKSPACE}/local/qt693-install/plugins/wayland-shell-integration ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/plugins/
         cp -R ${GITHUB_WORKSPACE}/local/qt693-install/plugins/xcbglintegrations ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/plugins/
+
+
+    - name: AppImage Copy Files
+      run: |
+        cp js8call.desktop ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/JS8Call-improved.desktop
+
+    - name: AppImage debug actions
+      run: |
+        sed -i '/Exec=js8call/c\Exec=JS8Call-improved' ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/JS8Call-improved.desktop
+        sed -i '/Name=js8call/c\Name=JS8Call-improved' ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/JS8Call-improved.desktop
 
 # Remove above debug action when we resync repos
 
@@ -348,8 +348,17 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
-    - name: Upload Artifact (app)
+    - name: Upload Artifact (Release build)
+      if: ${{ inputs.release-ver }}
+      uses: actions/upload-artifact@v5
+      with:
+        name: js8call-improved-${{ matrix.os }}
+        path: ./AppImage/*.AppImage*
+
+    - name: Upload Artifact (CI Build)
+      if: ${{ !inputs.release-ver }}
       uses: actions/upload-artifact@v5
       with:
         name: js8call-improved-${{ matrix.os }}
         path: ./AppImage/
+        
