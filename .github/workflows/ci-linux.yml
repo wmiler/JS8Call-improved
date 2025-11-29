@@ -326,6 +326,8 @@ jobs:
     - name: AppImage deploy (x86_64)
       if: (runner.arch == 'X64')
       run: |
+        echo "VERSION: "
+        env | grep -i VERSION
         cd ${GITHUB_WORKSPACE}/AppImage/
         /tmp/linuxdeployqt-continuous-x86_64.AppImage AppDir/usr/share/applications/JS8Call-improved.desktop \
           -executable=AppDir/usr/bin/JS8Call-improved \
