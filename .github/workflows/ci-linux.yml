@@ -54,14 +54,6 @@ jobs:
         echo "thisos=$ImageOS" >> $GITHUB_OUTPUT
       shell: bash
 
-    - name: Set our version tag for AppImage
-      if: ${{ inputs.release-ver }}
-      run: export VERSION=${{ inputs.release-ver }}
-      
-    - name: Set our version tag for AppImage
-      if: ${{ !inputs.release-ver }}
-      run: export VERSION=-devel-
-      
 # Move all of our cache checks here, so we know if we need to free bunches of disk space
     - name: Cache Check libusb 1.0.29
       id: cache-usb
@@ -323,11 +315,18 @@ jobs:
 
 # Remove above debug action when we resync repos
 
+    - name: Set our version tag for AppImage
+      if: ${{ inputs.release-ver }}
+      run: export VERSION=${{ inputs.release-ver }}
+      
+    - name: Set our version tag for AppImage
+      if: ${{ !inputs.release-ver }}
+      run: export VERSION=-devel-
+      
     - name: AppImage deploy (x86_64)
       if: (runner.arch == 'X64')
       run: |
-        echo "VERSION: "
-        env | grep -i VERSION
+        if [ -z ${{ inputs.release-ver }} ]; then export VERSION=devel else export VERSION=${{ inputs.release-ver }}; fi
         cd ${GITHUB_WORKSPACE}/AppImage/
         /tmp/linuxdeployqt-continuous-x86_64.AppImage AppDir/usr/share/applications/JS8Call-improved.desktop \
           -executable=AppDir/usr/bin/JS8Call-improved \
@@ -341,6 +340,7 @@ jobs:
     - name: AppImage deploy (arm64)
       if: (runner.arch == 'ARM64')
       run: |
+        if [ -z ${{ inputs.release-ver }} ]; then export VERSION=devel else export VERSION=${{ inputs.release-ver }}; fi
         cd ${GITHUB_WORKSPACE}/AppImage/
         /tmp/linuxdeployqt-continuous-aarch64.AppImage AppDir/usr/share/applications/JS8Call-improved.desktop \
           -executable=AppDir/usr/bin/JS8Call-improved \
