@@ -174,7 +174,7 @@ jobs:
         git clone --depth=1 --branch n7.1.3 https://git.ffmpeg.org/ffmpeg.git /tmp/ffmpeg
         mkdir -p /tmp/ffmpeg/build
         cd /tmp/ffmpeg/build
-        ../configure --prefix=${GITHUB_WORKSPACE}/local/ffmpeg --enable-shared --enable-static --disable-doc --enable-network
+        ../configure --prefix=${GITHUB_WORKSPACE}/local/ffmpeg --enable-shared --disable-doc --enable-network
         make -j install
         ls -lR ${GITHUB_WORKSPACE}/local/ffmpeg
 #        ../configure --prefix=${GITHUB_WORKSPACE}/local/ffmpeg --disable-shared --enable-static --disable-doc \
@@ -290,6 +290,9 @@ jobs:
         cmake -DCMAKE_PREFIX_PATH="${GITHUB_WORKSPACE}/local/qt693-install;${GITHUB_WORKSPACE}/local/hamlib;${GITHUB_WORKSPACE}/local/fftw;${GITHUB_WORKSPACE}/local/boost;${GITHUB_WORKSPACE}/local/libusb" ..
         make -j 4
 
+    - name: ldd check
+      run: ldd build/JS8Call-improved
+
 # AppImage
     - name: AppImage Directory Setup and File Copy
       run: |
@@ -305,7 +308,13 @@ jobs:
         cp -R ${GITHUB_WORKSPACE}/local/qt693-install/plugins/wayland-graphics-integration-client ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/plugins/
         cp -R ${GITHUB_WORKSPACE}/local/qt693-install/plugins/wayland-shell-integration ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/plugins/
         cp -R ${GITHUB_WORKSPACE}/local/qt693-install/plugins/xcbglintegrations ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/plugins/
-
+        cp -R ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libavcodec.so.61.19.101 ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/lib/libavcodec.so.61
+        cp -R ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libavdevice.so.61.3.100 ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/lib/libavdevice.so.61
+        cp -R ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libavfilter.so.10.4.100 ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/lib/libavfilter.so.10
+        cp -R ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libavformat.so.61.7.100 ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/lib/libavformat.so.61
+        cp -R ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libavutil.so.59.39.100 ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/lib/libavutil.so.59
+        cp -R ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libswresample.so.5.3.100 ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/lib/libswresample.so.5
+        cp -R ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libswscale.so.8.3.100 ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/lib/libswscale.so.8
 
     - name: AppImage Copy Files
       run: |
