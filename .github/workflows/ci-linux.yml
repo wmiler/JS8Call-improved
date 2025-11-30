@@ -176,7 +176,7 @@ jobs:
         cd /tmp/ffmpeg/build
         ../configure --prefix=${GITHUB_WORKSPACE}/local/ffmpeg --enable-shared --disable-doc --enable-network
         make -j install
-        ls -lR ${GITHUB_WORKSPACE}/local/ffmpeg
+        ls -lR ${GITHUB_WORKSPACE}/local/ffmpeg/lib/
 #        ../configure --prefix=${GITHUB_WORKSPACE}/local/ffmpeg --disable-shared --enable-static --disable-doc \
 #          --enable-network --enable-gpl --enable-libass --enable-libfreetype --enable-libmp3lame \
 #          --enable-libvorbis          
@@ -300,6 +300,7 @@ jobs:
         mkdir -p ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/
         mkdir -p ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/plugins/platforms/
         mkdir -p ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/bin/
+        mkdir -p ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/lib/
         
         cp build/JS8Call-improved ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/bin/
         cp icons/Unix/js8call_icon.png ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/icons/hicolor/256x256/apps/
@@ -335,10 +336,10 @@ jobs:
       if: ${{ !inputs.release-ver }}
       run: export VERSION=-devel-
       
-    - name: AppImage deploy (x86_64)
-      if: (runner.arch == 'X64')
+    - name: AppImage deploy (x86_64 Release Build)
+      if: (runner.arch == 'X64' && ${{ inputs.release-ver }})
       run: |
-        if [ -z ${{ inputs.release-ver }} ]; then export VERSION=devel else export VERSION=${{ inputs.release-ver }}; fi
+        export VERSION=${{ inputs.release-ver }}
         cd ${GITHUB_WORKSPACE}/AppImage/
         /tmp/linuxdeployqt-continuous-x86_64.AppImage AppDir/usr/share/applications/JS8Call-improved.desktop \
           -executable=AppDir/usr/bin/JS8Call-improved \
@@ -349,10 +350,24 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
-    - name: AppImage deploy (arm64)
-      if: (runner.arch == 'ARM64')
+    - name: AppImage deploy (x86_64 CI Build)
+      if: (runner.arch == 'X64' && ${{ !inputs.release-ver }})
       run: |
-        if [ -z ${{ inputs.release-ver }} ]; then export VERSION=devel else export VERSION=${{ inputs.release-ver }}; fi
+        export VERSION=devel
+        cd ${GITHUB_WORKSPACE}/AppImage/
+        /tmp/linuxdeployqt-continuous-x86_64.AppImage AppDir/usr/share/applications/JS8Call-improved.desktop \
+          -executable=AppDir/usr/bin/JS8Call-improved \
+          -qmake=/home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install/bin/qmake \
+          -appimage -verbose=2 -no-translations
+        chmod a+x *.AppImage
+      continue-on-error: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: AppImage deploy (arm64 Release Build)
+      if: (runner.arch == 'ARM64' && ${{ inputs.release-ver }})
+      run: |
+        export VERSION=${{ inputs.release-ver }}
         cd ${GITHUB_WORKSPACE}/AppImage/
         /tmp/linuxdeployqt-continuous-aarch64.AppImage AppDir/usr/share/applications/JS8Call-improved.desktop \
           -executable=AppDir/usr/bin/JS8Call-improved \
@@ -361,7 +376,20 @@ jobs:
         chmod a+x *.AppImage
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
+
+    - name: AppImage deploy (arm64 CI Build)
+      if: (runner.arch == 'ARM64' && ${{ !inputs.release-ver }})
+      run: |
+        export VERSION=devel
+        cd ${GITHUB_WORKSPACE}/AppImage/
+        /tmp/linuxdeployqt-continuous-aarch64.AppImage AppDir/usr/share/applications/JS8Call-improved.desktop \
+          -executable=AppDir/usr/bin/JS8Call-improved \
+          -qmake=/home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install/bin/qmake \
+          -appimage -verbose=2 -no-translations
+        chmod a+x *.AppImage
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Upload Artifact (Release build)
       if: ${{ inputs.release-ver }}
       uses: actions/upload-artifact@v5
