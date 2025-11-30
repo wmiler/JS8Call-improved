@@ -327,17 +327,9 @@ jobs:
         sed -i '/Name=js8call/c\Name=JS8Call-improved' ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/JS8Call-improved.desktop
 
 # Remove above debug action when we resync repos
-
-    - name: Set our version tag for AppImage
-      if: ${{ inputs.release-ver }}
-      run: export VERSION=${{ inputs.release-ver }}
-      
-    - name: Set our version tag for AppImage
-      if: ${{ !inputs.release-ver }}
-      run: export VERSION=-devel-
-      
+    
     - name: AppImage deploy (x86_64 Release Build)
-      if: (runner.arch == 'X64' && ${{ inputs.release-ver }})
+      if: (runner.arch == 'X64' && inputs.release-ver )
       run: |
         export VERSION=${{ inputs.release-ver }}
         cd ${GITHUB_WORKSPACE}/AppImage/
@@ -351,7 +343,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
     - name: AppImage deploy (x86_64 CI Build)
-      if: (runner.arch == 'X64' && ${{ !inputs.release-ver }})
+      if: (runner.arch == 'X64' && !inputs.release-ver )
       run: |
         export VERSION=devel
         cd ${GITHUB_WORKSPACE}/AppImage/
@@ -365,7 +357,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: AppImage deploy (arm64 Release Build)
-      if: (runner.arch == 'ARM64' && ${{ inputs.release-ver }})
+      if: (runner.arch == 'ARM64' && inputs.release-ver )
       run: |
         export VERSION=${{ inputs.release-ver }}
         cd ${GITHUB_WORKSPACE}/AppImage/
@@ -378,7 +370,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: AppImage deploy (arm64 CI Build)
-      if: (runner.arch == 'ARM64' && ${{ !inputs.release-ver }})
+      if: (runner.arch == 'ARM64' && !inputs.release-ver )
       run: |
         export VERSION=devel
         cd ${GITHUB_WORKSPACE}/AppImage/
