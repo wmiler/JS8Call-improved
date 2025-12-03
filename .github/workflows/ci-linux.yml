@@ -191,7 +191,6 @@ jobs:
       run: |
         git clone --depth=1 --branch=4.6.4 https://github.com/Hamlib/Hamlib.git /tmp/hamlib
         cd /tmp/hamlib
-        export CXXFLAGS="-g -O0 -fno-inline"
         ./bootstrap
         ./configure --prefix=${GITHUB_WORKSPACE}/local/hamlib
         make -j 4
@@ -265,7 +264,7 @@ jobs:
         git clone --depth=1 --branch=6.9.3 https://github.com/qt/qt5.git /tmp/qt6
         mkdir -p /tmp/qt6/build
         cd /tmp/qt6/build
-        /tmp/qt6/configure -debug -DCMAKE_PREFIX_PATH="${GITHUB_WORKSPACE}/local/ffmpeg" --prefix=${GITHUB_WORKSPACE}/local/qt693-install -init-submodules -submodules qtmultimedia,qtserialport,qtwayland -ffmpeg-dir /home/runner/work/JS8Call-improved/JS8Call-improved/local/ffmpeg
+        /tmp/qt6/configure -DCMAKE_PREFIX_PATH="${GITHUB_WORKSPACE}/local/ffmpeg" --prefix=${GITHUB_WORKSPACE}/local/qt693-install -init-submodules -submodules qtmultimedia,qtserialport,qtwayland -ffmpeg-dir /home/runner/work/JS8Call-improved/JS8Call-improved/local/ffmpeg
         cmake --build . --parallel
         cmake --install .
 
