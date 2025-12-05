@@ -288,7 +288,7 @@ jobs:
     - name: Attest
       uses: actions/attest-build-provenance@v3
       with:
-        subject-path: '${{ GITHUB_WORKSPACE }}/build/JS8Call-improved'
+        subject-path: '${{ github.workspace }}/build/JS8Call-improved'
           
 # AppImage
     - name: AppImage Directory Setup and File Copy
