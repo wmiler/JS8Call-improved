@@ -1,6 +1,8 @@
 permissions:
   contents: read
-
+  attestations: write
+  id-token: write
+  
 name: CI Build for Linux Ubuntu
 
 on: 
