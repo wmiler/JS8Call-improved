@@ -284,7 +284,12 @@ jobs:
         mkdir -p build && cd build
         cmake -DCMAKE_PREFIX_PATH="${GITHUB_WORKSPACE}/local/qt693-install;${GITHUB_WORKSPACE}/local/hamlib;${GITHUB_WORKSPACE}/local/fftw;${GITHUB_WORKSPACE}/local/boost;${GITHUB_WORKSPACE}/local/libusb" ..
         make -j 4
-
+        
+    - name: Attest
+      uses: actions/attest-build-provenance@v3
+      with:
+        subject-path: '${{ GITHUB_WORKSPACE }}/build/JS8Call-improved'
+          
 # AppImage
     - name: AppImage Directory Setup and File Copy
       run: |
