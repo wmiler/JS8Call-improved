@@ -286,7 +286,13 @@ jobs:
         mkdir -p build && cd build
         cmake -DCMAKE_PREFIX_PATH="${GITHUB_WORKSPACE}/local/qt693-install;${GITHUB_WORKSPACE}/local/hamlib;${GITHUB_WORKSPACE}/local/fftw;${GITHUB_WORKSPACE}/local/boost;${GITHUB_WORKSPACE}/local/libusb" ..
         make -j 4
-        
+
+    - name: SBOM
+      uses: anchore/sbom-action@v0.20.10
+      with:
+        path: ./build/
+        artifact-name: ${{ matrix.os }}-1.spdx
+      
     - name: Attest
       uses: actions/attest-build-provenance@v3
       with:
