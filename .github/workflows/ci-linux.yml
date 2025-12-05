@@ -290,8 +290,7 @@ jobs:
     - name: SBOM
       uses: anchore/sbom-action@v0.20.10
       with:
-        path: ./build/
-        artifact-name: ${{ matrix.os }}-1.spdx
+        artifact-name: ${{ matrix.os }}.spdx
       
     - name: Attest
       uses: actions/attest-build-provenance@v3
