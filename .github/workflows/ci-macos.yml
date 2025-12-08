@@ -257,7 +257,7 @@ jobs:
       continue-on-error: true
       
     - name: Create DMG
-      run: create-dmg "JS8Call-improved.dmg" "build/JS8Call.app"
+      run: create-dmg "JS8Call-improved.dmg" "build-xcode/Release/JS8Call.app"
       
     - name: Attestation (Release Only)
       if: ${{ inputs.release-ver }}
