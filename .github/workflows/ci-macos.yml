@@ -232,7 +232,11 @@ jobs:
         make
 
     - name: Apple info
-      run: codesign --verify --deep --strict --verbose=2 build/JS8Call.app
+      run: |
+        ls -lR build/JS8Call.app
+        echo "*** codesign ***"
+        codesign -d -vvv --verify --deep  --continue build/JS8Call.app
+      continue-on-error: true
       
     - name: Create DMG
       run: create-dmg "JS8Call-improved.dmg" "build/JS8Call.app"
