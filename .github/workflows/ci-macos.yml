@@ -248,10 +248,14 @@ jobs:
     - name: Apple app ls
       run: ls -lR build-xcode/Release/JS8Call.app
 
-    - name: Apple codesign
-      run: codesign -d -vvv --verify --deep  --continue build-xcode/Release/JS8Call.app/Contents/MacOS/JS8Call
+    - name: Apple codesign app binary
+      run: codesign -dv build-xcode/Release/JS8Call.app/Contents/MacOS/JS8Call
       continue-on-error: true
 
+    - name: Apple codesign Frameworks
+      run: codesign -dv --continue build-xcode/Release/JS8Call.app/Contents/Frameworks/*
+      continue-on-error: true
+      
     - name: Apple spctl
       run: |
         spctl -a -vvv --continue build-xcode/Release/JS8Call.app/Contents/Frameworks/*
