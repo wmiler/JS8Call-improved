@@ -122,6 +122,7 @@ jobs:
         run: echo "Workflow triggered by tag ${{ steps.get_tag.outputs.tag_name }}"
 
 #         mode: "HYBRID"
+#         fromTag: "4a06f800e747907e1c55322410336b2e8027d5f2"
       - name: Create Changelog
         id: github_release
         uses: mikepenz/release-changelog-builder-action@v6
@@ -129,7 +130,7 @@ jobs:
           mode: "PR"
           owner: "JS8Call-improved"
           repo: "JS8Call-improved"
-          fromTag: "4a06f800e747907e1c55322410336b2e8027d5f2"
+          fromTag: "release/2.4.0"
           toTag: "${{ steps.get_tag.outputs.tag_name }}"
           exportCache: true
           fetchReleaseInformation: true
