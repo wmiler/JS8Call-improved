@@ -228,11 +228,11 @@ jobs:
 #        modules: 'qtmultimedia qtserialport'
 #        archives: 'qtsvg qtdeclarative qtbase'
 
-    - name: Build JS8Call
-      run: |
-        mkdir -p ./build && cd ./build
-        cmake -DCMAKE_PREFIX_PATH="${GITHUB_WORKSPACE}/local/qt693-install;${GITHUB_WORKSPACE}/local/hamlib;${GITHUB_WORKSPACE}/local/fftw;${GITHUB_WORKSPACE}/local/boost;${GITHUB_WORKSPACE}/local/libusb" ..
-        make
+#    - name: Build JS8Call
+#      run: |
+#        mkdir -p ./build && cd ./build
+#        cmake -DCMAKE_PREFIX_PATH="${GITHUB_WORKSPACE}/local/qt693-install;${GITHUB_WORKSPACE}/local/hamlib;${GITHUB_WORKSPACE}/local/fftw;${GITHUB_WORKSPACE}/local/boost;${GITHUB_WORKSPACE}/local/libusb" ..
+#        make
 
     - name: Apple security
       run: security find-identity -p codesigning
@@ -246,7 +246,7 @@ jobs:
       continue-on-error: true
 
     - name: Apple app ls
-      run: ls -lR build-xcode/JS8Call.app
+      run: find . -name JS8Call.app -print
 
     - name: Apple codesign
       run: codesign -d -vvv --verify --deep  --continue build-xcode/JS8Call.app
