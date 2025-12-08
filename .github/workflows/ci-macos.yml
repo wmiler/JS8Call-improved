@@ -201,7 +201,10 @@ jobs:
         git clone --depth=1 --branch=6.9.3 https://github.com/qt/qt5.git /tmp/qt6
         mkdir -p /tmp/qt6/build
         cd /tmp/qt6/build
-        /tmp/qt6/configure -DCMAKE_PREFIX_PATH="${GITHUB_WORKSPACE}/local/ffmpeg" --prefix=${GITHUB_WORKSPACE}/local/qt693-install -init-submodules -submodules qtmultimedia,qtserialport -ffmpeg-dir /Users/runner/work/JS8Call-improved/JS8Call-improved/local/ffmpeg
+        /tmp/qt6/configure -DCMAKE_PREFIX_PATH="${GITHUB_WORKSPACE}/local/ffmpeg" \
+          --prefix=${GITHUB_WORKSPACE}/local/qt693-install -init-submodules \
+          -submodules qtmultimedia,qtserialport -sbom \
+          -ffmpeg-dir /Users/runner/work/JS8Call-improved/JS8Call-improved/local/ffmpeg
         cmake --build . --parallel
         cmake --install .
         
@@ -236,6 +239,8 @@ jobs:
         ls -lR build/JS8Call.app
         echo "*** codesign ***"
         codesign -d -vvv --verify --deep  --continue build/JS8Call.app
+        echo "*** spctl ***"
+        spctl -a -vvv --continue build/JS8Call.app
       continue-on-error: true
       
     - name: Create DMG
