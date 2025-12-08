@@ -114,7 +114,26 @@ jobs:
         key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-libusb1029
         path: /Users/runner/work/JS8Call-improved/JS8Call-improved/local/libusb
 
-## hamlib
+        
+## ffmpeg
+    - name: Install ffmpeg 7.1.3
+      if: steps.cache-ffmpeg.outputs.cache-hit != 'true'
+      id: install-ffmpeg
+      run: |
+        git clone --depth=1 --branch n7.1.3 https://git.ffmpeg.org/ffmpeg.git /tmp/ffmpeg
+        mkdir -p /tmp/ffmpeg/build
+        cd /tmp/ffmpeg/build
+        ../configure --prefix=${GITHUB_WORKSPACE}/local/ffmpeg --enable-shared --enable-static --disable-doc --enable-network
+        make install
+
+    - name: Save ffmpeg cache
+      if: steps.cache-ffmpeg.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v4
+      with:
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-ffmpeg713
+        path: /Users/runner/work/JS8Call-improved/JS8Call-improved/local/ffmpeg
+  
+  ## hamlib
     - name: Install Hamlib 4.6.5
       if: steps.cache-hamlib.outputs.cache-hit != 'true'
       id: install-hamlib
@@ -171,24 +190,7 @@ jobs:
       with:
         key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-boost188
         path: /Users/runner/work/JS8Call-improved/JS8Call-improved/local/boost
-        
-## ffmpeg
-    - name: Install ffmpeg 7.1.3
-      if: steps.cache-ffmpeg.outputs.cache-hit != 'true'
-      id: install-ffmpeg
-      run: |
-        git clone --depth=1 --branch n7.1.3 https://git.ffmpeg.org/ffmpeg.git /tmp/ffmpeg
-        mkdir -p /tmp/ffmpeg/build
-        cd /tmp/ffmpeg/build
-        ../configure --prefix=${GITHUB_WORKSPACE}/local/ffmpeg --enable-shared --enable-static --disable-doc --enable-network
-        make install
 
-    - name: Save ffmpeg cache
-      if: steps.cache-ffmpeg.outputs.cache-hit != 'true'
-      uses: actions/cache/save@v4
-      with:
-        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-ffmpeg713
-        path: /Users/runner/work/JS8Call-improved/JS8Call-improved/local/ffmpeg
 
 # QT 6.9.3
    # Takes about 1 hour if not cached
@@ -199,15 +201,16 @@ jobs:
         git clone --depth=1 --branch=6.9.3 https://github.com/qt/qt5.git /tmp/qt6
         mkdir -p /tmp/qt6/build
         cd /tmp/qt6/build
-        /tmp/qt6/configure -DCMAKE_PREFIX_PATH="${GITHUB_WORKSPACE}/local/ffmpeg" --prefix=${GITHUB_WORKSPACE}/local/qt693-install -init-submodules -submodules qtmultimedia,qtserialport,qtwayland -ffmpeg-dir /home/runner/work/JS8Call-improved/JS8Call-improved/local/ffmpeg
+        /tmp/qt6/configure -DCMAKE_PREFIX_PATH="${GITHUB_WORKSPACE}/local/ffmpeg" --prefix=${GITHUB_WORKSPACE}/local/qt693-install -init-submodules -submodules qtmultimedia,qtserialport -ffmpeg-dir /Users/runner/work/JS8Call-improved/JS8Call-improved/local/ffmpeg
         cmake --build . --parallel
         cmake --install .
+        
     - name: Save QT 6.9.3 cache
       if: steps.cache-qt.outputs.cache-hit != 'true'
       uses: actions/cache/save@v4
       with:
         key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-qt693
-        path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install
+        path: /Users/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install
 
 # QT 6.9.3 via installer
 #    - name: Install Qt 6.9.3
