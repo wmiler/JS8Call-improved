@@ -234,13 +234,26 @@ jobs:
         cmake -DCMAKE_PREFIX_PATH="${GITHUB_WORKSPACE}/local/qt693-install;${GITHUB_WORKSPACE}/local/hamlib;${GITHUB_WORKSPACE}/local/fftw;${GITHUB_WORKSPACE}/local/boost;${GITHUB_WORKSPACE}/local/libusb" ..
         make
 
-    - name: Apple info
+    - name: Apple app ls
+      run: ls -lR build/JS8Call.app
+
+    - name: Apple codesign
+      run: codesign -d -vvv --verify --deep  --continue build/JS8Call.app
+      continue-on-error: true
+
+    - name: Apple spctl
+      run: spctl -a -vvv --continue build/JS8Call.app
+      continue-on-error: true
+
+    - name: Apple security
+      run: security find-identity -p codesigning
+      continue-on-error: true
+
+    - name: Apple xcodebuild
       run: |
-        ls -lR build/JS8Call.app
-        echo "*** codesign ***"
-        codesign -d -vvv --verify --deep  --continue build/JS8Call.app
-        echo "*** spctl ***"
-        spctl -a -vvv --continue build/JS8Call.app
+        mkdir -p ./build-xcode && cd ./build-xcode
+        cmake -G Xcode -DCMAKE_PREFIX_PATH="${GITHUB_WORKSPACE}/local/qt693-install;${GITHUB_WORKSPACE}/local/hamlib;${GITHUB_WORKSPACE}/local/fftw;${GITHUB_WORKSPACE}/local/boost;${GITHUB_WORKSPACE}/local/libusb" ..
+        xcodebuild -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
       continue-on-error: true
       
     - name: Create DMG
