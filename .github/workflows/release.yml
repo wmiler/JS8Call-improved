@@ -85,7 +85,6 @@ jobs:
         with:
           path: release-artifacts
 
-# Rework needed to setup for Inno installer for Windows
       - name: tar.gz or zip artifacts back up (devel)
         if: ${{ !inputs.release-ver }}
         run: |
@@ -97,6 +96,7 @@ jobs:
           tar zcf JS8Call-improved-devel-ubuntu-22.04-arm.tar.gz js8call-improved-ubuntu-22.04-arm
         continue-on-error: true
 
+# Need to rework this a bit
       - name: tar.gz or zip artifacts back up (release)
         if: ${{ inputs.release-ver }}
         run: |
@@ -121,11 +121,12 @@ jobs:
       - name: Print tag name
         run: echo "Workflow triggered by tag ${{ steps.get_tag.outputs.tag_name }}"
 
+#         mode: "HYBRID"
       - name: Create Changelog
         id: github_release
         uses: mikepenz/release-changelog-builder-action@v6
         with:
-          mode: "HYBRID"
+          mode: "PR"
           owner: "JS8Call-improved"
           repo: "JS8Call-improved"
           fromTag: "4a06f800e747907e1c55322410336b2e8027d5f2"
