@@ -85,6 +85,14 @@ jobs:
         path: /Users/runner/work/JS8Call-improved/JS8Call-improved/local/boost
         key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-boost188
 
+    - name: Cache Check QT 6.9.3
+      id: cache-qt
+      uses: actions/cache/restore@v4
+      with:
+        path: /Users/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-qt693
+# End cache checks
+
 ## libusb
     - name: Install libusb 1.0.29
       if: steps.cache-usb.outputs.cache-hit != 'true'
@@ -182,18 +190,37 @@ jobs:
         key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-ffmpeg713
         path: /Users/runner/work/JS8Call-improved/JS8Call-improved/local/ffmpeg
 
-# QT 6.9.3 via installer
-    - name: Install Qt 6.9.3
-      uses: jurplel/install-qt-action@v4
+# QT 6.9.3
+   # Takes about 1 hour if not cached
+    - name: Install QT 6.9.3
+      if: steps.cache-qt.outputs.cache-hit != 'true'
+      id: install-qt693
+      run: |
+        git clone --depth=1 --branch=6.9.3 https://github.com/qt/qt5.git /tmp/qt6
+        mkdir -p /tmp/qt6/build
+        cd /tmp/qt6/build
+        /tmp/qt6/configure -DCMAKE_PREFIX_PATH="${GITHUB_WORKSPACE}/local/ffmpeg" --prefix=${GITHUB_WORKSPACE}/local/qt693-install -init-submodules -submodules qtmultimedia,qtserialport,qtwayland -ffmpeg-dir /home/runner/work/JS8Call-improved/JS8Call-improved/local/ffmpeg
+        cmake --build . --parallel
+        cmake --install .
+    - name: Save QT 6.9.3 cache
+      if: steps.cache-qt.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v4
       with:
-        cache: true
-        aqtversion: '==3.1.*'
-        version: '6.9.3'
-        host: 'mac'
-        target: 'desktop'
-        arch: 'clang_64'
-        modules: 'qtmultimedia qtserialport'
-        archives: 'qtsvg qtdeclarative qtbase'
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-qt693
+        path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install
+
+# QT 6.9.3 via installer
+#    - name: Install Qt 6.9.3
+#      uses: jurplel/install-qt-action@v4
+#      with:
+#        cache: true
+#        aqtversion: '==3.1.*'
+#        version: '6.9.3'
+#        host: 'mac'
+#        target: 'desktop'
+#        arch: 'clang_64'
+#        modules: 'qtmultimedia qtserialport'
+#        archives: 'qtsvg qtdeclarative qtbase'
 
     - name: Build JS8Call
       run: |
