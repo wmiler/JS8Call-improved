@@ -89,25 +89,27 @@ jobs:
         if: ${{ !inputs.release-ver }}
         run: |
           cd release-artifacts/JS8call-improved_devel_X64_win64/
-          zip -r /home/runner/work/JS8Call-improved/JS8Call-improved/release-artifacts/JS8call-improved_devel_X64_win64.zip .
+          zip -r /home/runner/work/JS8Call-improved/JS8Call-improved/release-artifacts/JS8call-improved_devel_X64_win64.zip JS8Call-installer-devel_X64.exe
 
           cd /home/runner/work/JS8Call-improved/JS8Call-improved/release-artifacts/
-          tar zcf JS8Call-improved-devel-ubuntu-22.04.tar.gz js8call-improved-ubuntu-22.04
-          tar zcf JS8Call-improved-devel-ubuntu-22.04-arm.tar.gz js8call-improved-ubuntu-22.04-arm
+          echo "ubuntu x86-64"
+          tar zcf JS8Call-improved-devel-ubuntu-22.04.tar.gz js8call-improved-ubuntu-22.04/*AppImage*
+          echo "ubuntu Arm64"
+          tar zcf JS8Call-improved-devel-ubuntu-22.04-arm.tar.gz js8call-improved-ubuntu-22.04-arm/*AppImage*
         continue-on-error: true
 
-# Need to rework this a bit
       - name: tar.gz or zip artifacts back up (release)
         if: ${{ inputs.release-ver }}
         run: |
           cd release-artifacts/JS8call-improved_devel_X64_win64/
-          zip -r /home/runner/work/JS8Call-improved/JS8Call-improved/release-artifacts/JS8call-improved_${{ inputs.release-ver }}_X64_win64.zip .
+          zip -r /home/runner/work/JS8Call-improved/JS8Call-improved/release-artifacts/JS8call-improved_${{ inputs.release-ver }}_X64_win64.zip JS8Call-installer-devel_X64.exe
 
           cd /home/runner/work/JS8Call-improved/JS8Call-improved/release-artifacts/
-          tar zcf JS8Call-improved-${{ inputs.release-ver }}-ubuntu-22.04.tar.gz js8call-improved-ubuntu-22.04
-          tar zcf JS8Call-improved-${{ inputs.release-ver }}-ubuntu-22.04-arm.tar.gz js8call-improved-ubuntu-22.04-arm
+          echo "ubuntu x86-64"
+          tar zcf JS8Call-improved-${{ inputs.release-ver }}-ubuntu-22.04.tar.gz js8call-improved-ubuntu-22.04/*AppImage*
+          echo "ubuntu Arm64"
+          tar zcf JS8Call-improved-${{ inputs.release-ver }}-ubuntu-22.04-arm.tar.gz js8call-improved-ubuntu-22.04-arm/*AppImage*
         continue-on-error: true
-# End rework
 
       - name: Display artifact structure
         run: |
@@ -175,6 +177,7 @@ jobs:
           tag_name: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.version || github.ref_name }}
           name: JS8Call-Improved Release ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.version || github.ref_name }}
           body: |
+            **Changes from v2.4.0**
             ${{steps.github_release.outputs.changelog}}
           prerelease: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.prerelease }}
           files: |
