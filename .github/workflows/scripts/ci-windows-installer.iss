@@ -33,8 +33,8 @@ PrivilegesRequiredOverridesAllowed=dialog
 OutputDir=D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call
 ; This can be changed from the ci-windows.yml for release builds
 OutputBaseFilename=JS8Call-installer
-SetupIconFile=D:\a\JS8Call-improved\JS8Call-improved\icons\windows-icons\js8call.ico
-UninstallDisplayIcon=D:\a\JS8Call-improved\JS8Call-improved\icons\windows-icons\js8call.ico
+SetupIconFile=D:\a\JS8Call-improved\JS8Call-improved\icons\windows-icons\installer_logo.bmp
+UninstallDisplayIcon=D:\a\JS8Call-improved\JS8Call-improved\icons\windows-icons\installer_logo.bmp
 SolidCompression=yes
 ; WizardStyle introduced in 6.6.0, Github has 6.5.4
 ;WizardStyle=modern dynamic
@@ -75,12 +75,12 @@ Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call\Qt6Svg.dll"; DestD
 Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call\Qt6Widgets.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call\swresample-5.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call\swscale-8.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\a\JS8Call-improved\JS8Call-improved\icons\windows-icons\js8call.ico"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
-Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
-IconFileName: D:\a\JS8Call-improved\JS8Call-improved\icons\windows-icons\js8call.ico
+Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\js8call.ico"
+Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\js8call.ico"; Tasks: desktopicon
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
