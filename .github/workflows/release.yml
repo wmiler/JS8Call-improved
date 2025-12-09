@@ -91,11 +91,13 @@ jobs:
           cd release-artifacts/JS8call-improved_devel_X64_win64/
           zip -r /home/runner/work/JS8Call-improved/JS8Call-improved/release-artifacts/JS8call-improved_devel_X64_win64.zip JS8Call-installer-devel_X64.exe
 
-          cd /home/runner/work/JS8Call-improved/JS8Call-improved/release-artifacts/
           echo "ubuntu x86-64"
-          tar zcf JS8Call-improved-devel-ubuntu-22.04.tar.gz js8call-improved-ubuntu-22.04/*AppImage*
+          cd /home/runner/work/JS8Call-improved/JS8Call-improved/release-artifacts/js8call-improved-ubuntu-22.04/
+          tar zcf JS8Call-improved-devel-ubuntu-22.04.tar.gz *AppImage*
+          
           echo "ubuntu Arm64"
-          tar zcf JS8Call-improved-devel-ubuntu-22.04-arm.tar.gz js8call-improved-ubuntu-22.04-arm/*AppImage*
+          cd /home/runner/work/JS8Call-improved/JS8Call-improved/release-artifacts/js8call-improved-ubuntu-22.04-arm/
+          tar zcf JS8Call-improved-devel-ubuntu-22.04-arm.tar.gz *AppImage*
         continue-on-error: true
 
       - name: tar.gz or zip artifacts back up (release)
@@ -104,11 +106,13 @@ jobs:
           cd release-artifacts/JS8call-improved_devel_X64_win64/
           zip -r /home/runner/work/JS8Call-improved/JS8Call-improved/release-artifacts/JS8call-improved_${{ inputs.release-ver }}_X64_win64.zip JS8Call-installer-devel_X64.exe
 
-          cd /home/runner/work/JS8Call-improved/JS8Call-improved/release-artifacts/
           echo "ubuntu x86-64"
-          tar zcf JS8Call-improved-${{ inputs.release-ver }}-ubuntu-22.04.tar.gz js8call-improved-ubuntu-22.04/*AppImage*
+          cd /home/runner/work/JS8Call-improved/JS8Call-improved/release-artifacts/js8call-improved-ubuntu-22.04/
+          tar zcf JS8Call-improved-${{ inputs.release-ver }}-ubuntu-22.04.tar.gz *AppImage*
+
           echo "ubuntu Arm64"
-          tar zcf JS8Call-improved-${{ inputs.release-ver }}-ubuntu-22.04-arm.tar.gz js8call-improved-ubuntu-22.04-arm/*AppImage*
+          cd /home/runner/work/JS8Call-improved/JS8Call-improved/release-artifacts/js8call-improved-ubuntu-22.04-arm/
+          tar zcf JS8Call-improved-${{ inputs.release-ver }}-ubuntu-22.04-arm.tar.gz *AppImage*
         continue-on-error: true
 
       - name: Display artifact structure
