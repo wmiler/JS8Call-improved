@@ -80,6 +80,7 @@ Source: "D:\a\JS8Call-improved\JS8Call-improved\build\JS8Call\swscale-8.dll"; De
 [Icons]
 Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
+IconFileName: D:\a\JS8Call-improved\JS8Call-improved\icons\windows-icons\js8call.ico
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
