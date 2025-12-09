@@ -272,6 +272,16 @@ jobs:
       run: |
         spctl -a -vvv --continue build-xcode/Release/JS8Call.app/Contents/Frameworks/*
       continue-on-error: true
+
+    - name: Apple nm
+      run: |
+        nm -ju build-xcode/Release/JS8Call.app/Contents/MacOS/JS8Call
+      continue-on-error: true
+      
+    - name: Apple otool
+      run: |
+        otool -L build-xcode/Release/JS8Call.app/Contents/MacOS/JS8Call
+      continue-on-error: true
       
     - name: Create DMG
       run: create-dmg "JS8Call-improved.dmg" "build-xcode/Release/JS8Call.app"
