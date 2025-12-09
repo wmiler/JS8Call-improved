@@ -215,6 +215,18 @@ jobs:
         key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-qt693
         path: /Users/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install
 
+    - name: Cleanup so we don't have unwanted libs laying around
+      run: |
+        echo "finding some libs"
+        find . -name libX11.6.dylib -print
+        find . -name libXau.6.dylib -print
+        find . -name libxcb.1.dylib -print
+        find . -name libXdmcp.6.dylib -print
+        
+        echo "removing ffmpeg since QT is built"
+        rm -rf /Users/runner/work/JS8Call-improved/JS8Call-improved/local/ffmpeg
+      continue-on-error: true
+
 # QT 6.9.3 via installer
 #    - name: Install Qt 6.9.3
 #      uses: jurplel/install-qt-action@v4
