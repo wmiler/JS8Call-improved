@@ -27,7 +27,8 @@ env:
 
 jobs:
   build_macos-latest:
-    runs-on: macos-15
+  # macos-15
+    runs-on: macos-26
     permissions: write-all
 
     steps:
@@ -217,12 +218,6 @@ jobs:
 
     - name: Cleanup so we don't have unwanted libs laying around
       run: |
-        echo "finding some libs"
-        find . -name libX11.6.dylib -print
-        find . -name libXau.6.dylib -print
-        find . -name libxcb.1.dylib -print
-        find . -name libXdmcp.6.dylib -print
-        
         echo "removing ffmpeg since QT is built"
         rm -rf /Users/runner/work/JS8Call-improved/JS8Call-improved/local/ffmpeg
       continue-on-error: true
@@ -271,11 +266,6 @@ jobs:
     - name: Apple spctl
       run: |
         spctl -a -vvv --continue build-xcode/Release/JS8Call.app/Contents/Frameworks/*
-      continue-on-error: true
-
-    - name: Apple nm
-      run: |
-        nm -ju build-xcode/Release/JS8Call.app/Contents/MacOS/JS8Call
       continue-on-error: true
       
     - name: Apple otool
