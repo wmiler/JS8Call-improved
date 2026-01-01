@@ -102,6 +102,11 @@ jobs:
         cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib/bin/libusb-1.0.dll' JS8Call/
         cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib/bin/libwinpthread-1.dll' JS8Call/
 
+    - name: First signtool run
+      run: |
+        cd ./build/JS8Call/
+        signtool verify /pa /v *
+ 
     - name: INNO Setup (Release build)
       if: ${{ inputs.release-ver }}
       run: |
@@ -114,6 +119,11 @@ jobs:
         cd ./build/
         & 'C:/Program Files (x86)/Inno Setup 6/ISCC.exe' /F"JS8Call-installer-devel_${{ runner.arch }}" ../.github/workflows/scripts/ci-windows-installer.iss
 
+    - name: Installer signtool run
+      run: |
+        cd ./build/
+        signtool verify /pa /v JS8Call-installer*
+        
     - name: Attestation (Release Only)
       if: ${{ inputs.release-ver }}
       uses: actions/attest-build-provenance@v3
