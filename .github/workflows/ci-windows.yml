@@ -109,8 +109,20 @@ jobs:
         echo "${{ secrets.CODE_SIGNING_KEY }}" > mykey.pem
         echo "${{ secrets.CODE_SIGNING_CERT }}" > mycert.pem
         echo "${{ secrets.CODE_SIGNING_PFX_BASE64 }}" > cert.pfx.base64
-        base64 --decode cert.pfx.base64 > certificate.pfx
+        
+        # Windows is stupid
+        # Define the output file path using a temporary directory
+        $filePath = Join-Path $env:RUNNER_TEMP "cert.pfx"
+        
+        # Convert the Base64 string from the environment variable back to bytes
+        [byte[]]$bytes = [System.Convert]::FromBase64String("cert.pfx.base64")
+        
+        # Write the bytes to the new file
+        [System.IO.File]::WriteAllBytes($filePath, $bytes)
+
         & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' sign /fd SHA256 /v /f certificate.pfx /p test *.exe
+
+#        base64 --decode cert.pfx.base64 > certificate.pfx
 #        openssl smime -sign -in JS8Call.exe -out JS8Call-signed.exe -signer mycert.pem -inkey mykey.pem -outform DER
 
 #    - name: Find signtool
