@@ -103,14 +103,22 @@ jobs:
         cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib/bin/libusb-1.0.dll' JS8Call/
         cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib/bin/libwinpthread-1.dll' JS8Call/
 
-    - name: Sign JS8Call
+    - name: Get secrets
       run: |
         cd ./build/JS8Call/
         echo "${{ secrets.CODE_SIGNING_KEY }}" > mykey.pem
         echo "${{ secrets.CODE_SIGNING_CERT }}" > mycert.pem
         echo "${{ secrets.CODE_SIGNING_PFX_BASE64 }}" > cert.pfx.base64
+        echo "** mykey.pem **"
+        cat mykey.pem
+        echo "** mycert.pem **"
+        cat mycert.pem
+        echo "** cert.pfx.base64 **"
         cat cert.pfx.base64
-        
+
+    - name: Sign JS8Call
+      run: |
+        cd ./build/JS8Call/
         # Windows is stupid
         # Define the output file path using a temporary directory
         $filePath = Join-Path $env:RUNNER_TEMP "cert.pfx"
