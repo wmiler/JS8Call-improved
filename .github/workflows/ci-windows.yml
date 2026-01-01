@@ -109,6 +109,7 @@ jobs:
         echo "${{ secrets.CODE_SIGNING_KEY }}" > mykey.pem
         echo "${{ secrets.CODE_SIGNING_CERT }}" > mycert.pem
         echo "${{ secrets.CODE_SIGNING_PFX_BASE64 }}" > cert.pfx.base64
+        cat cert.pfx.base64
         
         # Windows is stupid
         # Define the output file path using a temporary directory
