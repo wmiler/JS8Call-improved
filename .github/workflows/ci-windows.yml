@@ -103,16 +103,19 @@ jobs:
         cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib/bin/libusb-1.0.dll' JS8Call/
         cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib/bin/libwinpthread-1.dll' JS8Call/
 
-    - name: Get secrets and sign JS8Call
+    - name: Get secrets
       shell: pwsh
       env:
-        CODE_SIGNING_KEY: ${{ secrets.CODE_SIGNING_KEY }}
-        CODE_SIGNING_CERT: ${{ secrets.CODE_SIGNING_CERT }}
         CODE_SIGNING_PFX_BASE64: ${{ secrets.CODE_SIGNING_PFX_BASE64 }}
       run: |
         cd ./build/JS8Call/
         certutil -decode ${{ secrets.CODE_SIGNING_PFX_BASE64 }} certificate.pfx
+        dir
 
+    - name: Sign JS8Call
+      shell: pwsh
+      run: |
+        cd ./build/JS8Call/
         & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' sign /fd SHA256 /v /f certificate.pfx /p test *.exe
 
 #    - name: Find signtool
