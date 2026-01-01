@@ -109,7 +109,8 @@ jobs:
         CODE_SIGNING_PFX_BASE64: ${{ secrets.CODE_SIGNING_PFX_BASE64 }}
       run: |
         cd ./build/JS8Call/
-        certutil -decode ${{ secrets.CODE_SIGNING_PFX_BASE64 }} certificate.pfx
+        echo "${{ secrets.CODE_SIGNING_PFX_BASE64 }}" > cert.base64
+        certutil -decode cert.base64 certificate.pfx
         dir
 
     - name: Sign JS8Call
