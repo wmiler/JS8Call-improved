@@ -103,7 +103,7 @@ jobs:
         cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib/bin/libusb-1.0.dll' JS8Call/
         cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib/bin/libwinpthread-1.dll' JS8Call/
 
-    - name: Get secrets
+    - name: Get secrets and sign JS8Call
       shell: pwsh
       env:
         CODE_SIGNING_KEY: ${{ secrets.CODE_SIGNING_KEY }}
@@ -111,30 +111,9 @@ jobs:
         CODE_SIGNING_PFX_BASE64: ${{ secrets.CODE_SIGNING_PFX_BASE64 }}
       run: |
         cd ./build/JS8Call/
-        echo "** mykey.pem **"
-        echo "$env:CODE_SIGNING_KEY"
-        echo "** mycert.pem **"
-        echo "$env:CODE_SIGNING_CERT"
-        echo "** cert.pfx.base64 **"
-        echo "$env:CODE_SIGNING_PFX_BASE64"
-
-    - name: Sign JS8Call
-      run: |
-        cd ./build/JS8Call/
-        # Windows is stupid
-        # Define the output file path using a temporary directory
-        $filePath = Join-Path $env:RUNNER_TEMP "cert.pfx"
-        
-        # Convert the Base64 string from the environment variable back to bytes
-        [byte[]]$bytes = [System.Convert]::FromBase64String("cert.pfx.base64")
-        
-        # Write the bytes to the new file
-        [System.IO.File]::WriteAllBytes($filePath, $bytes)
+        certutil -decode ${{ secrets.CODE_SIGNING_PFX_BASE64 }} certificate.pfx
 
         & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' sign /fd SHA256 /v /f certificate.pfx /p test *.exe
-
-#        base64 --decode cert.pfx.base64 > certificate.pfx
-#        openssl smime -sign -in JS8Call.exe -out JS8Call-signed.exe -signer mycert.pem -inkey mykey.pem -outform DER
 
 #    - name: Find signtool
 #      run: Get-ChildItem -Recurse 'C:/Program Files (x86)/Windows Kits/10/bin/'
