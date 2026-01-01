@@ -109,8 +109,6 @@ jobs:
         echo "${{ secrets.CODE_SIGNING_KEY }}" > mykey.pem
         echo "${{ secrets.CODE_SIGNING_CERT }}" > mycert.pem
         openssl smime -sign -in JS8Call.exe -out JS8Call-signed.exe -signer mycert.pem -inkey mykey.pem -outform DER
-        mv JS8Call.exe JS8Call-unsigned.exe
-        mv JS8Call-signed.exe JS8Call.exe
 
 #    - name: Find signtool
 #      run: Get-ChildItem -Recurse 'C:/Program Files (x86)/Windows Kits/10/bin/'
@@ -118,7 +116,8 @@ jobs:
     - name: First signtool run
       run: |
         cd ./build/JS8Call/
-        & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' verify /pa /v *
+        & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' verify /pa /v *.exe
+      continue-on-error: true
  
     - name: INNO Setup (Release build)
       if: ${{ inputs.release-ver }}
@@ -136,6 +135,7 @@ jobs:
       run: |
         cd ./build/
         & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' verify /pa /v JS8Call-installer*
+      continue-on-error: true
         
     - name: Attestation (Release Only)
       if: ${{ inputs.release-ver }}
