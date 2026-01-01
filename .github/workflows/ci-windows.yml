@@ -111,21 +111,21 @@ jobs:
         cd ./build/JS8Call/
         echo "${{ secrets.CODE_SIGNING_PFX_BASE64 }}" > cert.base64
         certutil -decode cert.base64 certificate.pfx
-        dir
-
+      continue-on-error: true
+      
     - name: Sign JS8Call
       shell: pwsh
       run: |
         cd ./build/JS8Call/
         & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' sign /fd SHA256 /v /f certificate.pfx /p test *.exe
-
-#    - name: Find signtool
-#      run: Get-ChildItem -Recurse 'C:/Program Files (x86)/Windows Kits/10/bin/'
+        & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' sign /fd SHA256 /v /f certificate.pfx /p test libhamlib*.dll
+      continue-on-error: true
       
-    - name: First signtool run
+    - name: Verify signtool
       run: |
         cd ./build/JS8Call/
         & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' verify /pa /v *.exe
+        & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' verify /pa /v libhamlib*.dll
       continue-on-error: true
  
     - name: INNO Setup (Release build)
@@ -143,9 +143,15 @@ jobs:
     - name: Installer signtool run
       run: |
         cd ./build/
-        & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' verify /pa /v JS8Call-installer*
+        & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' sign /fd SHA256 /v /f certificate.pfx /p test JS8Call-installer-*.exe
       continue-on-error: true
         
+    - name: Verify signtool
+      run: |
+        cd ./build/
+        & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' verify /pa /v *.exe
+      continue-on-error: true
+
     - name: Attestation (Release Only)
       if: ${{ inputs.release-ver }}
       uses: actions/attest-build-provenance@v3
