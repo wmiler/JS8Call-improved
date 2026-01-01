@@ -104,17 +104,19 @@ jobs:
         cp 'D:/a/JS8Call-improved/JS8Call-improved/local/hamlib/bin/libwinpthread-1.dll' JS8Call/
 
     - name: Get secrets
+      shell: pwsh
+      env:
+        CODE_SIGNING_KEY: ${{ secrets.CODE_SIGNING_KEY }}
+        CODE_SIGNING_CERT: ${{ secrets.CODE_SIGNING_CERT }}
+        CODE_SIGNING_PFX_BASE64: ${{ secrets.CODE_SIGNING_PFX_BASE64 }}
       run: |
         cd ./build/JS8Call/
-        echo "${{ secrets.CODE_SIGNING_KEY }}" > mykey.pem
-        echo "${{ secrets.CODE_SIGNING_CERT }}" > mycert.pem
-        echo "${{ secrets.CODE_SIGNING_PFX_BASE64 }}" > cert.pfx.base64
         echo "** mykey.pem **"
-        cat mykey.pem
+        echo "$env:CODE_SIGNING_KEY"
         echo "** mycert.pem **"
-        cat mycert.pem
+        echo "$env:CODE_SIGNING_CERT"
         echo "** cert.pfx.base64 **"
-        cat cert.pfx.base64
+        echo "$env:CODE_SIGNING_PFX_BASE64"
 
     - name: Sign JS8Call
       run: |
