@@ -108,17 +108,19 @@ jobs:
       env:
         CODE_SIGNING_PFX_BASE64: ${{ secrets.CODE_SIGNING_PFX_BASE64 }}
       run: |
-        cd ./build/JS8Call/
-        echo "${{ secrets.CODE_SIGNING_PFX_BASE64 }}" > cert.base64
-        certutil -decode cert.base64 certificate.pfx
+        echo "${{ secrets.CODE_SIGNING_PFX_BASE64 }}" > /tmp/cert.base64
+        certutil -decode /tmp/cert.base64 /tmp/certificate.pfx
       continue-on-error: true
       
     - name: Sign JS8Call
       shell: pwsh
       run: |
         cd ./build/JS8Call/
-        & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' sign /fd SHA256 /v /f certificate.pfx /p test *.exe
-        & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' sign /fd SHA256 /v /f certificate.pfx /p test libhamlib*.dll
+        & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' sign /fd SHA256 /v /f '/tmp/certificate.pfx' /p test *.exe
+        & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' sign /fd SHA256 /v /f '/tmp/certificate.pfx' /p test libhamlib*.dll
+        & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' sign /fd SHA256 /v /f '/tmp/certificate.pfx' /p test libusb*.dll
+        & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' sign /fd SHA256 /v /f '/tmp/certificate.pfx' /p test libwinpthread*.dll
+        & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' sign /fd SHA256 /v /f '/tmp/certificate.pfx' /p test libfftw3*.dll
       continue-on-error: true
       
     - name: Verify signtool
@@ -126,6 +128,9 @@ jobs:
         cd ./build/JS8Call/
         & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' verify /pa /v *.exe
         & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' verify /pa /v libhamlib*.dll
+        & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' verify /pa /v libusb*.dll
+        & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' verify /pa /v libwinpthread*.dll
+        & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' verify /pa /v libfftw3*.dll
       continue-on-error: true
  
     - name: INNO Setup (Release build)
@@ -143,13 +148,13 @@ jobs:
     - name: Installer signtool run
       run: |
         cd ./build/
-        & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' sign /fd SHA256 /v /f certificate.pfx /p test JS8Call-installer-*.exe
+        & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' sign /fd SHA256 /v /f '/tmp/certificate.pfx' /p test JS8Call-installer-*.exe
       continue-on-error: true
         
     - name: Verify signtool
       run: |
         cd ./build/
-        & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' verify /pa /v *.exe
+        & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' verify /pa /v JS8Call-installer-*.exe
       continue-on-error: true
 
     - name: Attestation (Release Only)
