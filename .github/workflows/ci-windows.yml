@@ -110,7 +110,6 @@ jobs:
       run: |
         echo "${{ secrets.CODE_SIGNING_PFX_BASE64 }}" > 'D:/a/JS8Call-improved/cert.base64'
         certutil -decode 'D:/a/JS8Call-improved/cert.base64' 'D:/a/JS8Call-improved/certificate.pfx'
-        set SIGNPASS=${{ secrets.PFX_CERTIFICATE_PASSWORD }}
       continue-on-error: true
       
     - name: Sign JS8Call
@@ -118,13 +117,12 @@ jobs:
       env: 
         PFX_CERTIFICATE_PASSWORD: ${{ secrets.PFX_CERTIFICATE_PASSWORD }}
       run: |
-        set SIGNPASS=${{ secrets.PFX_CERTIFICATE_PASSWORD }}
         cd ./build/JS8Call/
-        & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' sign /fd SHA256 /v /f 'D:/a/JS8Call-improved/certificate.pfx' /p "%SIGNPASS%" *.exe
-        & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' sign /fd SHA256 /v /f 'D:/a/JS8Call-improved/certificate.pfx' /p "%SIGNPASS%" libhamlib*.dll
-        & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' sign /fd SHA256 /v /f 'D:/a/JS8Call-improved/certificate.pfx' /p "%SIGNPASS%" libusb*.dll
-        & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' sign /fd SHA256 /v /f 'D:/a/JS8Call-improved/certificate.pfx' /p "%SIGNPASS%" libwinpthread*.dll
-        & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' sign /fd SHA256 /v /f 'D:/a/JS8Call-improved/certificate.pfx' /p "%SIGNPASS%" libfftw3*.dll
+        & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' sign /fd SHA256 /v /f 'D:/a/JS8Call-improved/certificate.pfx' /p "$env:PFX_CERTIFICATE_PASSWORD" *.exe
+        & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' sign /fd SHA256 /v /f 'D:/a/JS8Call-improved/certificate.pfx' /p "$env:PFX_CERTIFICATE_PASSWORD" libhamlib*.dll
+        & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' sign /fd SHA256 /v /f 'D:/a/JS8Call-improved/certificate.pfx' /p "$env:PFX_CERTIFICATE_PASSWORD" libusb*.dll
+        & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' sign /fd SHA256 /v /f 'D:/a/JS8Call-improved/certificate.pfx' /p "$env:PFX_CERTIFICATE_PASSWORD" libwinpthread*.dll
+        & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' sign /fd SHA256 /v /f 'D:/a/JS8Call-improved/certificate.pfx' /p "$env:PFX_CERTIFICATE_PASSWORD" libfftw3*.dll
       continue-on-error: true
       
     - name: Verify signtool
@@ -153,9 +151,8 @@ jobs:
       env:
         PFX_CERTIFICATE_PASSWORD: ${{ secrets.PFX_CERTIFICATE_PASSWORD }}
       run: |
-        set SIGNPASS=${{ secrets.PFX_CERTIFICATE_PASSWORD }}
         cd ./build/JS8Call/
-        & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' sign /fd SHA256 /v /f 'D:/a/JS8Call-improved/certificate.pfx' /p "%SIGNPASS%" JS8Call-installer-*.exe
+        & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/signtool.exe' sign /fd SHA256 /v /f 'D:/a/JS8Call-improved/certificate.pfx' /p "$env:PFX_CERTIFICATE_PASSWORD" JS8Call-installer-*.exe
       continue-on-error: true
         
     - name: Verify installer signtool
