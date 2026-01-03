@@ -93,11 +93,11 @@ jobs:
 
           echo "ubuntu x86-64"
           cd /home/runner/work/JS8Call-improved/JS8Call-improved/release-artifacts/js8call-improved-ubuntu-22.04/
-          tar zcf JS8Call-improved-devel-ubuntu-22.04.tar.gz *AppImage*
+          tar zcf ../JS8Call-improved-devel-ubuntu-22.04.tar.gz *AppImage*
           
           echo "ubuntu Arm64"
           cd /home/runner/work/JS8Call-improved/JS8Call-improved/release-artifacts/js8call-improved-ubuntu-22.04-arm/
-          tar zcf JS8Call-improved-devel-ubuntu-22.04-arm.tar.gz *AppImage*
+          tar zcf ../JS8Call-improved-devel-ubuntu-22.04-arm.tar.gz *AppImage*
         continue-on-error: true
 
       - name: tar.gz or zip artifacts back up (release)
@@ -108,11 +108,11 @@ jobs:
 
           echo "ubuntu x86-64"
           cd /home/runner/work/JS8Call-improved/JS8Call-improved/release-artifacts/js8call-improved-ubuntu-22.04/
-          tar zcf JS8Call-improved-${{ inputs.release-ver }}-ubuntu-22.04.tar.gz *AppImage*
+          tar zcf ../JS8Call-improved-${{ inputs.release-ver }}-ubuntu-22.04.tar.gz *AppImage*
 
           echo "ubuntu Arm64"
           cd /home/runner/work/JS8Call-improved/JS8Call-improved/release-artifacts/js8call-improved-ubuntu-22.04-arm/
-          tar zcf JS8Call-improved-${{ inputs.release-ver }}-ubuntu-22.04-arm.tar.gz *AppImage*
+          tar zcf ../JS8Call-improved-${{ inputs.release-ver }}-ubuntu-22.04-arm.tar.gz *AppImage*
         continue-on-error: true
 
       - name: Display artifact structure
@@ -127,8 +127,6 @@ jobs:
       - name: Print tag name
         run: echo "Workflow triggered by tag ${{ steps.get_tag.outputs.tag_name }}"
 
-#         mode: "HYBRID"
-#         fromTag: "4a06f800e747907e1c55322410336b2e8027d5f2"
       - name: Create Changelog
         id: github_release
         uses: mikepenz/release-changelog-builder-action@v6
