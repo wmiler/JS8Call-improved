@@ -27,8 +27,14 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y doxygen graphviz
 
-      - name: Build docs
-        run: doxygen
+      - name: Build docs on master
+        if: (github.ref == 'refs/heads/master')
+        run: (cat Doxyfile; echo "PROJECT_NUMBER=master"; echo "OUTPUT_DIRECTORY=html/master") | doxygen -
+
+      - name: Build docs on a release branch
+        if: (startsWith(github.ref_name, 'release/'))
+        run: |
+          cat (Doxyfile; echo "PROJECT_NUMBER=${{ github.ref_name }}"; echo "OUTPUT_DIRECTORY=html/${{ github.ref_name }}") | doxygen -
 
       - name: Upload static files as artifact
         id: deployment
@@ -36,9 +42,10 @@ jobs:
         with:
           path: docs/html
 
-# Only run deploy if we are on master branch
+# Only run deploy if we are on master or a release branch
   deploy:
-    if: github.ref == 'refs/heads/master'
+    if: (github.ref == 'refs/heads/master') ||
+      (startsWith(github.ref_name, 'release/'))
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
