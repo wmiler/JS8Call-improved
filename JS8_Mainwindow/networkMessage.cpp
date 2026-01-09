@@ -1,18 +1,24 @@
 /** 
  * @file networkMessage.cpp
  * @brief member function of the MainWindow class
- *  sends data to external clients
- * @defgroup API Network Message API
- * @{
+ *  sends data to external clients via the Network Message API
  */
-
+ /**
+  * @defgroup API Network Message API
+  * @brief API commands for external control and data retrieval.
+  * @{
+*/
  #include "JS8_UI/mainwindow.h"
 
- /**
-  * @brief Process an incoming API network message
-  * 
-  * @param message 
-  */
+/**
+ * @brief Processes an incoming API network message
+ * 
+ * This function acts as the primary router for the JS8Call API. It handles 
+ * RIG, STATION, RX, and TX commands by either updating the application 
+ * state or querying current values to send back to the client.
+ *  
+ * @param message The network message to process
+*/
 void MainWindow::networkMessage(Message const &message) {
     auto type = message.type();
 
@@ -36,7 +42,17 @@ void MainWindow::networkMessage(Message const &message) {
 
     // RIG.GET_FREQ - Get the current Frequency
     // RIG.SET_FREQ - Set the current Frequency
-    /** RIG.GET_FREQ Get the rig's frequency */
+    /** 
+     * @name RIG Commands
+     * @{
+    */
+
+    /** 
+     * @brief RIG.GET_FREQ: Retrieves the current dial and offset frequencies.
+     * 
+     * If the WSJT-X protocol is enabled, this also triggers a status update 
+     * via the @ref m_wsjtxMessageMapper.
+     */
     if (type == "RIG.GET_FREQ") {
         // Send WSJT-X Status message if protocol is enabled
         if (m_wsjtxMessageMapper && m_config.wsjtx_protocol_enabled()) {
@@ -75,7 +91,9 @@ void MainWindow::networkMessage(Message const &message) {
         }
         return;
     }
-    /** RIG.SET_FREQ Set the rig's frequency */
+    /** 
+     * @brief RIG.SET_FREQ: Updates the rig dial frequency and/or frequency offset.
+     */
     if (type == "RIG.SET_FREQ") {
         auto params = message.params();
         if (params.contains("DIAL")) {
@@ -94,29 +112,36 @@ void MainWindow::networkMessage(Message const &message) {
             }
         }
     }
+    /** @} */ // End RIG Commands
 
     // STATION.GET_CALLSIGN - Get the current callsign
     // STATION.GET_GRID - Get the current grid locator
     // STATION.SET_GRID - Set the current grid locator
     // STATION.GET_INFO - Get the current station qth
     // STATION.SET_INFO - Set the current station qth
-    if (type == "STATION.GET_CALLSIGN") { /** STATION.GET_CALLSIGN */
+    /** 
+     * @name STATION Commands
+     * @{ 
+     */
+
+    /** @brief STATION.GET_CALLSIGN: Returns the configured station callsign. */
+    if (type == "STATION.GET_CALLSIGN") {
         sendNetworkMessage("STATION.CALLSIGN", m_config.my_callsign(),
                            {
                                {"_ID", id},
                            });
         return;
     }
-
-    if (type == "STATION.GET_GRID") { /** STATION.GET_GRID */
+    /** @brief STATION.GET_GRID: Returns the current Maidenhead grid locator. */
+    if (type == "STATION.GET_GRID") {
         sendNetworkMessage("STATION.GRID", m_config.my_grid(),
                            {
                                {"_ID", id},
                            });
         return;
     }
-
-    if (type == "STATION.SET_GRID") { /** STATION.SET_GRID */
+    /** @brief STATION.SET_GRID: Updates the dynamic grid locator for the station. */
+    if (type == "STATION.SET_GRID") {
         m_config.set_dynamic_location(message.value());
         sendNetworkMessage("STATION.GRID", m_config.my_grid(),
                            {
@@ -124,16 +149,16 @@ void MainWindow::networkMessage(Message const &message) {
                            });
         return;
     }
-
-    if (type == "STATION.GET_INFO") { /** STATION.GET_INFO */
+    /** @brief STATION.GET_INFO: Retrieves the station information (QTH). */
+    if (type == "STATION.GET_INFO") {
         sendNetworkMessage("STATION.INFO", m_config.my_info(),
                            {
                                {"_ID", id},
                            });
         return;
     }
-
-    if (type == "STATION.SET_INFO") { /** STATION.SET_INFO */
+    /** @brief STATION.SET_INFO: Updates the dynamic station information (QTH). */
+    if (type == "STATION.SET_INFO") {
         m_config.set_dynamic_station_info(message.value());
         sendNetworkMessage("STATION.INFO", m_config.my_info(),
                            {
@@ -141,16 +166,16 @@ void MainWindow::networkMessage(Message const &message) {
                            });
         return;
     }
-
-    if (type == "STATION.GET_STATUS") { /** STATION.GET_STATUS */
+    /** @brief STATION.GET_STATUS: Retrieves the current station status message. */
+    if (type == "STATION.GET_STATUS") {
         sendNetworkMessage("STATION.STATUS", m_config.my_status(),
                            {
                                {"_ID", id},
                            });
         return;
     }
-
-    if (type == "STATION.SET_STATUS") { /** STATION.SET_STATUS */
+    /** @brief STATION.SET_STATUS: Updates the dynamic station status message. */
+    if (type == "STATION.SET_STATUS") {
         m_config.set_dynamic_station_status(message.value());
         sendNetworkMessage("STATION.STATUS", m_config.my_status(),
                            {
@@ -158,13 +183,22 @@ void MainWindow::networkMessage(Message const &message) {
                            });
         return;
     }
+    /** @} */ // End STATION Commands
 
     // RX.GET_CALL_ACTIVITY
     // RX.GET_CALL_SELECTED
     // RX.GET_BAND_ACTIVITY
     // RX.GET_TEXT
+    /** 
+     * @name RX Commands
+     * @{ 
+     */
 
-    if (type == "RX.GET_CALL_ACTIVITY") { /** RX.GET_CALL_ACTIVITY */
+    /** 
+     * @brief RX.GET_CALL_ACTIVITY: Returns a list of active callsigns.
+     * Filters results based on the `callsign_aging` configuration.
+     */
+    if (type == "RX.GET_CALL_ACTIVITY") {
         auto now = DriftingDateTime::currentDateTimeUtc();
         int callsignAging = m_config.callsign_aging();
         QVariantMap calls = {
@@ -186,16 +220,19 @@ void MainWindow::networkMessage(Message const &message) {
         sendNetworkMessage("RX.CALL_ACTIVITY", "", calls);
         return;
     }
-
-    if (type == "RX.GET_CALL_SELECTED") { /** RX.GET_CALL_SELECTED */
+    /** @brief RX.GET_CALL_SELECTED: Returns the currently selected callsign. */
+    if (type == "RX.GET_CALL_SELECTED") {
         sendNetworkMessage("RX.CALL_SELECTED", callsignSelected(),
                            {
                                {"_ID", id},
                            });
         return;
     }
-
-    if (type == "RX.GET_BAND_ACTIVITY") { /** RX.GET_BAND_ACTIVITY */
+    /** 
+     * @brief RX.GET_BAND_ACTIVITY: Returns recent band activity details.
+     * Includes frequency, offset, text, SNR, and UTC timestamp for each entry. 
+     */
+    if (type == "RX.GET_BAND_ACTIVITY") {
         QVariantMap offsets = {
             {"_ID", id},
         };
@@ -217,7 +254,7 @@ void MainWindow::networkMessage(Message const &message) {
         sendNetworkMessage("RX.BAND_ACTIVITY", "", offsets);
         return;
     }
-
+    /** @brief RX.GET_TEXT: Retrieves the current RX text buffer. */
     if (type == "RX.GET_TEXT") { /** RX.GET_TEXT */
         sendNetworkMessage("RX.TEXT", ui->textEditRX->toPlainText().right(1024),
                            {
@@ -225,12 +262,17 @@ void MainWindow::networkMessage(Message const &message) {
                            });
         return;
     }
+    /** @} */ // End RX Commands
 
     // TX.GET_TEXT
     // TX.SET_TEXT
     // TX.SEND_MESSAGE
-
-    if (type == "TX.GET_TEXT") { /** TX.GET_TEXT */
+    /** 
+     * @name TX Commands
+     * @{ 
+     */
+    /** @brief TX.GET_TEXT: Retrieves the current TX text buffer. */
+    if (type == "TX.GET_TEXT") {
         sendNetworkMessage("TX.TEXT",
                            ui->extFreeTextMsgEdit->toPlainText().right(1024),
                            {
@@ -238,8 +280,8 @@ void MainWindow::networkMessage(Message const &message) {
                            });
         return;
     }
-
-    if (type == "TX.SET_TEXT") { /** TX.SET_TEXT */
+    /** @brief TX.SET_TEXT: Updates the TX text buffer with new content. */
+    if (type == "TX.SET_TEXT") {
         addMessageText(message.value(), true);
         sendNetworkMessage("TX.TEXT",
                            ui->extFreeTextMsgEdit->toPlainText().right(1024),
@@ -248,8 +290,8 @@ void MainWindow::networkMessage(Message const &message) {
                            });
         return;
     }
-
-    if (type == "TX.SEND_MESSAGE") { /** TX.SEND_MESSAGE */
+    /** @brief TX.SEND_MESSAGE: Enqueues a message for transmission. */
+    if (type == "TX.SEND_MESSAGE") {
         auto text = message.value();
         if (!text.isEmpty()) {
             enqueueMessage(PriorityNormal, text, -1, nullptr);
@@ -257,10 +299,16 @@ void MainWindow::networkMessage(Message const &message) {
             return;
         }
     }
+    /** @} */ // End TX Commands
 
     // MODE.GET_SPEED
     // MODE.SET_SPEED
-    if (type == "MODE.GET_SPEED") { /** MODE.GET_SPEED */
+    /** 
+     * @name MODE Commands
+     * @{ 
+     */
+    /** @brief MODE.GET_SPEED: Retrieves the current transmission speed mode. */
+    if (type == "MODE.GET_SPEED") {
         sendNetworkMessage("MODE.SPEED", "",
                            {
                                {"_ID", id},
@@ -268,8 +316,8 @@ void MainWindow::networkMessage(Message const &message) {
                            });
         return;
     }
-
-    if (type == "MODE.SET_SPEED") { /** MODE.SET_SPEED */
+    /** @brief MODE.SET_SPEED: Updates the transmission speed mode. */
+    if (type == "MODE.SET_SPEED") {
         auto ok = false;
         auto const speed =
             message.params().value("SPEED", QVariant(m_nSubMode)).toInt(&ok);
@@ -293,10 +341,16 @@ void MainWindow::networkMessage(Message const &message) {
                            });
         return;
     }
+    /** @} */ // End MODE Commands
 
     // INBOX.GET_MESSAGES
     // INBOX.STORE_MESSAGE
-    if (type == "INBOX.GET_MESSAGES") { /** INBOX.GET_MESSAGES */
+    /** 
+     * @name INBOX Commands
+     * @{ 
+     */
+    /** @brief INBOX.GET_MESSAGES: Retrieves messages for a specified callsign. */
+    if (type == "INBOX.GET_MESSAGES") {
         QString selectedCall =
             message.params().value("CALLSIGN", "").toString();
         if (selectedCall.isEmpty()) {
@@ -337,8 +391,8 @@ void MainWindow::networkMessage(Message const &message) {
                            });
         return;
     }
-
-    if (type == "INBOX.STORE_MESSAGE") { /** INBOX.STORE_MESSAGE */
+    /** @brief INBOX.STORE_MESSAGE: Stores a message in the inbox for a callsign. */
+    if (type == "INBOX.STORE_MESSAGE") {
         QString selectedCall =
             message.params().value("CALLSIGN", "").toString();
         if (selectedCall.isEmpty()) {
@@ -368,10 +422,15 @@ void MainWindow::networkMessage(Message const &message) {
                            });
         return;
     }
+    /** @} */ // End INBOX Commands
 
     // WINDOW.RAISE
-
-    if (type == "WINDOW.RAISE") { /** WINDOW.RAISE */
+    /** 
+     * @name WINDOW Commands
+     * @{ 
+     */
+    /** @brief WINDOW.RAISE: Brings the main application window to the foreground. */
+    if (type == "WINDOW.RAISE") {
         setWindowState(Qt::WindowActive);
         activateWindow();
         raise();
