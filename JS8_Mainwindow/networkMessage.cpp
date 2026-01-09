@@ -439,4 +439,5 @@ void MainWindow::networkMessage(Message const &message) {
 
     qCDebug(mainwindow_js8) << "Unable to process networkMessage:" << type;
 }
+/** @} */ // end of WINDOW Commands
 /** @} */ // end of API
