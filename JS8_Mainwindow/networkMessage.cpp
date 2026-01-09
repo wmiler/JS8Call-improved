@@ -3,6 +3,7 @@
  * @brief member function of the MainWindow class
  *  sends data to external clients
  * @defgroup API Network Message API
+ * @{
  */
 
  #include "JS8_UI/mainwindow.h"
@@ -378,3 +379,4 @@ void MainWindow::networkMessage(Message const &message) {
 
     qCDebug(mainwindow_js8) << "Unable to process networkMessage:" << type;
 }
+/** @} */ // end of API
