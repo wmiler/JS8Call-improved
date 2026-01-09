@@ -36,7 +36,8 @@ void MainWindow::networkMessage(Message const &message) {
 
     // RIG.GET_FREQ - Get the current Frequency
     // RIG.SET_FREQ - Set the current Frequency
-    if (type == "RIG.GET_FREQ") { /** RIG.GET_FREQ */
+    /** RIG.GET_FREQ Get the rig's frequency */
+    if (type == "RIG.GET_FREQ") {
         // Send WSJT-X Status message if protocol is enabled
         if (m_wsjtxMessageMapper && m_config.wsjtx_protocol_enabled()) {
             QString dx_call = callsignSelected();
@@ -74,8 +75,8 @@ void MainWindow::networkMessage(Message const &message) {
         }
         return;
     }
-
-    if (type == "RIG.SET_FREQ") { /** RIG.SET_FREQ */
+    /** RIG.SET_FREQ Set the rig's frequency */
+    if (type == "RIG.SET_FREQ") {
         auto params = message.params();
         if (params.contains("DIAL")) {
             bool ok = false;
