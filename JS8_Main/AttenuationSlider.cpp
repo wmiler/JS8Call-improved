@@ -1,3 +1,7 @@
+/**
+ * @file AttenuationSlider.cpp
+ * @brief Implementation of AttenuationSlider custom QSlider
+ */
 #include "AttenuationSlider.h"
 #include <QApplication>
 #include <QPainter>
@@ -33,6 +37,13 @@ constexpr auto contrastColor = QColor(255, 255, 255, 30);
 // ratio appropriate to the device in play; if the size is martian,
 // return a null pixmap.
 
+/**
+ * @private
+ * @brief Make a pixmap of the given size
+ * 
+ * @param size 
+ * @return auto 
+ */
 auto makePixmap(QSize const size) {
     if (size.isEmpty())
         return QPixmap();
@@ -47,7 +58,13 @@ auto makePixmap(QSize const size) {
 }
 
 // Create and return a pixmap for the groove, using the provided size.
-
+/**
+ * @private
+ * @brief Make a groove pixmap of the given size
+ * 
+ * @param size 
+ * @return auto 
+ */
 auto makeGroovePixmap(QSize const size) {
     if (auto pixmap = makePixmap(size); pixmap.isNull()) {
         return pixmap;
@@ -73,7 +90,13 @@ auto makeGroovePixmap(QSize const size) {
 
 // Create and return a pixmap for the groove active highlight, using
 // the provided size.
-
+/**
+ * @private
+ * @brief Make an active groove pixmap of the given size
+ * 
+ * @param size 
+ * @return auto 
+ */
 auto makeActivePixmap(QSize const size) {
     if (auto pixmap = makePixmap(size); pixmap.isNull()) {
         return pixmap;
@@ -101,7 +124,13 @@ auto makeActivePixmap(QSize const size) {
 }
 
 // Create and return a slider handle, using the provided size.
-
+/**
+ * @private
+ * @brief Make a handle pixmap of the given size
+ * 
+ * @param size 
+ * @return auto 
+ */
 auto makeHandlePixmap(QSize const size) {
     if (auto pixmap = makePixmap(size); pixmap.isNull()) {
         return pixmap;
@@ -151,7 +180,15 @@ using MakePixmap = QPixmap (*)(QSize);
 // Note that the cache is of limited size, so a pixmap not being present
 // doesn't mean we've never created one; it could have been purged since
 // the last time we did so.
-
+/**
+ * @private
+ * @brief Get a cached pixmap, or create and cache it if not present
+ * 
+ * @param size 
+ * @param name 
+ * @param make 
+ * @return auto 
+ */
 auto cachedPixmap(QSize const size, const char *const name,
                   MakePixmap const make) {
     QPixmap pixmap;
@@ -185,7 +222,11 @@ auto cachedPixmap(QSize const size, const char *const name,
 //
 // Note that as opposed to the standard QSlider, we ignore horizontal
 // orientation here; a fader control is always vertical in orientation.
-
+/**
+ * @brief Paint the attenuation slider
+ * 
+ * @param 
+ */
 void AttenuationSlider::paintEvent(QPaintEvent *) {
     auto const handle = QRect(QPoint((rect().width() - handleSize.width()) / 2,
                                      yValue(sliderPosition())),
@@ -252,7 +293,12 @@ void AttenuationSlider::paintEvent(QPaintEvent *) {
 }
 
 // Given an attenuation value, compute and return the corresponding Y value.
-
+/**
+ * @brief Given an attenuation value, compute and return the corresponding Y value
+ * 
+ * @param value 
+ * @return int 
+ */
 int AttenuationSlider::yValue(int const value) const {
     return QStyle::sliderPositionFromValue(
         minimum(), maximum(), value, rect().height() - handleSize.height(),

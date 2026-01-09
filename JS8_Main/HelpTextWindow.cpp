@@ -1,3 +1,7 @@
+/**
+ * @file HelpTextWindow.cpp
+ * @brief Implementation of HelpTextWindow for displaying help text files
+ */
 #include "HelpTextWindow.h"
 
 #include <QApplication>
@@ -9,6 +13,14 @@
 #include "JS8MessageBox.h"
 #include "qt_helpers.h"
 
+/**
+ * @brief Construct a new HelpTextWindow object
+ * 
+ * @param title Title of the help window
+ * @param file_name Path to the help text file
+ * @param font Font to use for displaying the help text
+ * @param parent Parent widget
+ */
 HelpTextWindow::HelpTextWindow(QString const &title, QString const &file_name,
                                QFont const &font, QWidget *parent)
     : QLabel{parent, Qt::WindowCloseButtonHint | Qt::WindowMinimizeButtonHint} {

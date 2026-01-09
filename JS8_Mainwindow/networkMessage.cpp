@@ -1,10 +1,17 @@
-#include "JS8_UI/mainwindow.h"
-
-/** \file
+/** 
+ * @file networkMessage.cpp
  * @brief member function of the MainWindow class
  *  sends data to external clients
+ * @defgroup API Network Message API
  */
 
+ #include "JS8_UI/mainwindow.h"
+
+ /**
+  * @brief Process an incoming API network message
+  * 
+  * @param message 
+  */
 void MainWindow::networkMessage(Message const &message) {
     auto type = message.type();
 

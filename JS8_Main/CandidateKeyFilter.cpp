@@ -1,3 +1,7 @@
+/**
+ * @file CandidateKeyFilter.cpp
+ * @brief Implementation of CandidateKeyFilter
+ */
 #include "CandidateKeyFilter.h"
 
 #include <QAbstractItemModel>

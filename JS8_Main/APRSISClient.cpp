@@ -1,3 +1,7 @@
+/**
+ * @file APRSISClient.cpp
+ * @brief Implementation of APRS-IS client for JS8Call
+ */
 #include "APRSISClient.h"
 #include <QLoggingCategory>
 #include <QRandomGenerator>
@@ -11,6 +15,13 @@ Q_DECLARE_LOGGING_CATEGORY(aprsisclient_js8)
 
 const int PACKET_TIMEOUT_SECONDS = 300;
 
+/**
+ * @brief Construct a new APRSISClient::APRSISClient object
+ * 
+ * @param host 
+ * @param port 
+ * @param parent 
+ */
 APRSISClient::APRSISClient(QString const host, quint16 const port,
                            QObject *parent)
     : QTcpSocket{parent}, m_timer{this} {
@@ -20,6 +31,12 @@ APRSISClient::APRSISClient(QString const host, quint16 const port,
     m_timer.start(std::chrono::minutes(1));
 }
 
+/**
+ * @brief Set the server host and port
+ * 
+ * @param host 
+ * @param port 
+ */
 quint32 APRSISClient::hashCallsign(QString callsign) {
     // based on: https://github.com/hessu/aprsc/blob/master/src/passcode.c
     QByteArray rootCall =
@@ -38,6 +55,12 @@ quint32 APRSISClient::hashCallsign(QString callsign) {
     return hash & 0x7FFF;
 }
 
+/**
+ * @brief Create a login frame for APRS-IS
+ * 
+ * @param callsign 
+ * @return QString 
+ */
 QString APRSISClient::loginFrame(QString callsign) {
     auto loginFrame = QString("user %1 pass %2 ver %3\n");
     loginFrame = loginFrame.arg(callsign);
@@ -46,6 +69,13 @@ QString APRSISClient::loginFrame(QString callsign) {
     return loginFrame;
 }
 
+/**
+ * @brief Find all matches of a regular expression in a string
+ * 
+ * @param re 
+ * @param content 
+ * @return QList<QStringList> 
+ */
 QList<QStringList> findall(QRegularExpression re, QString content) {
     qsizetype pos = 0;
     QList<QStringList> all;
@@ -63,6 +93,13 @@ QList<QStringList> findall(QRegularExpression re, QString content) {
     return all;
 }
 
+/**
+ * @brief Floor division for long integers
+ * 
+ * @param num 
+ * @param den 
+ * @return long 
+ */
 inline long floordiv(long num, long den) {
     if (0 < (num ^ den))
         return num / den;
@@ -73,6 +110,12 @@ inline long floordiv(long num, long den) {
 }
 
 // convert an arbitrary length grid locator to a high precision lat/lon
+/**
+ * @brief Convert grid locator to degrees
+ * 
+ * @param locator 
+ * @return QPair<float, float> 
+ */
 QPair<float, float> APRSISClient::grid2deg(QString locator) {
     QString grid = locator.toUpper();
 
@@ -128,6 +171,12 @@ QPair<float, float> APRSISClient::grid2deg(QString locator) {
 
 // convert an arbitrary length grid locator to a high precision lat/lon in aprs
 // format
+/**
+ * @brief Convert grid locator to APRS format
+ * 
+ * @param grid 
+ * @return QPair<QString, QString> 
+ */
 QPair<QString, QString> APRSISClient::grid2aprs(QString grid) {
     auto geo = APRSISClient::grid2deg(grid);
     auto lat = geo.first;
@@ -183,10 +232,23 @@ QPair<QString, QString> APRSISClient::grid2aprs(QString grid) {
             QString("%1%2").arg(aprsLon, 8, 'f', 2, QChar('0')).arg(lonDir)};
 }
 
+/**
+ * @brief Strip SSID from callsign
+ * 
+ * @param call 
+ * @return QString 
+ */
 QString APRSISClient::stripSSID(QString call) {
     return QString(call.split("-").first().toUpper());
 }
 
+/**
+ * @brief Replace callsign suffix with SSID
+ * 
+ * @param call 
+ * @param base 
+ * @return QString 
+ */
 QString APRSISClient::replaceCallsignSuffixWithSSID(QString call,
                                                     QString base) {
     if (call != base) {
@@ -203,6 +265,14 @@ QString APRSISClient::replaceCallsignSuffixWithSSID(QString call,
     return call;
 }
 
+/**
+ * @brief Enqueue a spot frame for APRS-IS
+ * 
+ * @param by_call 
+ * @param from_call 
+ * @param grid 
+ * @param comment 
+ */
 void APRSISClient::enqueueSpot(QString by_call, QString from_call, QString grid,
                                QString comment) {
     if (!isPasscodeValid()) {
@@ -219,6 +289,13 @@ void APRSISClient::enqueueSpot(QString by_call, QString from_call, QString grid,
     enqueueRaw(spotFrame);
 }
 
+/**
+ * @brief Enqueue a third-party message frame for APRS-IS
+ * 
+ * @param by_call 
+ * @param from_call 
+ * @param text 
+ */
 void APRSISClient::enqueueThirdParty(QString by_call, QString from_call,
                                      QString text) {
     if (!isPasscodeValid()) {
@@ -233,10 +310,20 @@ void APRSISClient::enqueueThirdParty(QString by_call, QString from_call,
     enqueueRaw(frame);
 }
 
+/**
+ * @brief Enqueue a raw APRS frame for APRS-IS
+ * 
+ * @param aprsFrame 
+ */
 void APRSISClient::enqueueRaw(QString aprsFrame) {
     m_frameQueue.enqueue({aprsFrame, DriftingDateTime::currentDateTimeUtc()});
 }
 
+/**
+ * @brief Process the APRS-IS frame queue
+ * 
+ * @param disconnect 
+ */
 void APRSISClient::processQueue(bool disconnect) {
     // don't process queue if we haven't set our local callsign
     if (m_localCall.isEmpty())

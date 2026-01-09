@@ -1,3 +1,7 @@
+/**
+ * @file Bands.cpp
+ * @brief Implementation of Bands model
+ */
 #include "Bands.h"
 
 #include <algorithm>
@@ -45,8 +49,17 @@ struct ADIFBand {
     {"1mm", 241000000000u, 250000000000u},
 };
 
+/**
+ * @brief Out Of Band name
+ * 
+ */
 QString const oob_name{QObject::tr("OOB")};
 
+/**
+ * @brief Get number of rows in ADIF band table
+ * 
+ * @return int 
+ */
 int constexpr table_rows() {
     return sizeof(ADIF_bands) / sizeof(ADIF_bands[0]);
 }
@@ -54,6 +67,12 @@ int constexpr table_rows() {
 
 Bands::Bands(QObject *parent) : QAbstractTableModel{parent} {}
 
+/**
+ * @brief Find the band that contains the given frequency
+ * 
+ * @param f 
+ * @return QString 
+ */
 QString Bands::find(Frequency f) const {
     QString result;
     auto const &end_iter = ADIF_bands + table_rows();
@@ -67,6 +86,12 @@ QString Bands::find(Frequency f) const {
     return result;
 }
 
+/**
+ * @brief Find the row index of the given band name
+ * 
+ * @param band 
+ * @return int 
+ */
 int Bands::find(QString const &band) const {
     int result{-1};
     for (auto i = 0u; i < table_rows(); ++i) {
@@ -77,6 +102,14 @@ int Bands::find(QString const &band) const {
     return result;
 }
 
+/**
+ * @brief Find the frequency bounds for the given band name
+ * 
+ * @param band 
+ * @param pFreqLower 
+ * @param pFreqHigher 
+ * @return true if band found, false otherwise
+ */
 bool Bands::findFreq(QString const &band, Radio::Frequency *pFreqLower,
                      Radio::Frequency *pFreqHigher) const {
     int row = find(band);
@@ -92,20 +125,50 @@ bool Bands::findFreq(QString const &band, Radio::Frequency *pFreqLower,
     return true;
 }
 
+/**
+ * @brief Get Out Of Band name
+ * 
+ * @return QString const& 
+ */
 QString const &Bands::oob() { return oob_name; }
 
+/**
+ * @brief Get number of rows in the model
+ * 
+ * @param parent 
+ * @return int 
+ */
 int Bands::rowCount(QModelIndex const &parent) const {
     return parent.isValid() ? 0 : table_rows();
 }
 
+/**
+ * @brief Get number of columns in the model
+ * 
+ * @param parent 
+ * @return int 
+ */
 int Bands::columnCount(QModelIndex const &parent) const {
     return parent.isValid() ? 0 : 3;
 }
 
+/**
+ * @brief Get item flags for the given index
+ * 
+ * @param index 
+ * @return Qt::ItemFlags 
+ */
 Qt::ItemFlags Bands::flags(QModelIndex const &index) const {
     return QAbstractTableModel::flags(index) | Qt::ItemIsDropEnabled;
 }
 
+/**
+ * @brief Get data for the given index and role
+ * 
+ * @param index 
+ * @param role 
+ * @return QVariant 
+ */
 QVariant Bands::data(QModelIndex const &index, int role) const {
     QVariant item;
 
@@ -190,6 +253,14 @@ QVariant Bands::data(QModelIndex const &index, int role) const {
     return item;
 }
 
+/**
+ * @brief Get header data for the given section, orientation, and role
+ * 
+ * @param section 
+ * @param orientation 
+ * @param role 
+ * @return QVariant 
+ */
 QVariant Bands::headerData(int section, Qt::Orientation orientation,
                            int role) const {
     QVariant result;
@@ -213,19 +284,45 @@ QVariant Bands::headerData(int section, Qt::Orientation orientation,
     return result;
 }
 
+/**
+ * @brief Dereference the iterator to get the band name
+ * 
+ * @return QString 
+ */
 QString Bands::const_iterator::operator*() { return ADIF_bands[row_].name_; }
 
+/**
+ * @brief Compare two iterators for inequality
+ * 
+ * @param rhs 
+ * @return true if not equal, false otherwise
+ */
 bool Bands::const_iterator::operator!=(const_iterator const &rhs) const {
     return row_ != rhs.row_;
 }
 
+/**
+ * @brief Increment the iterator
+ * 
+ * @return reference to incremented iterator
+ */
 auto Bands::const_iterator::operator++() -> const_iterator & {
     ++row_;
     return *this;
 }
 
+/**
+ * @brief Get begin iterator
+ * 
+ * @return Bands::const_iterator 
+ */
 auto Bands::begin() const -> Bands::const_iterator { return const_iterator(0); }
 
+/**
+ * @brief Get end iterator
+ * 
+ * @return Bands::const_iterator 
+ */
 auto Bands::end() const -> Bands::const_iterator {
     return const_iterator(table_rows());
 }

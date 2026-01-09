@@ -1,3 +1,7 @@
+/**
+ * @file DriftingDateTime.cpp
+ * @brief Implementation of DriftingDateTimeSingleton
+ */
 #include <QLoggingCategory>
 #include <QMutexLocker>
 #include <QThread>
@@ -9,6 +13,11 @@ Q_DECLARE_LOGGING_CATEGORY(driftingdatetime_js8)
 
 static QPointer<QDateTimeRoundingExperiment> experiment;
 
+/**
+ * @brief Get the singleton instance
+ * 
+ * @return DriftingDateTimeSingleton& 
+ */
 DriftingDateTimeSingleton &DriftingDateTimeSingleton::getSingleton() {
     if (singleton.isNull()) {
         singleton = QPointer{new DriftingDateTimeSingleton{}};
@@ -19,18 +28,40 @@ DriftingDateTimeSingleton &DriftingDateTimeSingleton::getSingleton() {
     return *(singleton.data());
 }
 
+/**
+ * @brief Construct a new Drifting Date Time Singleton:: Drifting Date Time Singleton object
+ * 
+ */
 DriftingDateTimeSingleton::DriftingDateTimeSingleton() : driftMS(0) {}
 
+/**
+ * @brief Retrieve drift, in milliseconds.
+ *
+ * Positive values indicate the drifted clock is behind the system clock,
+ * negative, it is early.
+ * 
+ * @return qint64 
+ */
 qint64 DriftingDateTimeSingleton::drift() const {
     QMutexLocker locker(&mutex);
     return driftMS;
 }
 
+/**
+ * @brief Set the drift inner
+ * 
+ * @param ms 
+ */
 void DriftingDateTimeSingleton::setDriftInner(qint64 ms) {
     QMutexLocker locker(&mutex);
     driftMS = ms;
 }
 
+/**
+ * @brief Set the drift
+ * 
+ * @param ms 
+ */
 void DriftingDateTimeSingleton::setDrift(qint64 ms) {
     qint64 old_drift = drift();
     setDriftInner(ms);
@@ -45,10 +76,18 @@ void DriftingDateTimeSingleton::setDrift(qint64 ms) {
     }
 }
 
+/**
+ * @brief Emits to the driftChanged signal (as per TwoPhaseSignal contract).
+ * 
+ */
 void DriftingDateTimeSingleton::onPlumbingCompleted() const {
     emit driftChanged(drift());
 }
 
+/**
+ * @brief Static member initialization
+ * 
+ */
 QPointer<DriftingDateTimeSingleton> DriftingDateTimeSingleton::singleton =
     QPointer<DriftingDateTimeSingleton>{};
 
