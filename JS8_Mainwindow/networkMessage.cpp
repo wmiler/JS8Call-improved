@@ -35,7 +35,7 @@ void MainWindow::networkMessage(Message const &message) {
 
     // RIG.GET_FREQ - Get the current Frequency
     // RIG.SET_FREQ - Set the current Frequency
-    if (type == "RIG.GET_FREQ") {
+    if (type == "RIG.GET_FREQ") { /** RIG.GET_FREQ */
         // Send WSJT-X Status message if protocol is enabled
         if (m_wsjtxMessageMapper && m_config.wsjtx_protocol_enabled()) {
             QString dx_call = callsignSelected();
@@ -74,7 +74,7 @@ void MainWindow::networkMessage(Message const &message) {
         return;
     }
 
-    if (type == "RIG.SET_FREQ") {
+    if (type == "RIG.SET_FREQ") { /** RIG.SET_FREQ */
         auto params = message.params();
         if (params.contains("DIAL")) {
             bool ok = false;
@@ -98,7 +98,7 @@ void MainWindow::networkMessage(Message const &message) {
     // STATION.SET_GRID - Set the current grid locator
     // STATION.GET_INFO - Get the current station qth
     // STATION.SET_INFO - Set the current station qth
-    if (type == "STATION.GET_CALLSIGN") {
+    if (type == "STATION.GET_CALLSIGN") { /** STATION.GET_CALLSIGN */
         sendNetworkMessage("STATION.CALLSIGN", m_config.my_callsign(),
                            {
                                {"_ID", id},
@@ -106,7 +106,7 @@ void MainWindow::networkMessage(Message const &message) {
         return;
     }
 
-    if (type == "STATION.GET_GRID") {
+    if (type == "STATION.GET_GRID") { /** STATION.GET_GRID */
         sendNetworkMessage("STATION.GRID", m_config.my_grid(),
                            {
                                {"_ID", id},
@@ -114,7 +114,7 @@ void MainWindow::networkMessage(Message const &message) {
         return;
     }
 
-    if (type == "STATION.SET_GRID") {
+    if (type == "STATION.SET_GRID") { /** STATION.SET_GRID */
         m_config.set_dynamic_location(message.value());
         sendNetworkMessage("STATION.GRID", m_config.my_grid(),
                            {
@@ -123,7 +123,7 @@ void MainWindow::networkMessage(Message const &message) {
         return;
     }
 
-    if (type == "STATION.GET_INFO") {
+    if (type == "STATION.GET_INFO") { /** STATION.GET_INFO */
         sendNetworkMessage("STATION.INFO", m_config.my_info(),
                            {
                                {"_ID", id},
@@ -131,7 +131,7 @@ void MainWindow::networkMessage(Message const &message) {
         return;
     }
 
-    if (type == "STATION.SET_INFO") {
+    if (type == "STATION.SET_INFO") { /** STATION.SET_INFO */
         m_config.set_dynamic_station_info(message.value());
         sendNetworkMessage("STATION.INFO", m_config.my_info(),
                            {
@@ -140,7 +140,7 @@ void MainWindow::networkMessage(Message const &message) {
         return;
     }
 
-    if (type == "STATION.GET_STATUS") {
+    if (type == "STATION.GET_STATUS") { /** STATION.GET_STATUS */
         sendNetworkMessage("STATION.STATUS", m_config.my_status(),
                            {
                                {"_ID", id},
@@ -148,7 +148,7 @@ void MainWindow::networkMessage(Message const &message) {
         return;
     }
 
-    if (type == "STATION.SET_STATUS") {
+    if (type == "STATION.SET_STATUS") { /** STATION.SET_STATUS */
         m_config.set_dynamic_station_status(message.value());
         sendNetworkMessage("STATION.STATUS", m_config.my_status(),
                            {
@@ -162,7 +162,7 @@ void MainWindow::networkMessage(Message const &message) {
     // RX.GET_BAND_ACTIVITY
     // RX.GET_TEXT
 
-    if (type == "RX.GET_CALL_ACTIVITY") {
+    if (type == "RX.GET_CALL_ACTIVITY") { /** RX.GET_CALL_ACTIVITY */
         auto now = DriftingDateTime::currentDateTimeUtc();
         int callsignAging = m_config.callsign_aging();
         QVariantMap calls = {
@@ -185,7 +185,7 @@ void MainWindow::networkMessage(Message const &message) {
         return;
     }
 
-    if (type == "RX.GET_CALL_SELECTED") {
+    if (type == "RX.GET_CALL_SELECTED") { /** RX.GET_CALL_SELECTED */
         sendNetworkMessage("RX.CALL_SELECTED", callsignSelected(),
                            {
                                {"_ID", id},
@@ -193,7 +193,7 @@ void MainWindow::networkMessage(Message const &message) {
         return;
     }
 
-    if (type == "RX.GET_BAND_ACTIVITY") {
+    if (type == "RX.GET_BAND_ACTIVITY") { /** RX.GET_BAND_ACTIVITY */
         QVariantMap offsets = {
             {"_ID", id},
         };
@@ -216,7 +216,7 @@ void MainWindow::networkMessage(Message const &message) {
         return;
     }
 
-    if (type == "RX.GET_TEXT") {
+    if (type == "RX.GET_TEXT") { /** RX.GET_TEXT */
         sendNetworkMessage("RX.TEXT", ui->textEditRX->toPlainText().right(1024),
                            {
                                {"_ID", id},
@@ -228,7 +228,7 @@ void MainWindow::networkMessage(Message const &message) {
     // TX.SET_TEXT
     // TX.SEND_MESSAGE
 
-    if (type == "TX.GET_TEXT") {
+    if (type == "TX.GET_TEXT") { /** TX.GET_TEXT */
         sendNetworkMessage("TX.TEXT",
                            ui->extFreeTextMsgEdit->toPlainText().right(1024),
                            {
@@ -237,7 +237,7 @@ void MainWindow::networkMessage(Message const &message) {
         return;
     }
 
-    if (type == "TX.SET_TEXT") {
+    if (type == "TX.SET_TEXT") { /** TX.SET_TEXT */
         addMessageText(message.value(), true);
         sendNetworkMessage("TX.TEXT",
                            ui->extFreeTextMsgEdit->toPlainText().right(1024),
@@ -247,7 +247,7 @@ void MainWindow::networkMessage(Message const &message) {
         return;
     }
 
-    if (type == "TX.SEND_MESSAGE") {
+    if (type == "TX.SEND_MESSAGE") { /** TX.SEND_MESSAGE */
         auto text = message.value();
         if (!text.isEmpty()) {
             enqueueMessage(PriorityNormal, text, -1, nullptr);
@@ -258,7 +258,7 @@ void MainWindow::networkMessage(Message const &message) {
 
     // MODE.GET_SPEED
     // MODE.SET_SPEED
-    if (type == "MODE.GET_SPEED") {
+    if (type == "MODE.GET_SPEED") { /** MODE.GET_SPEED */
         sendNetworkMessage("MODE.SPEED", "",
                            {
                                {"_ID", id},
@@ -267,7 +267,7 @@ void MainWindow::networkMessage(Message const &message) {
         return;
     }
 
-    if (type == "MODE.SET_SPEED") {
+    if (type == "MODE.SET_SPEED") { /** MODE.SET_SPEED */
         auto ok = false;
         auto const speed =
             message.params().value("SPEED", QVariant(m_nSubMode)).toInt(&ok);
@@ -294,7 +294,7 @@ void MainWindow::networkMessage(Message const &message) {
 
     // INBOX.GET_MESSAGES
     // INBOX.STORE_MESSAGE
-    if (type == "INBOX.GET_MESSAGES") {
+    if (type == "INBOX.GET_MESSAGES") { /** INBOX.GET_MESSAGES */
         QString selectedCall =
             message.params().value("CALLSIGN", "").toString();
         if (selectedCall.isEmpty()) {
@@ -336,7 +336,7 @@ void MainWindow::networkMessage(Message const &message) {
         return;
     }
 
-    if (type == "INBOX.STORE_MESSAGE") {
+    if (type == "INBOX.STORE_MESSAGE") { /** INBOX.STORE_MESSAGE */
         QString selectedCall =
             message.params().value("CALLSIGN", "").toString();
         if (selectedCall.isEmpty()) {
@@ -369,7 +369,7 @@ void MainWindow::networkMessage(Message const &message) {
 
     // WINDOW.RAISE
 
-    if (type == "WINDOW.RAISE") {
+    if (type == "WINDOW.RAISE") { /** WINDOW.RAISE */
         setWindowState(Qt::WindowActive);
         activateWindow();
         raise();
