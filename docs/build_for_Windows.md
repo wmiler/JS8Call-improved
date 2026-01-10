@@ -1,7 +1,6 @@
-------------------------------------------------------------------------------
 # Building JS8Call-improved on Windows
 
-This is a general overview with some slight variations for building Qt6-compliant JS8Call-improved using JTSDK64-Tools (HamlibSDK) - see the detailed instructions for JTSDK64-Tools at Sourceforge:  https://hamlib-sdk.sourceforge.io/
+This is a general overview with some slight variations for building Qt6-compliant JS8Call-improved using JTSDK64-Tools (HamlibSDK) - see the detailed instructions for JTSDK64-Tools at Sourceforge:  [https://hamlib-sdk.sourceforge.io/](https://hamlib-sdk.sourceforge.io/)
 
 **Prerequisites:**
 Windows 10 or 11
@@ -28,14 +27,15 @@ Windows 10 or 11
 3) Unless some requirements of the source change (e.g., a requirement to install a newer version of Qt or Boost), this build system can be used to simply do `jtbuild package` after the source has been updated.
    
    NOTE:  The JTSDK64-Tools build system will not package JS8Call.  There will be packaging errors presented when the build is finished.  IGNORE those errors (for now, with JTSDK64-Tools 4.1.0).  A future version of JTSDK64-Tools should include an option to "jtbuild noinstall" which will not present packaging errors.
-5) If you wish to package JS8Call, we suggest that you install the Inno Installer from:  https://github.com/jrsoftware/issrc.  Detail of how to setup and develop an Inno installer script is beyond the scope of this document.  However, when setting up an installer, we have found that you must pull four .dll files into the JS8Call bin directory as follows:
+
+4) If you wish to package JS8Call, we suggest that you install the Inno Installer from:  https://github.com/jrsoftware/issrc.  Detail of how to setup and develop an Inno installer script is beyond the scope of this document.  However, when setting up an installer, we have found that you must pull four .dll files into the JS8Call bin directory as follows:
    ```
    libfftw3f-3.dll from C:\JTSDK64-Tools\tools\fftw\3.3.10
    libhamlib-4.dll, libusb-1.0.dll, and libwinpthread-1.dll from C:\JTSDK64-Tools\tools\hamlib\bin
    ```
-6) To run JS8Call from the build directory, the above-mentioned four .dll files will need to be copied into the binary directory (e.g., `C:\JTSDK64-Tools\tmp\wsjtx-output\qt\6.9.3\2.5.0\Release\build\JS8Call`), and the JS8Call.exe file in the `C:\JTSDK64-Tools\tmp\wsjtx-output\qt\6.9.3\2.5.0\Release\build` directory will need to be copied into the `C:\JTSDK64-Tools\tmp\wsjtx-output\qt\6.9.3\2.5.0\Release\build\JS8Call` directory.  JS8Call.exe in the `C:\JTSDK64-Tools\tmp\wsjtx-output\qt\6.9.3\2.6.0\Release\build\JS8Call` directory can now be executed.
+5) To run JS8Call from the build directory, the above-mentioned four .dll files will need to be copied into the binary directory (e.g., `C:\JTSDK64-Tools\tmp\wsjtx-output\qt\6.9.3\2.5.0\Release\build\JS8Call`), and the JS8Call.exe file in the `C:\JTSDK64-Tools\tmp\wsjtx-output\qt\6.9.3\2.5.0\Release\build` directory will need to be copied into the `C:\JTSDK64-Tools\tmp\wsjtx-output\qt\6.9.3\2.5.0\Release\build\JS8Call` directory.  JS8Call.exe in the `C:\JTSDK64-Tools\tmp\wsjtx-output\qt\6.9.3\2.6.0\Release\build\JS8Call` directory can now be executed.
 ------------------------------------------------------------------------------
-# Building JS8Call-improved 2.4 and later with Qt Creator
+## Building JS8Call-improved 2.4 and later with Qt Creator
 
 **Set up the build environment**
 1) Download and install CMake 4.1.1 from Kitware. You can search for this on the web.
@@ -54,7 +54,7 @@ Windows 10 or 11
 
 * Download the Windows JS8Call-improved development library [here](https://github.com/JS8Call-improved/JS8Call-improved/releases/tag/2.4) and unzip the library inside of the development folder. This will create a folder called `js8lib` which contains the necessary development libraries to build JS8Call-improved
 
-* Next we need to get the JS8Call-improved source code with git. This requires use of the Windows Command shell (installing the Windows PowerShell is recommended). Change to the C:\development folder and type `git clone https://github.com/JS8Call-improved/JS8Call-improved.git` This will create a folder called JS8Call-improved which contains the source code.
+* Next we need to get the JS8Call-improved source code with git. This requires use of the Windows Command shell (installing the Windows PowerShell is recommended). Change to the `C:\development` folder and type `git clone https://github.com/JS8Call-improved/JS8Call-improved.git` This will create a folder called JS8Call-improved which contains the source code.
 
 **Setting up Qt Creator**
 
@@ -84,7 +84,7 @@ cd C:\development\JS8Call-improved\build\Desktop_Qt_6_8_3_MinGW_64_bit-Release &
 ```
 cd C:\development\JS8Call-improved\build\Desktop_Qt_6_8_3_MinGW_64_bit-Release && copy C:\development\js8lib\dll\*.dll .\JS8Call
 ```
-You can now click on the hammer in the lower left and the JS8Call-improved project should build. After the build completes you will find a folder inside the build -> (kit name) directory called JS8Call-improved. It will contain all the libraries the program needs to run, along with the JS8Call-improved executable. At this point you can use a Windows Installer package creator like NSIS or Inno Setup to create a Windows installer if you wish. Or if you are building only for your local computer you can move the JS8Call folder to C:\Program Files, create a shortcut to the JS8Call.exe executable, and place the shortcut on your desktop to launch the program.
+You can now click on the hammer in the lower left and the JS8Call-improved project should build. After the build completes you will find a folder inside the build -> (kit name) directory called JS8Call-improved. It will contain all the libraries the program needs to run, along with the JS8Call-improved executable. At this point you can use a Windows Installer package creator like NSIS or Inno Setup to create a Windows installer if you wish. Or if you are building only for your local computer you can move the JS8Call folder to `C:\Program Files`, create a shortcut to the JS8Call.exe executable, and place the shortcut on your desktop to launch the program.
 
 If you wish to do another build later simply go to Build in the menu and select Clean Build Folder and it will remove all old build artifacts so you can do another build without reconfiguration of Qt Creator. The program will save your build setup as long as you don't delete the folders inside the `build` folder. But during a Clean Build Folder it will not remove the built JS8Call product folder. That must be deleted manually, or moved, before doing another build.
 

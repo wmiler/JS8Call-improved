@@ -1,5 +1,5 @@
 #  JS8Call Developer and Contributor Guidelines
--   **Basic Overview of Project Structure**\
+-   **Basic Overview of Project Structure**
     The JS8Call project's main branch (sometimes called "master") is the branch to which PR's for all new features
     and enhancements should be submitted. It should be considered an unstable development branch, not suitable to
     build and run except for development purposes. It will likely be in a constant state of flux as new PR's are
