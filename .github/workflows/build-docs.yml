@@ -25,7 +25,15 @@ jobs:
       - name: Get doxygen and graphviz
         run: |
           sudo apt-get update
-          sudo apt-get install -y doxygen graphviz
+          sudo apt-get install -y doxygen graphviz flex bison make cmake g++
+          wget https://www.doxygen.nl/files/doxygen-1.16.0.src.tar.gz
+          tar zxf doxygen-1.16.0.src.tar.gz
+          cd doxygen-1.16.0
+          mkdir build
+          cd build
+          cmake -G "Unix Makefiles" ..
+          make
+          sudo make install
 
       - name: Build docs
         run: (cat .github/workflows/misc/Doxyfile; echo "PROJECT_NUMBER=master";) | doxygen -
