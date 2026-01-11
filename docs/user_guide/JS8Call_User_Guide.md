@@ -846,33 +846,10 @@ apply the right input/output levels:
     further down to that sweet spot of 30-60dB as read by the meter in
     the app.
 
-<table>
-<tbody>
-<tr class="odd">
-<td><blockquote>
-<p><img src="JS8Call_User_Guide_html_e75e99fb.png"
-style="width:0.8543in;height:2.5209in" /></p>
-</blockquote></td>
-<td><blockquote>
-<p><img src="JS8Call_User_Guide_html_f876c1c.png"
-style="width:0.8126in;height:2.4791in" /></p>
-</blockquote></td>
-<td><blockquote>
-<p><img src="JS8Call_User_Guide_html_91907e2c.png"
-style="width:0.8437in;height:2.4791in" /></p>
-</blockquote></td>
-</tr>
-<tr class="even">
-<td><strong>Audio input it too low!</strong></td>
-<td><blockquote>
-<p><strong>Audio input is just right!</strong></p>
-</blockquote></td>
-<td><blockquote>
-<p><strong>Audio input is too high!</strong></p>
-</blockquote></td>
-</tr>
-</tbody>
-</table>
+| | | |
+|:-----:|:-----:|:-----:|
+| Audio input is too low! | Audio input is just right! | Audio input is too high! |
+|![Audio input is too low!](JS8Call_User_Guide_html_e75e99fb.png)|![Audio input is just right!](JS8Call_User_Guide_html_f876c1c.png) |![Audio input is too high!](JS8Call_User_Guide_html_91907e2c.png)|
 
 ### Reporting (Spotting and API)
 
@@ -1322,8 +1299,7 @@ in saved messages which will be replaced when sending the message:
           - Leave a space after .exe then \--rig-name=FT817 (replace
             FT817 with anything that uniquely identifies your rig)
 
-          - Something like: ``"C:\Program Files
-            (x86)\js8call\bin\js8call.exe\ --rig-name=FT817``
+          - Something like: ``C:\Program Files (x86)\js8call\bin\js8call.exe --rig-name=FT817``
 
   - Can I use group callsigns to run a net?
 
