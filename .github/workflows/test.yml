@@ -40,6 +40,7 @@ jobs:
         echo "${{ secrets.CI_CODE_SIGNING_PFX_BASE64 }}" > 'D:/a/JS8Call-improved/cert.base64'
         echo "${{ secrets.RELEASE_CODE_SIGNING_PFX_BASE64 }}" > 'D:/a/JS8Call-improved/cert-re.base64'
         certutil -decode 'D:/a/JS8Call-improved/cert.base64' 'D:/a/JS8Call-improved/certificate.pfx'
+        certutil -decode 'D:/a/JS8Call-improved/cert-re.base64' 'D:/a/JS8Call-improved/certificate.pfx'
       continue-on-error: false
 
       
