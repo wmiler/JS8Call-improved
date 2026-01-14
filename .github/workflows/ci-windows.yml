@@ -13,6 +13,10 @@ on:
         required: false
         type: string
         default: 'v2.5.0'
+      environment:
+        description: 'Environment to run in'
+        type: environment
+        required: true
   pull_request:
   workflow_call:
     inputs:
@@ -116,6 +120,7 @@ jobs:
     - name: Get secrets
       shell: pwsh
       env:
+        ENVIRONMENT: ${{ inputs.environment }}
         CODE_SIGNING_PFX_BASE64: ${{ secrets.CI_CODE_SIGNING_PFX_BASE64 }}
         PFX_CERTIFICATE_PASSWORD: ${{ secrets.CI_PFX_CERTIFICATE_PASSWORD }}
       run: |
