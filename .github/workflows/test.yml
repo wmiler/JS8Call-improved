@@ -1,6 +1,7 @@
 name: Secrets testing
 
 on: 
+  pull_request:
   workflow_dispatch: 
     inputs:
       build-type:
