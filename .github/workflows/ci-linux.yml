@@ -4,11 +4,10 @@ permissions:
   id-token: write
 
 name: CI Build for Linux Ubuntu
+run-name: ${{ github.event.inputs.environment || 'CI' }} Build for Linux Ubuntu
 
 on:
-  workflow_dispatch:
-  pull_request:
-  workflow_call:
+  workflow_dispatch: 
     inputs:
       build-type:
         description: 'Build type (Debug/Release)'
@@ -16,10 +15,28 @@ on:
         type: string
         default: 'Release'
       release-ver:
-        description: 'Release Version (v2.5.0)'
+        description: 'Release Version (v2.5.1)'
         required: false
         type: string
-        default: 'v2.5.0'
+        default: 'v2.5.1'
+      environment:
+        description: 'Environment to run in'
+        type: environment
+        default: CI
+        required: false
+  pull_request:
+  workflow_call:
+    inputs:
+      build-type:
+        description: 'Build type (Debug/Release)'
+        required: false
+        type: string
+        default: 'Debug'
+      release-ver:
+        description: 'Release Version (v2.5.1)'
+        required: false
+        type: string      
+        default: 'v2.5.1'        
 
 # The package arrays below are mainly for building the libs, one could add fedora_build_package to include the
 # packages fedora requires, for instance.
@@ -292,6 +309,7 @@ jobs:
       run: |
         mkdir -p ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/icons/hicolor/128x128/apps/
         mkdir -p ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/
+        mkdir -p ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/metainfo/
         mkdir -p ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/plugins/platforms/
         mkdir -p ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/bin/
         mkdir -p ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/lib/
@@ -314,6 +332,7 @@ jobs:
     - name: AppImage Copy Files
       run: |
         cp .github/workflows/misc/JS8Call.desktop ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/JS8Call.desktop
+        cp .github/workflows/misc/JS8Call.appdata.xml ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/metainfo/JS8Call.appdata.xml
 
     - name: AppImage deploy (x86_64 Release Build)
       if: (runner.arch == 'X64' && inputs.release-ver)
@@ -330,7 +349,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: AppImage deploy (x86_64 CI Build)
-      if: (runner.arch == 'X64' && !inputs.release-ver )
+      if: ((runner.arch == 'X64') && !(inputs.release-ver) && (!(inputs.environment) || (inputs.environment == 'CI')))
       run: |
         export VERSION=devel
         cd ${GITHUB_WORKSPACE}/AppImage/
@@ -357,7 +376,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: AppImage deploy (arm64 CI Build)
-      if: (runner.arch == 'ARM64' && !inputs.release-ver )
+      if: ((runner.arch == 'ARM64') && !(inputs.release-ver) && (!(inputs.environment) || (inputs.environment == 'CI')))
       run: |
         export VERSION=devel
         cd ${GITHUB_WORKSPACE}/AppImage/
@@ -370,13 +389,13 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Attestation (Release Only)
-      if: ${{ inputs.release-ver }}
+      if: ${{ (inputs.environment == 'Release') && (inputs.release-ver) }}
       uses: actions/attest-build-provenance@v3
       with:
         subject-path: '${{ github.workspace }}/AppImage/*.AppImage*'
 
     - name: Upload Artifact (Release build)
-      if: ${{ inputs.release-ver }}
+      if: ${{ (inputs.environment == 'Release') && (inputs.release-ver) }}
       uses: actions/upload-artifact@v5
       with:
         name: js8call-improved-${{ matrix.os }}
