@@ -346,9 +346,9 @@ jobs:
       run: |
         echo "${{ secrets.CI_APPIMAGE_SIGNING_KEY }}" >/tmp/js8call.key.asc
         ls -l /tmp/js8call.key.asc
+        gpg --batch --import /tmp/js8call.key.asc
         echo "${{ secrets.CI_APPIMAGE_SIGNING_PASS }}" | gpg --batch --yes --passphrase-fd 0 --pinentry-mode loopback --import <(echo -e "/tmp/js8call.key.asc")
       continue-on-error: true
-#        gpg --batch --import /tmp/js8call.key.asc
 
     - name: List keys
       if: ${{ !(inputs.environment) || (inputs.environment == 'CI') }}
