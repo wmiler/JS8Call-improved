@@ -353,7 +353,7 @@ jobs:
     - name: List keys
       if: ${{ !(inputs.environment) || (inputs.environment == 'CI') }}
       run: gpg --list-secret-keys --keyid-format LONG
-      continue-on-error: false
+      continue-on-error: true
 
     - name: AppImage deploy (x86_64 Release Build)
       if: (runner.arch == 'X64' && inputs.release-ver)
@@ -368,13 +368,27 @@ jobs:
       continue-on-error: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
+
+# A bit of weirdness
+    - name: AppImage deploy (x86_64 CI Build)
+      if: ((runner.arch == 'X64') && !(inputs.release-ver) && (!(inputs.environment) || (inputs.environment == 'CI')))
+      run: |
+        export VERSION=devel
+        cd ${GITHUB_WORKSPACE}/AppImage/
+        /tmp/linuxdeployqt-continuous-x86_64.AppImage AppDir/usr/share/applications/JS8Call.desktop \
+          -executable=AppDir/usr/bin/JS8Call \
+          -qmake=/home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install/bin/qmake \
+          -verbose=2 -no-translations
+#        chmod a+x *.AppImage
+      continue-on-error: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 # Sign the AppImage directory before packaging
     - name: AppImage Sign (x86_64 CI Build)
       if: ((runner.arch == 'X64') && !(inputs.release-ver) && (!(inputs.environment) || (inputs.environment == 'CI')))
       run: |
         cd ${GITHUB_WORKSPACE}/AppImage/
-        ls -l
         ls -l AppDir/
         /tmp/appimagetool-x86_64.AppImage AppDir --sign
       continue-on-error: true
