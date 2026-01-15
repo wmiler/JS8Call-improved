@@ -378,7 +378,7 @@ jobs:
         /tmp/linuxdeployqt-continuous-x86_64.AppImage AppDir/usr/share/applications/JS8Call.desktop \
           -executable=AppDir/usr/bin/JS8Call \
           -qmake=/home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install/bin/qmake \
-          -verbose=2 -no-translations
+          -verbose=1 -no-translations
 #        chmod a+x *.AppImage
       continue-on-error: true
       env:
@@ -401,7 +401,7 @@ jobs:
         /tmp/linuxdeployqt-continuous-x86_64.AppImage AppDir/usr/share/applications/JS8Call.desktop \
           -executable=AppDir/usr/bin/JS8Call \
           -qmake=/home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install/bin/qmake \
-          -appimage -verbose=2 -no-translations
+          -appimage -verbose=1 -no-translations
         chmod a+x *.AppImage
       continue-on-error: true
       env:
