@@ -155,6 +155,8 @@ jobs:
       run: |
         curl --location --output /tmp/linuxdeployqt-continuous-x86_64.AppImage https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
         chmod a+x /tmp/linuxdeployqt-continuous-x86_64.AppImage
+        curl --location --output /tmp/appimagetool-x86_64.AppImage https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
+        chmod a+x /tmp/appimagetool-x86_64.AppImage
         sudo apt-get install -y ${{ env.ffmpeg_build }} ${{ env.opengl_package1 }} ${{ env.opengl_package2 }} ${{ env.opengl_package3 }}
 
     - name: AppImage tools (arm64)
@@ -162,6 +164,8 @@ jobs:
       run: |
         curl --location --output /tmp/linuxdeployqt-continuous-aarch64.AppImage https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-aarch64.AppImage
         chmod a+x /tmp/linuxdeployqt-continuous-aarch64.AppImage
+        curl --location --output /tmp/appimagetool-aarch64.AppImage https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-aarch64.AppImage
+        chmod a+x /tmp/appimagetool-aarch64.AppImage
         sudo apt-get install -y ${{ env.ffmpeg_build }} ${{ env.opengl_package1 }} ${{ env.opengl_package2 }} ${{ env.opengl_package3 }}
 
 ## libusb
@@ -334,6 +338,19 @@ jobs:
         cp .github/workflows/misc/JS8Call.desktop ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/JS8Call.desktop
         cp .github/workflows/misc/JS8Call.appdata.xml ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/metainfo/io.github.JS8Call_improved.JS8Call.appdata.xml
 
+    - name: Get secrets (CI)
+      if: ${{ !(inputs.environment) || (inputs.environment == 'CI') }}
+      run: |
+        echo "${{ secrets.CI_APPIMAGE_SIGNING_KEY }}" | gpg --import
+      continue-on-error: true
+      
+# Sign the AppImage directory before packaging
+    - name: AppImage Sign (x86_64 Release Build)
+      if: (runner.arch == 'X64' && inputs.release-ver)
+      run: |
+        cd ${GITHUB_WORKSPACE}/AppImage/
+        /tmp/appimagetool-x86_64.AppImage AppDir --sign
+      
     - name: AppImage deploy (x86_64 Release Build)
       if: (runner.arch == 'X64' && inputs.release-ver)
       run: |
