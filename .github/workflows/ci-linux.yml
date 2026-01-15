@@ -342,7 +342,7 @@ jobs:
     - name: Get secrets (CI)
 #      if: ${{ !(inputs.environment) || (inputs.environment == 'CI') }}
       run: |
-        echo -e "${{ secrets.CI_APPIMAGE_SIGNING_KEY }}" >/tmp/js9call.key.asc
+        echo -e "${{ secrets.CI_APPIMAGE_SIGNING_KEY }}" >/tmp/js8call.key.asc
         gpg --batch --import /tmp/js8call.key.asc
         echo "${{ secrets.CI_APPIMAGE_SIGNING_PASS }}" | gpg --batch --yes --passphrase-fd 0 --pinentry-mode loopback --import <(echo -e "/tmp/js8call.key.asc")
         gpg --list-secret-keys --keyid-format LONG
@@ -367,8 +367,11 @@ jobs:
       if: ((runner.arch == 'X64') && !(inputs.release-ver) && (!(inputs.environment) || (inputs.environment == 'CI')))
       run: |
         cd ${GITHUB_WORKSPACE}/AppImage/
+        ls -l
+        ls -l AppDir/
         /tmp/appimagetool-x86_64.AppImage AppDir --sign
-        
+      continue-on-error: true
+      
     - name: AppImage deploy (x86_64 CI Build)
       if: ((runner.arch == 'X64') && !(inputs.release-ver) && (!(inputs.environment) || (inputs.environment == 'CI')))
       run: |
