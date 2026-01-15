@@ -56,6 +56,7 @@ jobs:
   ci_ubuntu_linux:
     name: ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    environment: ${{ inputs.environment }}
     strategy:
       fail-fast: false
       matrix:
@@ -341,9 +342,9 @@ jobs:
 
 # Secrets
     - name: Get secrets (CI)
-#      if: ${{ !(inputs.environment) || (inputs.environment == 'CI') }}
+      if: ${{ !(inputs.environment) || (inputs.environment == 'CI') }}
       run: |
-        echo -e "${{ secrets.CI_APPIMAGE_SIGNING_KEY }}" >/tmp/js8call.key.asc
+        echo "${{ secrets.CI_APPIMAGE_SIGNING_KEY }}" >/tmp/js8call.key.asc
         ls -l /tmp/js8call.key.asc
         gpg --batch --import /tmp/js8call.key.asc
         echo "${{ secrets.CI_APPIMAGE_SIGNING_PASS }}" | gpg --batch --yes --passphrase-fd 0 --pinentry-mode loopback --import <(echo -e "/tmp/js8call.key.asc")
