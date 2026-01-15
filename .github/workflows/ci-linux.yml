@@ -390,8 +390,8 @@ jobs:
       if: ((runner.arch == 'X64') && !(inputs.release-ver) && (!(inputs.environment) || (inputs.environment == 'CI')))
       run: |
         cd ${GITHUB_WORKSPACE}/AppImage/
-        ls -l AppDir/
         APPIMAGETOOL_SIGN_PASSPHRASE="${{ secrets.CI_APPIMAGE_SIGNING_PASS }}" /tmp/appimagetool-x86_64.AppImage AppDir --sign
+        ls -l AppDir/
       continue-on-error: true
       
     - name: AppImage deploy Run 2 (x86_64 CI Build)
