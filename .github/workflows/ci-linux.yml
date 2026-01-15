@@ -338,19 +338,15 @@ jobs:
         cp .github/workflows/misc/JS8Call.desktop ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/JS8Call.desktop
         cp .github/workflows/misc/JS8Call.appdata.xml ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/metainfo/io.github.JS8Call_improved.JS8Call.appdata.xml
 
+# Secrets
     - name: Get secrets (CI)
       if: ${{ !(inputs.environment) || (inputs.environment == 'CI') }}
       run: |
-        echo "${{ secrets.CI_APPIMAGE_SIGNING_KEY }}" | gpg --dearmor --import
+        echo -e "${{ secrets.CI_APPIMAGE_SIGNING_KEY }}" | gpg --batch --import
+        echo "${{ secrets.CI_APPIMAGE_SIGNING_PASS }}" | gpg --batch --yes --passphrase-fd 0 --pinentry-mode loopback --import <(echo -e "${{ secrets.CI_APPIMAGE_SIGNING_KEY }}")
+        gpg --list-secret-keys --keyid-format LONG
       continue-on-error: true
-      
-# Sign the AppImage directory before packaging
-    - name: AppImage Sign (x86_64 Release Build)
-      if: (runner.arch == 'X64' && inputs.release-ver)
-      run: |
-        cd ${GITHUB_WORKSPACE}/AppImage/
-        /tmp/appimagetool-x86_64.AppImage AppDir --sign
-      
+
     - name: AppImage deploy (x86_64 Release Build)
       if: (runner.arch == 'X64' && inputs.release-ver)
       run: |
@@ -364,7 +360,14 @@ jobs:
       continue-on-error: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+      
+# Sign the AppImage directory before packaging
+    - name: AppImage Sign (x86_64 CI Build)
+      if: ((runner.arch == 'X64') && !(inputs.release-ver) && (!(inputs.environment) || (inputs.environment == 'CI')))
+      run: |
+        cd ${GITHUB_WORKSPACE}/AppImage/
+        /tmp/appimagetool-x86_64.AppImage AppDir --sign
+        
     - name: AppImage deploy (x86_64 CI Build)
       if: ((runner.arch == 'X64') && !(inputs.release-ver) && (!(inputs.environment) || (inputs.environment == 'CI')))
       run: |
