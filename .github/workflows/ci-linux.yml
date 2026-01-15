@@ -341,7 +341,7 @@ jobs:
     - name: Get secrets (CI)
       if: ${{ !(inputs.environment) || (inputs.environment == 'CI') }}
       run: |
-        echo "${{ secrets.CI_APPIMAGE_SIGNING_KEY }}" | gpg --import
+        echo "${{ secrets.CI_APPIMAGE_SIGNING_KEY }}" | gpg --dearmor --import
       continue-on-error: true
       
 # Sign the AppImage directory before packaging
