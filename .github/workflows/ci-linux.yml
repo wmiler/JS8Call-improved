@@ -346,9 +346,9 @@ jobs:
       run: |
         echo "${{ secrets.CI_APPIMAGE_SIGNING_KEY }}" >/tmp/js8call.key.asc
         ls -l /tmp/js8call.key.asc
-        gpg --batch --import /tmp/js8call.key.asc
         echo "${{ secrets.CI_APPIMAGE_SIGNING_PASS }}" | gpg --batch --yes --passphrase-fd 0 --pinentry-mode loopback --import <(echo -e "/tmp/js8call.key.asc")
       continue-on-error: true
+#        gpg --batch --import /tmp/js8call.key.asc
 
     - name: List keys
       if: ${{ !(inputs.environment) || (inputs.environment == 'CI') }}
@@ -369,7 +369,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-# A bit of weirdness
+# A bit of weirdness, have to build out the AppDir before we can sign it
     - name: AppImage deploy Run 1 (x86_64 CI Build)
       if: ((runner.arch == 'X64') && !(inputs.release-ver) && (!(inputs.environment) || (inputs.environment == 'CI')))
       run: |
@@ -379,6 +379,7 @@ jobs:
           -executable=AppDir/usr/bin/JS8Call \
           -qmake=/home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install/bin/qmake \
           -verbose=1 -no-translations
+        ls -l ${GITHUB_WORKSPACE}/AppImage/
 #        chmod a+x *.AppImage
       continue-on-error: true
       env:
@@ -403,6 +404,7 @@ jobs:
           -qmake=/home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install/bin/qmake \
           -appimage -verbose=1 -no-translations
         chmod a+x *.AppImage
+        ls -l ${GITHUB_WORKSPACE}/AppImage/
       continue-on-error: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
