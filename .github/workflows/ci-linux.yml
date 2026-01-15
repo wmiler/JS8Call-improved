@@ -333,6 +333,7 @@ jobs:
         cp -R ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libswresample.so.5.3.100 ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/lib/libswresample.so.5
         cp -R ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libswscale.so.8.3.100 ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/lib/libswscale.so.8
 
+# Include AppStream data
     - name: AppImage Copy Files
       run: |
         cp .github/workflows/misc/JS8Call.desktop ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/JS8Call.desktop
