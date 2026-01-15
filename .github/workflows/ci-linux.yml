@@ -60,8 +60,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - {os: ubuntu-22.04, arch: X64, packages: build-essential autoconf curl git cmake libtool libxkbcommon-dev libudev-dev yasm libva-dev libpulse-dev libegl1-mesa-dev libgles2-mesa-dev libgbm-dev libgl1-mesa-dev libxkbcommon-x11-dev}
-          - {os: ubuntu-22.04-arm, arch: ARM64, packages: build-essential autoconf curl git cmake libtool libxkbcommon-dev libudev-dev yasm libva-dev libpulse-dev libegl1-mesa-dev libgles2-mesa-dev libgbm-dev libgl1-mesa-dev libxkbcommon-x11-dev}
+          - {os: ubuntu-22.04, arch: X64, packages: build-essential autoconf curl git cmake appstream libtool libxkbcommon-dev libudev-dev yasm libva-dev libpulse-dev libegl1-mesa-dev libgles2-mesa-dev libgbm-dev libgl1-mesa-dev libxkbcommon-x11-dev}
+          - {os: ubuntu-22.04-arm, arch: ARM64, packages: build-essential autoconf curl git cmake appstream libtool libxkbcommon-dev libudev-dev yasm libva-dev libpulse-dev libegl1-mesa-dev libgles2-mesa-dev libgbm-dev libgl1-mesa-dev libxkbcommon-x11-dev}
 
     steps:
     - uses: actions/checkout@v5
@@ -340,10 +340,11 @@ jobs:
 
 # Secrets
     - name: Get secrets (CI)
-      if: ${{ !(inputs.environment) || (inputs.environment == 'CI') }}
+#      if: ${{ !(inputs.environment) || (inputs.environment == 'CI') }}
       run: |
-        echo -e "${{ secrets.CI_APPIMAGE_SIGNING_KEY }}" | gpg --batch --import
-        echo "${{ secrets.CI_APPIMAGE_SIGNING_PASS }}" | gpg --batch --yes --passphrase-fd 0 --pinentry-mode loopback --import <(echo -e "${{ secrets.CI_APPIMAGE_SIGNING_KEY }}")
+        echo -e "${{ secrets.CI_APPIMAGE_SIGNING_KEY }}" >/tmp/js9call.key.asc
+        gpg --batch --import /tmp/js8call.key.asc
+        echo "${{ secrets.CI_APPIMAGE_SIGNING_PASS }}" | gpg --batch --yes --passphrase-fd 0 --pinentry-mode loopback --import <(echo -e "/tmp/js8call.key.asc")
         gpg --list-secret-keys --keyid-format LONG
       continue-on-error: true
 
