@@ -393,6 +393,8 @@ jobs:
       if: ((runner.arch == 'X64') && !(inputs.release-ver) && (!(inputs.environment) || (inputs.environment == 'CI')))
       run: |
         export VERSION=devel
+        export EXTRA_PLATFORM_PLUGINS=libqwayland-generic.so
+        export EXTRA_QT_MODULES="waylandcompositor"
         export LD_LIBRARY_PATH=/home/runner/work/JS8Call-improved/JS8Call-improved/local/ffmpeg/lib
 
         cd ${GITHUB_WORKSPACE}/AppImage/
