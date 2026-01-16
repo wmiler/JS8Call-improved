@@ -335,21 +335,23 @@ jobs:
         cp -R ${GITHUB_WORKSPACE}/local/qt693-install/plugins/wayland-graphics-integration-client ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/plugins/
         cp -R ${GITHUB_WORKSPACE}/local/qt693-install/plugins/wayland-shell-integration ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/plugins/
         cp -R ${GITHUB_WORKSPACE}/local/qt693-install/plugins/xcbglintegrations ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/plugins/
-        cp -R ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libavcodec.so.61.19.101 ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/lib/libavcodec.so.61
-        cp -R ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libavdevice.so.61.3.100 ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/lib/libavdevice.so.61
-        cp -R ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libavfilter.so.10.4.100 ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/lib/libavfilter.so.10
-        cp -R ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libavformat.so.61.7.100 ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/lib/libavformat.so.61
-        cp -R ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libavutil.so.59.39.100 ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/lib/libavutil.so.59
-        cp -R ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libswresample.so.5.3.100 ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/lib/libswresample.so.5
-        cp -R ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libswscale.so.8.3.100 ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/lib/libswscale.so.8
+        
+        cp ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libavcodec.so.61.19.101 ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/lib/libavcodec.so.61
+        cp ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libavdevice.so.61.3.100 ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/lib/libavdevice.so.61
+        cp ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libavfilter.so.10.4.100 ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/lib/libavfilter.so.10
+        cp ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libavformat.so.61.7.100 ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/lib/libavformat.so.61
+        cp ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libavutil.so.59.39.100 ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/lib/libavutil.so.59
+        cp ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libswresample.so.5.3.100 ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/lib/libswresample.so.5
+        cp ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libswscale.so.8.3.100 ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/lib/libswscale.so.8
 
-        cp -R ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libavcodec.so.61.19.101 ${GITHUB_WORKSPACE}/local/qt693-install/usr/lib/libavcodec.so.61
-        cp -R ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libavdevice.so.61.3.100 ${GITHUB_WORKSPACE}/local/qt693-install/usr/lib/libavdevice.so.61
-        cp -R ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libavfilter.so.10.4.100 ${GITHUB_WORKSPACE}/local/qt693-install/lib/libavfilter.so.10
-        cp -R ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libavformat.so.61.7.100 ${GITHUB_WORKSPACE}/local/qt693-install/lib/libavformat.so.61
-        cp -R ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libavutil.so.59.39.100 ${GITHUB_WORKSPACE}/local/qt693-install/lib/libavutil.so.59
-        cp -R ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libswresample.so.5.3.100 ${GITHUB_WORKSPACE}/local/qt693-install/lib/libswresample.so.5
-        cp -R ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libswscale.so.8.3.100 ${GITHUB_WORKSPACE}/local/qt693-install/lib/libswscale.so.8
+        ls -l ${GITHUB_WORKSPACE}/local/ffmpeg/lib/
+        cp ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libavcodec.so.61.19.101 ${GITHUB_WORKSPACE}/local/qt693-install/usr/lib/libavcodec.so.61
+        cp ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libavdevice.so.61.3.100 ${GITHUB_WORKSPACE}/local/qt693-install/usr/lib/libavdevice.so.61
+        cp ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libavfilter.so.10.4.100 ${GITHUB_WORKSPACE}/local/qt693-install/lib/libavfilter.so.10
+        cp ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libavformat.so.61.7.100 ${GITHUB_WORKSPACE}/local/qt693-install/lib/libavformat.so.61
+        cp ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libavutil.so.59.39.100 ${GITHUB_WORKSPACE}/local/qt693-install/lib/libavutil.so.59
+        cp ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libswresample.so.5.3.100 ${GITHUB_WORKSPACE}/local/qt693-install/lib/libswresample.so.5
+        cp ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libswscale.so.8.3.100 ${GITHUB_WORKSPACE}/local/qt693-install/lib/libswscale.so.8
         ls -l ${GITHUB_WORKSPACE}/local/ffmpeg/lib/
 
 # Include AppStream data
