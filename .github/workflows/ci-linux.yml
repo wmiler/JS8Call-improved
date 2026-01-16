@@ -4,7 +4,7 @@ permissions:
   id-token: write
 
 name: CI Build for Linux Ubuntu
-run-name: ${{ (github.event.inputs.environment) || (github.event_name) || 'CI' }} Build for Linux Ubuntu
+run-name: ${{ (github.event.inputs.environment) || (github.event.pull_request.title) || 'CI' }} Build for Linux Ubuntu
 
 on:
   workflow_dispatch: 
