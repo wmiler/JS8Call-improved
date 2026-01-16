@@ -338,6 +338,7 @@ jobs:
     - name: AppImage Copy Files
       run: |
         cp .github/workflows/misc/JS8Call.desktop ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/JS8Call.desktop
+        sed -i 's/<name>JS8Call</name>/<name>JS8Call-devel</name>/g' .github/workflows/misc/JS8Call.appdata.xml
         cp .github/workflows/misc/JS8Call.appdata.xml ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/metainfo/io.github.JS8Call_improved.JS8Call.appdata.xml
 
 # Secrets
