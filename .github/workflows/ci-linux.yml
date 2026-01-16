@@ -151,17 +151,17 @@ jobs:
         sudo apt-get install -y ${{ env.ffmpeg_build }} ${{ env.opengl_package2 }} ${{ env.opengl_package3 }}
         sudo apt-get clean
 
-    - name: AppImage tools (x86_64)
-      if: (runner.arch == 'X64')
-      run: |
-        curl --location --output /tmp/linuxdeployqt-continuous-x86_64.AppImage https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
-        chmod a+x /tmp/linuxdeployqt-continuous-x86_64.AppImage
-        curl --location --output /tmp/appimagetool-x86_64.AppImage https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
-        chmod a+x /tmp/appimagetool-x86_64.AppImage
-        sudo apt-get install -y ${{ env.ffmpeg_build }} ${{ env.opengl_package1 }} ${{ env.opengl_package2 }} ${{ env.opengl_package3 }}
+# To be REMOVED
+#    - name: AppImage tools (x86_64)
+#      if: (runner.arch == 'X64')
+#      run: |
+#        curl --location --output /tmp/linuxdeployqt-continuous-x86_64.AppImage https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
+#        chmod a+x /tmp/linuxdeployqt-continuous-x86_64.AppImage
+#        curl --location --output /tmp/appimagetool-x86_64.AppImage https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
+#        chmod a+x /tmp/appimagetool-x86_64.AppImage
+#        sudo apt-get install -y ${{ env.ffmpeg_build }} ${{ env.opengl_package1 }} ${{ env.opengl_package2 }} ${{ env.opengl_package3 }}
 
-# For **testing**
-    - name: AppImage tools TEST (x86_64)
+    - name: AppImage tools (x86_64)
       if: (runner.arch == 'X64')
       run: |
         curl --location --output /tmp/linuxdeploy-x86_64.AppImage https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
@@ -172,11 +172,21 @@ jobs:
     - name: AppImage tools (arm64)
       if: (runner.arch == 'ARM64')
       run: |
-        curl --location --output /tmp/linuxdeployqt-continuous-aarch64.AppImage https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-aarch64.AppImage
-        chmod a+x /tmp/linuxdeployqt-continuous-aarch64.AppImage
-        curl --location --output /tmp/appimagetool-aarch64.AppImage https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-aarch64.AppImage
-        chmod a+x /tmp/appimagetool-aarch64.AppImage
+        curl --location --output /tmp/linuxdeploy-aarch64.AppImage https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-aarch64.AppImage
+        chmod a+x /tmp/linuxdeploy-aarch64.AppImage
+        curl --location --output /tmp/linuxdeploy-plugin-qt-aarch64.AppImage https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-aarch64.AppImage
+        chmod a+x /tmp/linuxdeploy-plugin-qt-aarch64.AppImage
         sudo apt-get install -y ${{ env.ffmpeg_build }} ${{ env.opengl_package1 }} ${{ env.opengl_package2 }} ${{ env.opengl_package3 }}
+
+# To be REMOVED
+#    - name: AppImage tools (arm64)
+#      if: (runner.arch == 'ARM64')
+#      run: |
+#        curl --location --output /tmp/linuxdeployqt-continuous-aarch64.AppImage https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-aarch64.AppImage
+#        chmod a+x /tmp/linuxdeployqt-continuous-aarch64.AppImage
+#        curl --location --output /tmp/appimagetool-aarch64.AppImage https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-aarch64.AppImage
+#        chmod a+x /tmp/appimagetool-aarch64.AppImage
+#        sudo apt-get install -y ${{ env.ffmpeg_build }} ${{ env.opengl_package1 }} ${{ env.opengl_package2 }} ${{ env.opengl_package3 }}
 
 ## libusb
     - name: Install libusb 1.0.29
@@ -327,6 +337,7 @@ jobs:
         cp icons/Unix/js8call_icon.png ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/icons/hicolor/128x128/apps/
         cp .github/workflows/misc/JS8Call.appdata.xml ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/metainfo/io.github.JS8Call_improved.JS8Call.appdata.xml
 
+# To be REMOVED
 # This worked with linuxdeployqt
 #        mkdir -p ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/
 #        cp build/JS8Call ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/bin/
@@ -353,6 +364,7 @@ jobs:
 #        cp ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libswresample.so.5.3.100 ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/lib/libswresample.so.5
 #        cp ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libswscale.so.8.3.100 ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/lib/libswscale.so.8
 
+# To be REMOVED
 # Include AppStream data
 #    - name: AppImage Copy Files
 #      run: |
