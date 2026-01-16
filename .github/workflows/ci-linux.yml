@@ -168,6 +168,7 @@ jobs:
         chmod +x /tmp/linuxdeploy-x86_64.AppImage
         curl --location --output /tmp/linuxdeploy-plugin-qt-x86_64.AppImage https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage
         chmod +x /tmp/linuxdeploy-plugin-qt-x86_64.AppImage
+        sudo apt-get install -y ${{ env.ffmpeg_build }} ${{ env.opengl_package1 }} ${{ env.opengl_package2 }} ${{ env.opengl_package3 }}
         
     - name: AppImage tools (arm64)
       if: (runner.arch == 'ARM64')
