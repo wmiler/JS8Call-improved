@@ -168,6 +168,8 @@ jobs:
         chmod +x /tmp/linuxdeploy-x86_64.AppImage
         curl --location --output /tmp/linuxdeploy-plugin-qt-x86_64.AppImage https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage
         chmod +x /tmp/linuxdeploy-plugin-qt-x86_64.AppImage
+        curl --location --output /tmp/appimagelint-x86_64.AppImage https://github.com/TheAssassin/appimagelint/releases/download/continuous/appimagelint-x86_64.AppImage
+        chmod +x /tmp/appimagelint-x86_64.AppImage
         sudo apt-get install -y ${{ env.ffmpeg_build }} ${{ env.opengl_package1 }} ${{ env.opengl_package2 }} ${{ env.opengl_package3 }}
         
     - name: AppImage tools (arm64)
@@ -401,7 +403,6 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-# **TEST**
     - name: AppImage linuxdeploy Sign and Package **TEST** (x86_64 CI Build)
       if: ((runner.arch == 'X64') && !(inputs.release-ver) && (!(inputs.environment) || (inputs.environment == 'CI')))
       run: |
@@ -428,6 +429,38 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: AppImage lint (x86_64 CI Build)
+      if: ((runner.arch == 'X64') && !(inputs.release-ver) && (!(inputs.environment) || (inputs.environment == 'CI')))
+      run: /tmp/appimagelint-x86_64.AppImage ./AppImage/*.AppImage
+
+    - name: AppImage linuxdeploy Sign and Package **TEST** (ARM64 CI Build)
+      if: ((runner.arch == 'ARM64') && !(inputs.release-ver) && (!(inputs.environment) || (inputs.environment == 'CI')))
+      run: |
+        export VERSION=devel
+        export EXTRA_PLATFORM_PLUGINS=libqwayland-generic.so
+        export EXTRA_QT_MODULES="waylandcompositor"
+        export LD_LIBRARY_PATH=/home/runner/work/JS8Call-improved/JS8Call-improved/local/ffmpeg/lib
+
+        cd ${GITHUB_WORKSPACE}/AppImage/
+        APPIMAGETOOL_SIGN_PASSPHRASE="${{ secrets.CI_APPIMAGE_SIGNING_PASS }}" DISABLE_COPYRIGHT_FILES_DEPLOYMENT=1 \
+          LDAI_SIGN=1 QMAKE=/home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install/bin/qmake \
+          /tmp/linuxdeploy-x86_64.AppImage \
+          --appdir=AppDir \
+          --desktop-file=${GITHUB_WORKSPACE}/.github/workflows/misc/JS8Call.desktop \
+          --executable=${GITHUB_WORKSPACE}/build/JS8Call \
+          --plugin=qt \
+          --output appimage \
+          --verbosity=0
+          
+        ls -l ${GITHUB_WORKSPACE}/AppImage/
+#           -verbose=1 -no-translations
+#        chmod a+x *.AppImage
+      continue-on-error: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+# To be REMOVED
 # A bit of weirdness, have to build out the AppDir before we can sign it
 #    - name: AppImage deploy Run 1 (x86_64 CI Build)
 #      if: ((runner.arch == 'X64') && !(inputs.release-ver) && (!(inputs.environment) || (inputs.environment == 'CI')))
@@ -481,18 +514,19 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: AppImage deploy (arm64 CI Build)
-      if: ((runner.arch == 'ARM64') && !(inputs.release-ver) && (!(inputs.environment) || (inputs.environment == 'CI')))
-      run: |
-        export VERSION=devel
-        cd ${GITHUB_WORKSPACE}/AppImage/
-        /tmp/linuxdeployqt-continuous-aarch64.AppImage AppDir/usr/share/applications/JS8Call.desktop \
-          -executable=AppDir/usr/bin/JS8Call \
-          -qmake=/home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install/bin/qmake \
-          -appimage -verbose=2 -no-translations
-        chmod a+x *.AppImage
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+# To be REMOVED
+#    - name: AppImage deploy (arm64 CI Build)
+#      if: ((runner.arch == 'ARM64') && !(inputs.release-ver) && (!(inputs.environment) || (inputs.environment == 'CI')))
+#      run: |
+#        export VERSION=devel
+#        cd ${GITHUB_WORKSPACE}/AppImage/
+#        /tmp/linuxdeployqt-continuous-aarch64.AppImage AppDir/usr/share/applications/JS8Call.desktop \
+#          -executable=AppDir/usr/bin/JS8Call \
+#          -qmake=/home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install/bin/qmake \
+#          -appimage -verbose=2 -no-translations
+#        chmod a+x *.AppImage
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Attestation (Release Only)
       if: ${{ (inputs.environment == 'Release') && (inputs.release-ver) }}
