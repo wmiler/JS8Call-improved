@@ -393,6 +393,8 @@ jobs:
       if: ((runner.arch == 'X64') && !(inputs.release-ver) && (!(inputs.environment) || (inputs.environment == 'CI')))
       run: |
         export VERSION=devel
+        env
+
         cd ${GITHUB_WORKSPACE}/AppImage/
         APPIMAGETOOL_SIGN_PASSPHRASE="${{ secrets.CI_APPIMAGE_SIGNING_PASS }}" DISABLE_COPYRIGHT_FILES_DEPLOYMENT=1 \
           LDAI_SIGN=1 QMAKE=/home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install/bin/qmake \
