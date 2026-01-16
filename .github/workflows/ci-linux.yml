@@ -322,26 +322,29 @@ jobs:
     - name: AppImage Directory Setup and File Copy
       run: |
         mkdir -p ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/icons/hicolor/128x128/apps/
-        mkdir -p ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/
         mkdir -p ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/metainfo/
-        mkdir -p ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/plugins/platforms/
         mkdir -p ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/bin/
-        mkdir -p ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/lib/
-
-        cp build/JS8Call ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/bin/
         cp icons/Unix/js8call_icon.png ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/icons/hicolor/128x128/apps/
-        cp .github/workflows/misc/JS8Call.desktop ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/JS8Call.desktop
         cp .github/workflows/misc/JS8Call.appdata.xml ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/metainfo/io.github.JS8Call_improved.JS8Call.appdata.xml
 
-        cp ${GITHUB_WORKSPACE}/local/qt693-install/plugins/platforms/*.so ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/plugins/platforms/
-        cp -R ${GITHUB_WORKSPACE}/local/qt693-install/plugins/wayland-decoration-client ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/plugins/
-        cp -R ${GITHUB_WORKSPACE}/local/qt693-install/plugins/wayland-graphics-integration-client ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/plugins/
-        cp -R ${GITHUB_WORKSPACE}/local/qt693-install/plugins/wayland-shell-integration ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/plugins/
-        cp -R ${GITHUB_WORKSPACE}/local/qt693-install/plugins/xcbglintegrations ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/plugins/
-
-        ls -l ${GITHUB_WORKSPACE}/local/ffmpeg/lib/
-
 # This worked with linuxdeployqt
+#        mkdir -p ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/
+#        cp build/JS8Call ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/bin/
+#        cp icons/Unix/js8call_icon.png ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/icons/hicolor/128x128/apps/
+#        cp .github/workflows/misc/JS8Call.desktop ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/JS8Call.desktop
+
+
+#        mkdir -p ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/plugins/platforms/
+#        mkdir -p ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/lib/
+
+#        cp -R ${GITHUB_WORKSPACE}/local/qt693-install/plugins/platforms/*.so ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/plugins/platforms/
+#        cp -R ${GITHUB_WORKSPACE}/local/qt693-install/plugins/wayland-decoration-client ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/plugins/
+#        cp -R ${GITHUB_WORKSPACE}/local/qt693-install/plugins/wayland-graphics-integration-client ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/plugins/
+#        cp -R ${GITHUB_WORKSPACE}/local/qt693-install/plugins/wayland-shell-integration ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/plugins/
+#        cp -R ${GITHUB_WORKSPACE}/local/qt693-install/plugins/xcbglintegrations ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/plugins/
+
+#        ls -l ${GITHUB_WORKSPACE}/local/ffmpeg/lib/
+
 #        cp ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libavcodec.so.61.19.101 ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/lib/libavcodec.so.61
 #        cp ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libavdevice.so.61.3.100 ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/lib/libavdevice.so.61
 #        cp ${GITHUB_WORKSPACE}/local/ffmpeg/lib/libavfilter.so.10.4.100 ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/lib/libavfilter.so.10
@@ -395,8 +398,8 @@ jobs:
           LDAI_SIGN=1 QMAKE=/home/runner/work/JS8Call-improved/JS8Call-improved/local/qt693-install/bin/qmake \
           /tmp/linuxdeploy-x86_64.AppImage \
           --appdir=AppDir \
-          --desktop-file=AppDir/usr/share/applications/JS8Call.desktop \
-          --executable=AppDir/usr/bin/JS8Call \
+          --desktop-file=${GITHUB_WORKSPACE}/.github/workflows/misc/JS8Call.desktop \
+          --executable=${GITHUB_WORKSPACE}/build/JS8Call \
           --plugin=qt \
           --output appimage \
           --verbosity=0
