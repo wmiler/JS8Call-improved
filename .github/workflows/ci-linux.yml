@@ -338,7 +338,6 @@ jobs:
     - name: AppImage Copy Files
       run: |
         cp .github/workflows/misc/JS8Call.desktop ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/applications/JS8Call.desktop
-        sed -i 's/<name>JS8Call/<name>JS8Call-devel/g' .github/workflows/misc/JS8Call.appdata.xml
         cp .github/workflows/misc/JS8Call.appdata.xml ${GITHUB_WORKSPACE}/AppImage/AppDir/usr/share/metainfo/io.github.JS8Call_improved.JS8Call.appdata.xml
 
 # Secrets
@@ -391,8 +390,8 @@ jobs:
       if: ((runner.arch == 'X64') && !(inputs.release-ver) && (!(inputs.environment) || (inputs.environment == 'CI')))
       run: |
         cd ${GITHUB_WORKSPACE}/AppImage/
-        APPIMAGETOOL_SIGN_PASSPHRASE="${{ secrets.CI_APPIMAGE_SIGNING_PASS }}" /tmp/appimagetool-x86_64.AppImage AppDir --sign
-        ls -l AppDir/
+        APPIMAGETOOL_SIGN_PASSPHRASE="${{ secrets.CI_APPIMAGE_SIGNING_PASS }}" /tmp/appimagetool-x86_64.AppImage AppDir --sign JS8Call-devel-x86_64.AppImage
+        ls -l ${GITHUB_WORKSPACE}/AppImage/
       continue-on-error: true
       
     - name: AppImage deploy Run 2 (x86_64 CI Build)
