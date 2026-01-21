@@ -22,3 +22,7 @@ jobs:
     - name: Run clang-format dry-run
       run: |
         clang-format-20 --Werror --dry-run --style='{BasedOnStyle: LLVM, IndentWidth: 4}' JS8*/*.h JS8*/*.cpp
+
+    - name: Run clang-tidy
+      run: echo "Test"
+      
