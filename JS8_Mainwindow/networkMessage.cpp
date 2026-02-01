@@ -2,8 +2,8 @@
  * @file networkMessage.cpp
  * @brief member function of the UI_Constructor class
  * API commands for external control and data retrieval.
- *  sends data to external clients via the Network Message API
- * @defgroup API Network Message API
+ * sends data to external clients via the Network Message API
+ * defgroup API Network Message API
  */
 
 #include "JS8_UI/mainwindow.h"
@@ -13,6 +13,7 @@
  * This function acts as the primary router for the JS8Call API. It handles
  * RIG, STATION, RX, and TX commands by either updating the application
  * state or querying current values to send back to the client.
+ *
  * @param message The network message to process
  */
 void UI_Constructor::networkMessage(Message const &message) {
@@ -29,19 +30,62 @@ void UI_Constructor::networkMessage(Message const &message) {
     // Inspired by FLDigi
     // TODO: MAIN.RX - Turn on RX
     // TODO: MAIN.TX - Transmit
-    // TODO: MAIN.PTT - PTT
-    // TODO: MAIN.TUNE - Tune
-    // TODO: MAIN.HALT - Halt
     // TODO: MAIN.AUTO - Auto
-    // TODO: MAIN.SPOT - Spot
     // TODO: MAIN.HB - HB
 
+    // RIG.GET_PTT  - Returns PTT status
+    // RIG.SET_TUNE - Turns TUNE on and off
+    // RIG.TX_HALT  - Stops transmission immediately
     // RIG.GET_FREQ - Get the current Frequency
     // RIG.SET_FREQ - Set the current Frequency
     /**
      * @name RIG Commands
-     * @{
+     * RIG related API calls
      */
+     /** @{ */
+
+    /** @brief RIG.GET_PTT
+     * Returns the PTT status
+     * @note API 2.6+
+     */
+    if (type == "RIG.GET_PTT") {
+        bool isPTT = m_transmitting;
+        sendNetworkMessage("RIG.PTT_STATUS", "",
+            {
+                {"_ID", id},
+                {"PTT", QVariant(isPTT)},
+                {"MESSAGE", QVariant(isPTT ? m_currentMessage : "")}
+           });
+        return;
+    }
+
+    /** @brief RIG.SET_TUNE
+     * Turns TUNE on and off
+     * @note API 2.6+
+     */
+    if (type == "RIG.SET_TUNE") {
+        auto value = QVariant(message.value());
+        UI_Constructor::on_tuneButton_clicked(value.toBool());
+          sendNetworkMessage("RIG.SET_TUNE", "", {
+            {"_ID", id},
+            {"value", ui->tuneButton->isChecked()}
+          });
+        return;
+    }
+
+    /** @brief RIG.TX_HALT
+     * Stops transmission immediately, consider this an E-stop for the rig
+     * @note API 2.6+
+     */
+    if (type == "RIG.TX_HALT") {
+        auto value = QVariant(message.value());
+        UI_Constructor::on_stopTxButton_clicked();
+          sendNetworkMessage("RIG.TX_HALT", "", {
+            {"_ID", id},
+            {"value", ui->monitorTxButton->isChecked()}
+          });
+        return;
+    }
 
     /**
      * @brief RIG.GET_FREQ: Retrieves the current dial and offset frequencies.
@@ -111,15 +155,22 @@ void UI_Constructor::networkMessage(Message const &message) {
     }
     /** @} */ // End RIG Commands
 
+    // STATION refers to JS8Call station settings
     // STATION.GET_CALLSIGN - Get the current callsign
     // STATION.GET_GRID - Get the current grid locator
     // STATION.SET_GRID - Set the current grid locator
     // STATION.GET_INFO - Get the current station qth
     // STATION.SET_INFO - Set the current station qth
+    // STATION.GET_SPOT - Get the current spotting status
+    // STATION.SET_SPOT - Set the current spotting status
+    // STATION.GET_OS   - Get basic info about the OS we are running on
+    // STATION.VERSION  - Get the JS8Call version
     /**
      * @name STATION Commands
-     * @{
+     * STATION related API calls
+     * These calls refer to JS8Call station settings
      */
+    /** @{ */
 
     /** @brief STATION.GET_CALLSIGN: Returns the configured station callsign. */
     if (type == "STATION.GET_CALLSIGN") {
@@ -184,6 +235,67 @@ void UI_Constructor::networkMessage(Message const &message) {
                            });
         return;
     }
+
+    /** @brief STATION.VERSION
+     * Returns the JS8Call version
+     * @note API 2.6+
+     */
+    if (type == "STATION.VERSION") {
+        QString ver = version();
+        sendNetworkMessage("STATION.VERSION", "",
+            {
+                {"_ID", id},
+                {"VERSION", QVariant(ver)}
+            });
+        return;
+    }
+
+    /** @brief STATION.GET_OS
+     * Returns OS information for the station
+     * @note API 2.6+
+     *
+     * Thanks to N0GQ Jeff Francis
+     */
+    if(type == "STATION.GET_OS"){
+      sendNetworkMessage("STATION.GET_OS", "", {
+	      {"OS_NAME", QSysInfo::prettyProductName()},
+	      {"OS_KERNEL", QSysInfo::kernelType()},
+	      {"OS_KERNEL_VERSION", QSysInfo::kernelVersion()},
+	      {"_ID", id}
+        });
+        return;
+    }
+
+    /** @brief STATION.GET_SPOT
+     * Get the current spotting status
+     * @note API 2.6+
+     *
+     * Thanks to N0GQ Jeff Francis
+     */
+    if(type == "STATION.GET_SPOT") {
+        sendNetworkMessage("STATION.SPOT", "", {
+          {"value", ui->spotButton->isChecked()},
+	      {"_ID", id}
+        });
+        return;
+    }
+
+    /** @brief STATION.SET_SPOT
+     * Set the current spotting status
+     * @note API 2.6+
+     *
+     * Thanks to N0GQ Jeff Francis
+     */
+if(type == "STATION.SET_SPOT") {
+        auto value = QVariant(message.value());
+          UI_Constructor::on_spotButton_clicked(value.toBool());
+          sendNetworkMessage("STATION.SPOT", "", {
+            {"value", ui->spotButton->isChecked()},
+            {"_ID", id}
+          });
+          return;
+    }
+
     /** @} */ // End STATION Commands
 
     // RX.GET_CALL_ACTIVITY
@@ -192,8 +304,10 @@ void UI_Constructor::networkMessage(Message const &message) {
     // RX.GET_TEXT
     /**
      * @name RX Commands
-     * @{
+     * RX related API calls
+     * Refers to received data and activity
      */
+    /** @{ */
 
     /**
      * @brief RX.GET_CALL_ACTIVITY: Returns a list of active callsigns.
@@ -265,13 +379,17 @@ void UI_Constructor::networkMessage(Message const &message) {
     }
     /** @} */ // End RX Commands
 
-    // TX.GET_TEXT
-    // TX.SET_TEXT
-    // TX.SEND_MESSAGE
+    // TX.GET_TEXT - Retrieves the current TX text buffer.
+    // TX.SET_TEXT - Updates the TX text buffer with new content.
+    // TX.SEND_MESSAGE - Enqueues a message for transmission.
+    // TX.GET_QUEUE_DEPTH - Return the number of items in the transmit queue.
     /**
      * @name TX Commands
-     * @{
+     * TX related API calls
+     * Refers to transmitted data and activity
      */
+    /** @{ */
+
     /** @brief TX.GET_TEXT: Retrieves the current TX text buffer. */
     if (type == "TX.GET_TEXT") {
         sendNetworkMessage("TX.TEXT",
@@ -300,14 +418,31 @@ void UI_Constructor::networkMessage(Message const &message) {
             return;
         }
     }
+
+    /**
+     * @brief Return the number of items in the transmit queue.
+     * @note API 2.6+
+     * 
+     * Thanks to N0GQ Jeff Francis
+     */
+    if(type == "TX.GET_QUEUE_DEPTH"){
+      int depth = m_txMessageQueue.size();
+      if(m_transmitting && depth==0) depth=1;
+      sendNetworkMessage("TX.QUEUE_DEPTH", "", {
+	  {"_ID", id},
+	  {"DEPTH", QVariant(depth)}
+	});
+      return;
+    }
     /** @} */ // End TX Commands
 
     // MODE.GET_SPEED
     // MODE.SET_SPEED
     /**
      * @name MODE Commands
-     * @{
+     * MODE related API calls
      */
+    /** @{ */
     /** @brief MODE.GET_SPEED: Retrieves the current transmission speed mode. */
     if (type == "MODE.GET_SPEED") {
         sendNetworkMessage("MODE.SPEED", "",
@@ -335,7 +470,7 @@ void UI_Constructor::networkMessage(Message const &message) {
                 ui->actionModeJS8Ultra->setChecked(true);
             setupJS8();
         }
-        sendNetworkMessage("MODE.SPEED", "",
+        sendNetworkMessage("MODE.SET_SPEED", "",
                            {
                                {"_ID", id},
                                {"SPEED", m_nSubMode},
@@ -348,10 +483,10 @@ void UI_Constructor::networkMessage(Message const &message) {
     // INBOX.STORE_MESSAGE
     /**
      * @name INBOX Commands
-     * @{
+     * INBOX related API calls
      */
-    /** @brief INBOX.GET_MESSAGES: Retrieves messages for a specified callsign.
-     */
+    /** @{ */
+    /** @brief INBOX.GET_MESSAGES: Retrieves messages for a specified callsign. */
     if (type == "INBOX.GET_MESSAGES") {
         QString selectedCall =
             message.params().value("CALLSIGN", "").toString();
@@ -430,10 +565,13 @@ void UI_Constructor::networkMessage(Message const &message) {
     // WINDOW.RAISE
     /**
      * @name WINDOW Commands
-     * @{
+     * WINDOW related API calls
      */
+    /** @{ */
     /** @brief WINDOW.RAISE: Brings the main application window to the
-     * foreground. */
+     * foreground.
+     * NOTE: Some OSes block this from happening
+     */
     if (type == "WINDOW.RAISE") {
         setWindowState(Qt::WindowActive);
         activateWindow();
@@ -443,5 +581,5 @@ void UI_Constructor::networkMessage(Message const &message) {
 
     qCDebug(mainwindow_js8) << "Unable to process networkMessage:" << type;
 }
-/** @} */ // end of WINDOW Commands
+    /** @} */ // end of WINDOW Commands
 /** @} */ // end of API
