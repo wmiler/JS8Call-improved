@@ -61,8 +61,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - {os: ubuntu-22.04, arch: X64, packages: build-essential autoconf curl git cmake appstream libtool libxkbcommon-dev libudev-dev yasm libva-dev libpulse-dev libegl1-mesa-dev libgles2-mesa-dev libgbm-dev libgl1-mesa-dev libxkbcommon-x11-dev}
-          - {os: ubuntu-22.04-arm, arch: ARM64, packages: build-essential autoconf curl git cmake appstream libtool libxkbcommon-dev libudev-dev yasm libva-dev libpulse-dev libegl1-mesa-dev libgles2-mesa-dev libgbm-dev libgl1-mesa-dev libxkbcommon-x11-dev}
+          - {os: ubuntu-22.04, arch: X64, packages: build-essential autoconf curl git cmake pkg-config appstream libtool libxkbcommon-dev libudev-dev yasm libva-dev libpulse-dev libegl1-mesa-dev libgles2-mesa-dev libgbm-dev libgl1-mesa-dev libxkbcommon-x11-dev}
+          - {os: ubuntu-22.04-arm, arch: ARM64, packages: build-essential autoconf curl git cmake pkg-config appstream libtool libxkbcommon-dev libudev-dev yasm libva-dev libpulse-dev libegl1-mesa-dev libgles2-mesa-dev libgbm-dev libgl1-mesa-dev libxkbcommon-x11-dev}
 
     steps:
     - uses: actions/checkout@v5
