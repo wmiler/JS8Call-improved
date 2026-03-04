@@ -76,8 +76,7 @@ jobs:
 
     - name: Check gcc version
       run: |
-        whereis g++
-        g++12 --version
+        g++-12 --version
         
 # Move all of our cache checks here, so we know if we need to free bunches of disk space
     - name: Cache Check libusb 1.0.29
