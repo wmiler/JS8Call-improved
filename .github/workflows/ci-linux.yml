@@ -76,7 +76,10 @@ jobs:
 
     - name: Check gcc version
       run: |
-        g++-12 --version
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 120
+        sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 120
+        gcc --version
+        g++ --version
         
 # Move all of our cache checks here, so we know if we need to free bunches of disk space
     - name: Cache Check libusb 1.0.29
