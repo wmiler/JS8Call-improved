@@ -116,6 +116,13 @@ int main(int argc, char *argv[]) {
             a.translate("main", "configuration"));
         parser.addOption(cfg_option);
 
+        // support for external stylesheets
+        QCommandLineOption style_option(
+            QStringList{} << "s" << "style",
+            a.translate("main", "Where <stylesheet> is an existing one."),
+            a.translate("main", "stylesheet"));
+        parser.addOption(style_option);
+
         QCommandLineOption test_option(
             QStringList{} << "test-mode",
             a.translate("main", "Writable files in test location.  Use with "
@@ -137,6 +144,25 @@ int main(int argc, char *argv[]) {
 
         if (parser.isSet(output_option)) {
             new TraceFile(parser.value(output_option));
+        }
+      
+        // styles
+        if (parser.isSet(style_option)) {
+            auto temp_name = parser.value(style_option);
+            if (!temp_name.isEmpty()) {
+                if (temp_name.contains(QRegularExpression{R"([\\/,])"})) {
+                    std::cerr << "Invalid file location - \\ & / not allowed"
+                              << std::endl;
+                    parser.showHelp(-1);
+                }
+
+            qCDebug(main_js8) << temp_name + " - Stylesheet name";
+            QFile file(temp_name);
+            if (file.open(QFile::ReadOnly)) {
+              qCDebug(main_js8) << temp_name + " - Stylesheet opened";
+              a.setStyleSheet(QLatin1String(file.readAll()));
+            }
+          }
         }
 
         QStandardPaths::setTestModeEnabled(parser.isSet(test_option));
