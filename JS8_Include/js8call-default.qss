@@ -1,0 +1,295 @@
+/* JS8Call Default Style Sheet */
+/* Configuration.ui */
+
+QPushButton:checked#test_PTT_button {
+        background-color: red;
+        border-style    : outset;
+        border-width: 1px;
+        border-radius: 5px;
+        border-color: black;
+        min-width: 5em;
+        padding: 3px;
+}
+
+QLabel#tableSelectionBackgroundLabel {
+  background-color: #3498db;
+}
+
+QLabel#labCQ {
+  background-color: #66ff66;
+}
+
+QLabel#primaryHighlightLabel {
+  background-color: #f1c40f;
+}
+
+QLabel#tableForegroundLabel {
+  background-color: white;
+}
+
+QLabel#tableBackgroundLabel {
+  background-color: white;
+}
+
+QLabel#cqMessagesLabel {
+  background-color: #66ff66;
+}
+
+QLabel#labMyCall {
+  background-color: #ff6666;
+}
+
+QLabel#secondaryHighlightLabel {
+  background-color: #ffff66;
+}   
+
+QLabel#rxLabel {
+  background-color: #ffeaa7;
+}
+
+QLabel#txForegroundLabel {
+  background-color: #ffeaa7;
+}
+
+QLabel#rxForegroundLabel {
+  background-color: #ffeaa7;
+}
+
+QLabel#composeLabel {
+  background-color: white;
+}
+
+/* mainwindow.ui */
+
+QFrame#logWidget {
+  background-color: black;
+}
+
+QFrame#frame {
+  background-color: black;
+  color: white;
+}
+QPushButton#dialFreqUpButton {
+        background-color:black  ;
+        background-image:url(":/images/artwork/up.png");
+        background-position: center center;
+        background-repeat:no-repeat;
+        border:1px solid;
+        border-radius:2px;
+}
+
+QLabel#labDialFreqOffset {
+  font-size: 14pt;
+  line-height:12pt;
+  color: white;
+}
+
+QFrame#frame_6 {
+  background-color: black;
+}
+
+QLabel#labCallsign {
+  font-size: 14pt;
+  line-height:12pt;
+  color: white;
+}
+
+Qlabel#labUTC {
+  font-size: 14pt;
+  line-height:12pt;
+  color: white;
+}
+
+QFrame:QPushButton#buttonGrid {
+  background-color: lightgray;
+  padding:0.25em 0.25em; font-weight:normal;
+  border-style:solid;
+  border-width:0px;
+  border-radius:2px;
+}
+
+QFrame:QPushButton:checked#buttonGrid {
+  background-color: #6699ff;
+  padding:0.25em 0.25em; font-weight:bold;
+  border-style:solid;
+  border-width:0px;
+  border-radius:2px;
+}
+
+QPushButton#monitorTxButton {
+        background-color:lightgray  ;
+        padding:0.25em 0.25em; font-weight:normal;
+        border-style:solid;
+        border-width:0px;
+        border-radius:2px;
+}
+
+QPushButton:checked#monitorTxButton {
+  background-color:#22FF22;
+}
+
+QPushButton#monitorTxButton[transmitting="true"] {
+  background-color:#FF2222;
+}
+
+QPushButton#monitorButton {
+        background-color:lightgray  ;
+        padding:0.25em 0.25em; font-weight:normal;
+        border-style:solid;
+        border-width:0px;
+        border-radius:2px;
+}
+
+QPushButton:checked#monitorButton {
+  background-color:#22FF22;
+}
+
+QPushButton#logQSOButton {
+        background-color:lightgray  ;
+        padding:0.25em 0.25em; font-weight:normal;
+        border-style:solid;
+        border-width:0px;
+        border-radius:2px;
+}
+QPushButton:checked#logQSOButton {  
+  background-color:#22FF22;
+}
+
+QPushButton#tuneButton {
+        background-color:lightgray  ;
+        padding:0.25em 0.25em; font-weight:normal;
+        border-style:solid;
+        border-width:0px;
+        border-radius:2px;
+}
+QPushButton:checked#tuneButton {
+  background-color: #6699ff;
+}
+
+QPushButton#modeButton {
+        background-color: #6699ff  ;
+        padding:0.25em 0.25em; font-weight:normal;
+        border-style:solid;
+        border-width:0px;
+        border-radius:2px;
+}
+QPushButton:checked#modeButton {
+  background-color: #6699ff;
+}
+
+QPushButton#spotButton {
+        background-color:lightgray  ;
+        padding:0.25em 0.25em; font-weight:normal;
+        border-style:solid;
+        border-width:0px;
+        border-radius:2px;
+}
+QPushButton:checked#spotButton {
+  background-color: #6699ff;
+}
+
+QTextEdit#textEditRx {
+  background-color: #ffeaa7;
+}
+
+TransmitTextEdit#textEditTx {
+  background-color: white;
+}
+
+TransmitTextEdit:QTextEdit[readOnly="true"] {
+        background: #EEE;
+        font-style: italic;
+}
+
+TransmitTextEdit:QTextEdit[transmitting="true"] {
+        background: #EEE;
+        font-style: italic;
+}
+
+QPushButton#hbMacroButton {
+        background-color:lightgray  ;
+        padding:0.25em 0.25em; font-weight:normal;
+        border-style:solid;
+        border-width:0px;
+        border-radius:2px;
+}
+QPushButton:checked#hbMacroButton {
+   font-weight:bold;
+   color:black;
+}
+
+QPushButton#cqMacroButton {
+        background-color:lightgray  ;
+        padding:0.25em 0.25em; font-weight:normal;
+        border-style:solid;
+        border-width:0px;
+        border-radius:2px;
+}
+QPushButton:checked#cqMacroButton {
+   font-weight:bold;
+   color:black;
+}
+
+QPushButton#startTxMacroButton {
+        background-color:lightgray  ;
+        padding:0.25em 0.25em; font-weight:normal;
+        border-style:solid;
+        border-width:0px;
+        border-radius:2px;
+}
+QPushButton:checked#startTxMacroButton {
+   background-color: #22FF22;
+   color: #222;
+}
+QPushButton#startTxMacroButton[transmitting="true"] {
+   background-color: #FF2222;
+   color: #222;
+}
+
+QWidget#widget_3 {
+  background-color: black;
+}
+
+QPushButton#readFreq {
+  font-family: helvetica;
+  font-size: 9pt;
+  font-weight: bold;
+  background-color: white;
+  color: black;
+  border-style: solid;
+  border-width:0px;
+  border-color: gray;
+  min-width:40px;
+  min-height:30px;
+}
+
+QPushButton#readFreq[state="warning"] {
+  background-color: orange;
+}
+
+QPushButton#readFreq[state="ok"] {
+  background-color: #22FF22;
+}
+
+SignalMeter#signal_meter_widget {
+    QLabel {
+      color: white;
+    }
+}
+
+QFrame#logWidget {
+  background: black;
+}
+
+/* MessagePanel.ui */
+
+QTextEdit#messageTextEdit {
+  background-color: #ffeaa7;
+}
+
+/* WideGraph.ui */
+
+QPushButton:checked#autoDriftButton {
+  font-weight:bold;
+  color:black;
+}
