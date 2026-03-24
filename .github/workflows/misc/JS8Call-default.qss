@@ -1,14 +1,33 @@
 /* JS8Call Default Style Sheet */
+
+/* Reset a few things to catch edge cases as reported by Rob Ruchte (Manjaro with Gnome) */
+
+* {
+  font-size: 11pt;
+  background-color: white;
+  color: #242424;
+ 	selection-background-color: #242424;
+ 	selection-color: white;
+}
+
+/* QWidget */
+/* { */
+/* 	background-color: #242424; */
+/* 	color: #fff; */
+/* 	selection-background-color: #fff; */
+/* 	selection-color: #000; */
+/* } */
+
 /* Configuration.ui */
 
 QPushButton:checked#test_PTT_button {
-        background-color: red;
-        border-style    : outset;
-        border-width: 1px;
-        border-radius: 5px;
-        border-color: black;
-        min-width: 5em;
-        padding: 3px;
+  background-color: red;
+  border-style    : outset;
+  border-width: 1px;
+  border-radius: 5px;
+  border-color: black;
+  min-width: 5em;
+  padding: 3px;
 }
 
 QLabel#tableSelectionBackgroundLabel {
@@ -69,13 +88,14 @@ QFrame#frame {
   background-color: black;
   color: white;
 }
+
 QPushButton#dialFreqUpButton {
-        background-color:black  ;
-        background-image:url(":/images/artwork/up.png");
-        background-position: center center;
-        background-repeat:no-repeat;
-        border:1px solid;
-        border-radius:2px;
+  background-color:black  ;
+  background-image:url(":/images/artwork/up.png");
+  background-position: center center;
+  background-repeat:no-repeat;
+  border:1px solid;
+  border-radius:2px;
 }
 
 QLabel#labDialFreqOffset {
@@ -117,11 +137,11 @@ QFrame:QPushButton:checked#buttonGrid {
 }
 
 QPushButton#monitorTxButton {
-        background-color:lightgray  ;
-        padding:0.25em 0.25em; font-weight:normal;
-        border-style:solid;
-        border-width:0px;
-        border-radius:2px;
+  background-color:lightgray  ;
+  padding:0.25em 0.25em; font-weight:normal;
+  border-style:solid;
+  border-width:0px;
+  border-radius:2px;
 }
 
 QPushButton:checked#monitorTxButton {
@@ -133,11 +153,11 @@ QPushButton#monitorTxButton[transmitting="true"] {
 }
 
 QPushButton#monitorButton {
-        background-color:lightgray  ;
-        padding:0.25em 0.25em; font-weight:normal;
-        border-style:solid;
-        border-width:0px;
-        border-radius:2px;
+  background-color:lightgray  ;
+  padding:0.25em 0.25em; font-weight:normal;
+  border-style:solid;
+  border-width:0px;
+  border-radius:2px;
 }
 
 QPushButton:checked#monitorButton {
@@ -145,45 +165,49 @@ QPushButton:checked#monitorButton {
 }
 
 QPushButton#logQSOButton {
-        background-color:lightgray  ;
-        padding:0.25em 0.25em; font-weight:normal;
-        border-style:solid;
-        border-width:0px;
-        border-radius:2px;
+  background-color:lightgray  ;
+  padding:0.25em 0.25em; font-weight:normal;
+  border-style:solid;
+  border-width:0px;
+  border-radius:2px;
 }
+
 QPushButton:checked#logQSOButton {  
   background-color:#22FF22;
 }
 
 QPushButton#tuneButton {
-        background-color:lightgray  ;
-        padding:0.25em 0.25em; font-weight:normal;
-        border-style:solid;
-        border-width:0px;
-        border-radius:2px;
+  background-color:lightgray  ;
+  padding:0.25em 0.25em; font-weight:normal;
+  border-style:solid;
+  border-width:0px;
+  border-radius:2px;
 }
+
 QPushButton:checked#tuneButton {
   background-color: #6699ff;
 }
 
 QPushButton#modeButton {
-        background-color: #6699ff  ;
-        padding:0.25em 0.25em; font-weight:normal;
-        border-style:solid;
-        border-width:0px;
-        border-radius:2px;
+  background-color: #6699ff  ;
+  padding:0.25em 0.25em; font-weight:normal;
+  border-style:solid;
+  border-width:0px;
+  border-radius:2px;
 }
+
 QPushButton:checked#modeButton {
   background-color: #6699ff;
 }
 
 QPushButton#spotButton {
-        background-color:lightgray  ;
-        padding:0.25em 0.25em; font-weight:normal;
-        border-style:solid;
-        border-width:0px;
-        border-radius:2px;
+  background-color:lightgray;
+  padding:0.25em 0.25em; font-weight:normal;
+  border-style:solid;
+  border-width:0px;
+  border-radius:2px;
 }
+
 QPushButton:checked#spotButton {
   background-color: #6699ff;
 }
@@ -192,58 +216,65 @@ QTextEdit#textEditRx {
   background-color: #ffeaa7;
 }
 
+/* Custom Widget is defined in JS8_Main/TransmitTextEdit.h */
+
 TransmitTextEdit#textEditTx {
   background-color: white;
+  font-size: 11pt;
 }
 
 TransmitTextEdit:QTextEdit[readOnly="true"] {
-        background: #EEE;
-        font-style: italic;
+  background: #EEE;
+  font-style: italic;
 }
 
 TransmitTextEdit:QTextEdit[transmitting="true"] {
-        background: #EEE;
-        font-style: italic;
+  background: #EEE;
+  font-style: italic;
 }
 
 QPushButton#hbMacroButton {
-        background-color:lightgray  ;
-        padding:0.25em 0.25em; font-weight:normal;
-        border-style:solid;
-        border-width:0px;
-        border-radius:2px;
+  background-color:lightgray;
+  padding:0.25em 0.25em; font-weight:normal;
+  border-style:solid;
+  border-width:0px;
+  border-radius:2px;
 }
+
 QPushButton:checked#hbMacroButton {
-   font-weight:bold;
-   color:black;
+  font-weight:bold;
+  color:black;
 }
 
 QPushButton#cqMacroButton {
-        background-color:lightgray  ;
-        padding:0.25em 0.25em; font-weight:normal;
-        border-style:solid;
-        border-width:0px;
-        border-radius:2px;
+  background-color:lightgray;
+  padding:0.25em 0.25em; font-weight:normal;
+  border-style:solid;
+  border-width:0px;
+  border-radius:2px;
 }
+
 QPushButton:checked#cqMacroButton {
-   font-weight:bold;
-   color:black;
+  font-weight:bold;
+  color:black;
 }
 
 QPushButton#startTxMacroButton {
-        background-color:lightgray  ;
-        padding:0.25em 0.25em; font-weight:normal;
-        border-style:solid;
-        border-width:0px;
-        border-radius:2px;
+  background-color:lightgray;
+  padding:0.25em 0.25em; font-weight:normal;
+  border-style:solid;
+  border-width:0px;
+  border-radius:2px;
 }
+
 QPushButton:checked#startTxMacroButton {
-   background-color: #22FF22;
-   color: #222;
+  background-color: #22FF22;
+  color: #222;
 }
+
 QPushButton#startTxMacroButton[transmitting="true"] {
-   background-color: #FF2222;
-   color: #222;
+  background-color: #FF2222;
+  color: #222;
 }
 
 QWidget#widget_3 {
@@ -271,14 +302,18 @@ QPushButton#readFreq[state="ok"] {
   background-color: #22FF22;
 }
 
-SignalMeter#signal_meter_widget {
-    QLabel {
-      color: white;
-    }
-}
-
 QFrame#logWidget {
   background: black;
+}
+
+/* Custom Widget is defined in JS8_Main/SignalMeter.h */
+/* Meter component, which displays to the right of the scale, as a  */
+/* level gauge with a peak hold indicator. Displays green when the  */
+/* level is good, yellow when it's too low, red when it's too high. */
+
+SignalMeter#signal_meter_widget {
+  color: white;
+  font-size: 11pt;
 }
 
 /* MessagePanel.ui */
