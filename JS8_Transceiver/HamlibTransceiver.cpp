@@ -1142,10 +1142,11 @@ void HamlibTransceiver::set_conf(char const *item, char const *value) {
 
 QByteArray HamlibTransceiver::get_conf(char const *item) {
     token_t token = rig_token_lookup(rig_.data(), item);
-    QByteArray value{128, '\0'};
+    constexpr int valueSize = 128;
+    QByteArray value{valueSize, '\0'};
     if (RIG_CONF_END != token) // only get if valid for rig model
     {
-        error_check(rig_get_conf(rig_.data(), token, value.data()),
+        error_check(rig_get_conf2(rig_.data(), token, value.data(), valueSize),
                     tr("getting a configuration item"));
     }
     return value;
