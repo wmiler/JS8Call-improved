@@ -4,27 +4,31 @@
 <tbody>
 <tr class="odd">
 <td><img src="JS8Call_User_Guide_html_e18288a9.png" style="width:0.7465in;height:0.7465in" /></td>
-<td><p><span id="anchor"></span><span id="anchor-1"></span>JS8Call de KN4CRD</p><p>2026-03-12 - v2.6 
+<td><p><span id="anchor"></span><span id="anchor-1"></span>JS8Call de KN4CRD</p><p>2026-03-12 - v3.0.0
 <!-- TODO: change to User Guide release date following approval and remove 'partially updated' warning below | assignee: @Aqueum --> </p></td>
 </tr>
 </tbody>
 </table>
-**This is the User Guide from the repo master and contains items currently in development. We have marked items not released yet.**
+<b>This is the User Guide from the repo master and contains items currently in development. We have marked items that have not been released yet.</b>
 <hr>
-To save an offline copy of the User Guide as PDF [download from here](https://js8call-improved.github.io/downloads/JS8Call_User_Guide.pdf)
+
+To save an offline copy of the User Guide as PDF download from [here](https://js8call-improved.github.io/downloads/JS8Call_User_Guide.pdf)
+
 <hr>
- JS8Call is an experiment in combining the robustness of FT8 (a weak-signal mode by K1JT) with a messaging and network protocol layer for weak signal *communication*. The open source software is designed for connecting amateur radio operators who are operating under weak signal conditions and offers real-time keyboard-to-keyboard messaging, stored (inbox) messaging, message relay, and automatic station announcements. JS8Call is heavily inspired by [WSJT-X](https://wsjt.sourceforge.io/wsjtx.html), [Fldigi](http://www.w1hkj.org/), and [FSQCall](http://www.qsl.net/zl1bpu/MFSK/FSQweb.htm) and would not exist without the hard work and dedication of the many developers in the amateur radio community.
+
+ JS8Call is an experiment in combining the robustness of FT8 (a weak-signal mode by K1JT) with a messaging and network protocol layer for weak signal <b>communication</b>. The open source software is designed for connecting amateur radio operators who are operating under weak signal conditions and offers real-time keyboard-to-keyboard messaging, stored (inbox) messaging, message relay, and automatic station announcements. JS8Call is heavily inspired by [WSJT-X](https://wsjt.sourceforge.io/wsjtx.html), [Fldigi](http://www.w1hkj.org/), and [FSQCall](http://www.qsl.net/zl1bpu/MFSK/FSQweb.htm) and would not exist without the hard work and dedication of the many developers in the amateur radio community.
 
 <p>
-
-**JS8Call stands on the shoulders of giants...the takeoff angle is better up there.**
+ 
+ **JS8Call stands on the shoulders of giants...the takeoff angle is better up there.**
 <p>
 
 <hr>
-<center>Read more on the original [design inspiration here.](https://github.com/jsherer/ft8call)</center>
 
-<center>For release announcements and discussion, join the JS8Call mailing list here: [https://groups.io/g/js8Call](https://groups.io/g/js8call)
-</center>
+Read more on the original [design inspiration here.](https://github.com/jsherer/ft8call)
+
+For release announcements and discussion, join the JS8Call mailing list here: [https://groups.io/g/js8Call](https://groups.io/g/js8call)
+
 <hr>
 
 <center><img src="JS8Call_User_Guide_html_4c60ef75.jpg" style="width:5.1866in;height:3.7374in">
@@ -32,6 +36,7 @@ To save an offline copy of the User Guide as PDF [download from here](https://js
  © 2020 Jordan Sherer - This work is openly licensed via [*CC BY-SA*](https://creativecommons.org/share-your-work/cclicenses/).
 </center>
 </div>
+
 
  ## History
 
@@ -105,10 +110,10 @@ To save an offline copy of the User Guide as PDF [download from here](https://js
 - **January 6, 2026** - Version 2.5.0 released, renamed back to JS8Call. 
   See [Release notes v2.5.0](https://github.com/JS8Call-improved/JS8Call-improved/releases/tag/release%2F2.5.0)
 
-- **TBD** - Version 2.6.0 - Feature and bug fix release.
-  See Release notes v2.6.0
+- **TBD** - Version 3.0.0 - Feature and bug fix release.
+  See Release notes v3.0.0
 
-<!-- Remember to point to the 2.6.0 release tag when we release -->
+<!-- Remember to point to the 3.0.0 release tag when we release -->
 
 ## Notice
 
@@ -168,7 +173,7 @@ Make sure your rig is set to upper sideband (USB) mode for every band. If you ar
 The JS8 modulator is a constant envelope, full-duty modulation that transmits in 12.6 second frames in normal speed. Because of the dead air between transmission frames, multi-frame messages can be classified as 84% duty on a 15-second window (12.6 / 15 = 0.84) for normal and slow (25.28 / 30 = 0.84), 79% for fast on a 10-second window (7.9 / 10 = 0.79), 65% for JS8 40 (formerly "Turbo") on a 6-second window (3.95 / 6 = 0.653).
 
 > [!NOTE]
-JS8 60 is an experimental mode introduced in 2.6 and later; it uses a 3-second Tx on a 4-second frame interval, so is technically 75% duty cycle. However, these specs may change as JS8 60 is more cpu intensive than other modes and can be unreliable.
+JS8 60 is an experimental mode introduced in 3.0 and later; it uses a 3-second Tx on a 4-second frame interval, so is technically 75% duty cycle. However, these specs may change as JS8 60 is more cpu intensive than other modes and can be unreliable.
 
 Please make note of the power restrictions your transceiver manufacturer recommends for full-duty digital transmissions. When in doubt, use only a maximum of 50% of your rig's power output to "save your finals".
 
@@ -191,7 +196,7 @@ If you've used FSQ, Fldigi or WSJT-X before, you'll feel right at home with JS8C
 
 ### Mode Speed
 
-JS8Call 2.0 introduced two new faster mode speeds for QSOs and 2.1 introduced a slow mode. 2.6 and later introduced JS8 60 and renamed "Turbo" to JS8 40, the two faster modes designated by approximate words-per-minute transmission speed. As noted in the table below, JS8 40 and JS8 60 do not allow participation in the Heartbeat (HB) networking system. These two modes are not suitable for sending MSG's and are more designed for faster keyboard-to-keyboard QSO in good conditions. The five speeds now available in JS8 are:
+JS8Call 2.0 introduced two new faster mode speeds for QSOs and 2.1 introduced a slow mode. 3.0 and later introduced JS8 60 and renamed "Turbo" to JS8 40, the two faster modes designated by approximate words-per-minute transmission speed. As noted in the table below, JS8 40 and JS8 60 do not allow participation in the Heartbeat (HB) networking system. These two modes are not suitable for sending MSG's and are more designed for faster keyboard-to-keyboard QSO in good conditions. The five speeds now available in JS8 are:
 
 |Name | Period/s | Bandwidth/Hz | Speed/WPM | Sensitivity/dB|
 |-------|:----:|:-----:|:----:|:----:|
@@ -199,8 +204,8 @@ JS8Call 2.0 introduced two new faster mode speeds for QSOs and 2.1 introduced a 
 |Normal | 15 | 50  | 16 | -24|
 |Fast   | 10 | 80  | 24 | -20|
 
->[!NOTE]
->JS 60 available in 2.6.0+, JS8 40 renamed from Turbo
+> [!NOTE]
+> JS 60 available in 3.0.0+, JS8 40 renamed from Turbo
 >
 > Faster but less reliable modes designated by transmission speed in wpm. Heartbeat networking is disabled with these modes.
 > |Name | Period/s | Bandwidth/Hz | Speed/WPM | Sensitivity/dB|
@@ -243,7 +248,7 @@ Normal FT8 character restrictions **do not** apply! The extended character set i
 
 As you type your message you'll see the send button display the transmission time it'll take to send your complete message. All you have to do is click send (or hit enter) to start transmitting on the next interval. As each frame is transmitted one after the other, the button will update with the amount of time left to transmit the message. JS8Call 2.0 supports typeahead, so you can start transmitting and continue typing your message as each frame is transmitted. Checksummed messages like MSG or Relays cannot use typeahead.
 
-Starting with JS8Call 2.6, the transmit message box can highlight structured parts of a message as colored pills while you type. This includes recipient callsigns, relay paths, group callsigns, and common commands such as directed-message commands. Hovering over a pill shows a short tooltip explaining that part of the message. This feature is enabled by default and requires no setup. If you prefer plain text, open `Settings -> UI -> Composition` and clear **Display callsigns and commands as pills**.
+Starting with JS8Call 3.0, the transmit message box can highlight structured parts of a message as colored pills while you type. This includes recipient callsigns, relay paths, group callsigns, and common commands such as directed-message commands. Hovering over a pill shows a short tooltip explaining that part of the message. This feature is enabled by default and requires no setup. If you prefer plain text, open `Settings -> UI -> Composition` and clear **Display callsigns and commands as pills**.
 
 <img src="pill.png">
 
@@ -354,11 +359,11 @@ There are special directed messages that you can send to stations to have them a
   - When received in its entirety, the destination station will send an `ACK` reply to the message
   - Optionally, this message can be relayed to its final destination through multiple relay stations by prefixing additional callsigns to the message:
 
-    - `KN4CRD\>HELLO!` (will send the message to KN4CRD)
+    - `KN4CRD>HELLO!` (will send the message to KN4CRD)
 
-    - `KN4CRD\>DR4CNK\>HELLO!` (will send the message to DR4CNK through KN4CRD)
+    - `KN4CRD>DR4CNK>HELLO!` (will send the message to DR4CNK through KN4CRD)
 
-    - `KN4CRD\>DR4CNK\>J0Y\>HELLO!` (will send the message to J0Y through DR4CNK through KN4CRD)
+    - `KN4CRD>DR4CNK>J0Y>HELLO!` (will send the message to J0Y through DR4CNK through KN4CRD)
 
   - Stations will respond to a subset of commands issued through forwarded messages (SNR, INFO, GRID, MSG, MSG TO:, etc) and will reply using the relay path provided.
 
@@ -416,7 +421,7 @@ If we wanted to ask DR4CNK what their station information was, we'd send:
 
 If we wanted to transmit a "relay" message to OH8STN through DR4CNK, we could use the relay command and send:
 
-- `DR4CNK\>OH8STN\>HELLO JULIAN!`
+- `DR4CNK>OH8STN>HELLO JULIAN!`
 
   - During relay, at each hop the originating sender's call is appended to the message.
 
@@ -424,11 +429,11 @@ If we wanted to transmit a "relay" message to OH8STN through DR4CNK, we could us
 
     - KN4 station sends:
 
-        `KN4CRD: DR4CNK\>OH8STN\>HELLO JULIAN!`
+        `KN4CRD: DR4CNK>OH8STN>HELLO JULIAN!`
 
     - DR4 station relays:
 
-        ` DR4CNK: OH8STN\>HELLO JULIAN! DE KN4CRD`
+        ` DR4CNK: OH8STN>HELLO JULIAN! DE KN4CRD`
 
 You can also mix and match standard and free text messages, but most of the time you won't need to.
 
@@ -923,7 +928,7 @@ via [https://sourceforge.net/p/wsjt/mailman/message/36224507/](https://sourcefor
 If you're having trouble, head over to the troubleshooting chatroom for help: [JS8Call email list](https://js8call.groups.io/g/main), [Github Discussions](https://github.com/orgs/JS8Call-improved/discussions) or email Jordan directly: [kn4crd@gmail.com](mailto:kn4crd@gmail.com)
 
 > [!NOTE]
-> Starting with the 2.6.0 release, there is a new `Diagnostics` tab on the main Settings screen. Information from this sreen may be requested when you are submitting an issue or bug report.
+> Starting with the 3.0.0 release, there is a new `Diagnostics` tab on the main Settings screen. Information from this sreen may be requested when you are submitting an issue or bug report.
 
 ### Common Problems & Solutions
 

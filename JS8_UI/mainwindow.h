@@ -55,6 +55,7 @@
 #include "JS8_UI/MessagePanel.h"
 #include "LogQSO.h"
 #include "MessageReplyDialog.h"
+#include "styles.h"
 #include "ui_mainwindow.h"
 
 #include <QAbstractSocket>
@@ -98,6 +99,7 @@
 #include <QSoundEffect>
 #include <QStandardPaths>
 #include <QStringBuilder>
+#include <QStyleFactory>
 #include <QTableWidget>
 #include <QTextEdit>
 #include <QThread>
@@ -231,7 +233,6 @@ class UI_Constructor : public QMainWindow {
     void setXIT(int n);
     void qsy(int hzDelta);
     void onDriftChanged(qint64 new_drift_ms);
-    void setFreqOffsetForRestore(int freq, bool shouldRestore);
     bool tryRestoreFreqOffset();
     void changeFreq(int);
 
@@ -655,14 +656,18 @@ class UI_Constructor : public QMainWindow {
 
     char m_msg[100][80];
 
-    // labels in status bar
+    // labels and widgets in status and header bar
     QLabel tx_status_label;
     QLabel config_label;
     QLabel mode_label;
+    QLabel frequency_label;
+    QLabel auto_reply_label;
     QLabel last_tx_label;
     QLabel auto_tx_label;
     QProgressBar progressBar;
     QLabel wpm_label;
+    Styles::OffsetSliderWidget *freqOffsetWidget = nullptr;
+    int m_sliderFreqBeforeHB = 0;
 
     // QPointer<QProcess> proc_js8;
 
@@ -926,8 +931,6 @@ class UI_Constructor : public QMainWindow {
      */
     QHash<QString, QDateTime> m_aprsRelayDedupCache;
     QSet<QString> m_callSeenHeartbeat; // call
-    int m_previousFreq;
-    bool m_shouldRestoreFreq;
     bool m_bandHopped;
     Frequency m_bandHoppedFreq;
 

@@ -89,12 +89,12 @@ jobs:
         path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/ffmpeg
         key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-ffmpeg713
 
-    - name: Cache Check Hamlib 4.7.0
+    - name: Cache Check Hamlib 4.7.1
       id: cache-hamlib
       uses: actions/cache/restore@v5
       with:
         path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/hamlib
-        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-hamlib470
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-hamlib471
 
     - name: Cache Check fftw 3.3.10
       id: cache-fftw
@@ -216,21 +216,24 @@ jobs:
         path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/ffmpeg
 
 ## Hamlib official release
-    - name: Build/Install Hamlib 4.7.0
-      if: steps.cache-hamlib.outputs.cache-hit != 'true'
-      id: install-hamlib
-      uses: robinraju/release-downloader@v1.12
-      with:
-        repository: 'hamlib/hamlib'
-        fileName: 'hamlib-4.7.0.tar.gz '
-        tag: '4.7.0'
-        extract: true
-        out-file-path: /tmp/hamlib
+#    - name: Build/Install Hamlib 4.7.0
+#      if: steps.cache-hamlib.outputs.cache-hit != 'true'
+#      id: install-hamlib
+#      uses: robinraju/release-downloader@v1.12
+#      with:
+#        repository: 'hamlib/hamlib'
+#        fileName: 'hamlib-4.7.0.tar.gz '
+#        tag: '4.7.0'
+#        extract: true
+#        out-file-path: /tmp/hamlib
 
-    - name: Build Hamlib 4.7.0 with debug flags
+    - name: Build Hamlib 4.7.1 with debug flags
       if: steps.cache-hamlib.outputs.cache-hit != 'true'
       run: |
-        cd /tmp/hamlib/hamlib-4.7.0/
+        curl --location --output /tmp/hamlib-4.7.1.tar.gz https://github.com/Hamlib/Hamlib/releases/download/4.7.1/hamlib-4.7.1.tar.gz
+        cd /tmp
+        tar zxf hamlib-4.7.1.tar.gz
+        cd /tmp/hamlib-4.7.1/
         ./configure --prefix=${GITHUB_WORKSPACE}/local/hamlib --no-create --no-recursion CFLAGS="-g -O0 -fPIC"
         ./config.status
         make -j
@@ -240,7 +243,7 @@ jobs:
       if: steps.cache-hamlib.outputs.cache-hit != 'true'
       uses: actions/cache/save@v5
       with:
-        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-hamlib470
+        key: ${{ runner.os }}-${{ steps.which-os.outputs.thisos }}-${{ runner.arch }}-hamlib471
         path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/hamlib
 
  ## fftw

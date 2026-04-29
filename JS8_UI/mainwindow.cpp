@@ -189,6 +189,9 @@ void UI_Constructor::on_the_minute() {
 
     if (m_config.watchdog()) {
         incrementIdleTimer();
+        if (!m_tx_watchdog && m_idleMinutes >= m_config.watchdog()) {
+            tx_watchdog(true);
+        }
     } else {
         tx_watchdog(false);
     }
@@ -513,8 +516,8 @@ void UI_Constructor::readSettings() {
     m_settings->beginGroup("Common");
 
     // set the frequency offset
-    setFreqOffsetForRestore(
-        m_settings->value("Freq", Default::FREQUENCY).toInt(), false); // XXX
+    changeFreq(
+        m_settings->value("Freq", Default::FREQUENCY).toInt()); // XXX
 
     setSubmode(m_settings->value("SubMode", Default::SUBMODE).toInt());
     ui->actionModeJS8HB->setChecked(
@@ -854,7 +857,7 @@ void UI_Constructor::on_actionSetOffset_triggered() {
         return;
     }
 
-    setFreqOffsetForRestore(offset, false);
+    changeFreq(offset);
 }
 
 void UI_Constructor::on_actionShow_Fullscreen_triggered(bool checked) {
@@ -1334,13 +1337,16 @@ void UI_Constructor::displayDialFrequency() {
     auto const &band_name = m_config.bands()->find(dial_frequency);
 
     auto sFreq = Radio::pretty_frequency_MHz_string(dial_frequency);
-    ui->currentFreq->setDigitCount(sFreq.length());
-    ui->currentFreq->display(sFreq);
+    ui->currentFreq->setText(sFreq);
 
     if (m_splitMode && m_transmitting) {
         audio_frequency += m_XIT;
     }
-    ui->labDialFreqOffset->setText(QString("%1 Hz").arg(audio_frequency));
+
+    freqOffsetWidget->setValue(audio_frequency);
+
+    auto const onAir = dial_frequency + audio_frequency;
+        frequency_label.setText(QString("Freq: %1").arg(Radio::pretty_frequency_MHz_string(onAir)));
 }
 
 void UI_Constructor::statusChanged() { statusUpdate(); }
@@ -1383,35 +1389,71 @@ void UI_Constructor::createStatusBar() // createStatusBar
 {
     tx_status_label.setAlignment(Qt::AlignCenter);
     tx_status_label.setMinimumSize(QSize{150, 18});
-    tx_status_label.setStyleSheet("QLabel{background-color: #22ff22}");
-    tx_status_label.setFrameStyle(QFrame::Panel | QFrame::Sunken);
+    tx_status_label.setStyleSheet(txStatusLabelStyle(TxStatusAppearance::Receiving));
     statusBar()->addWidget(&tx_status_label);
+
+    last_tx_label.setAlignment(Qt::AlignCenter);
+    last_tx_label.setMinimumSize(QSize{150, 18});
+    last_tx_label.setStyleSheet(statusLabelStyle());
+    statusBar()->addWidget(&last_tx_label);
 
     config_label.setAlignment(Qt::AlignCenter);
     config_label.setMinimumSize(QSize{80, 18});
-    config_label.setFrameStyle(QFrame::Panel | QFrame::Sunken);
+    config_label.setStyleSheet(statusLabelStyle());
     statusBar()->addWidget(&config_label);
     config_label.hide(); // only shown for non-default configuration
 
     mode_label.setAlignment(Qt::AlignCenter);
     mode_label.setMinimumSize(QSize{80, 18});
-    mode_label.setStyleSheet("QLabel{background-color: #6699ff}");
-    mode_label.setFrameStyle(QFrame::Panel | QFrame::Sunken);
-    mode_label.setText("JS8");
+    mode_label.setStyleSheet(statusLabelStyle());
+
+    {
+        QString modeLabelText;
+        switch (m_nSubMode) {
+        case Varicode::JS8CallSlow:
+            modeLabelText = "JS8 Slow";
+            break;
+        case Varicode::JS8CallNormal:
+            modeLabelText = "JS8 Normal";
+            break;
+        case Varicode::JS8CallFast:
+            modeLabelText = "JS8 Fast";
+            break;
+        case Varicode::JS8CallTurbo:
+            modeLabelText = "JS8 40";
+            break;
+        case Varicode::JS8CallUltra:
+            modeLabelText = "JS8 60";
+            break;
+        default:
+            modeLabelText = "JS8";
+            break;
+        }
+        mode_label.setText(modeLabelText);
+    }
     statusBar()->addWidget(&mode_label);
 
-    last_tx_label.setAlignment(Qt::AlignCenter);
-    last_tx_label.setMinimumSize(QSize{150, 18});
-    last_tx_label.setFrameStyle(QFrame::Panel | QFrame::Sunken);
-    statusBar()->addWidget(&last_tx_label);
+    frequency_label.setAlignment(Qt::AlignCenter);
+    frequency_label.setMinimumSize(QSize{110, 18});
+    frequency_label.setStyleSheet(statusLabelStyle());
+    frequency_label.setText(QString("Freq: %1").arg(Radio::pretty_frequency_MHz_string(dialFrequency() + freq())));
+    statusBar()->addWidget(&frequency_label);
+    
+    auto_reply_label.setAlignment(Qt::AlignCenter);
+    auto_reply_label.setMinimumSize(QSize{110, 18});
+    auto_reply_label.setStyleSheet(statusLabelStyle());
+    QString autoReplyState = ui->actionModeAutoreply->isChecked() ? "On" : "Off";
+    statusBar()->addWidget(&auto_reply_label);
 
     statusBar()->addPermanentWidget(&progressBar);
     progressBar.setMinimumSize(QSize{100, 18});
+    const bool small = true;
+    progressBar.setStyleSheet(progress_bar_stylesheet(small));
     progressBar.setFormat("%v/%m");
 
     statusBar()->addPermanentWidget(&wpm_label);
     wpm_label.setMinimumSize(QSize{120, 18});
-    wpm_label.setFrameStyle(QFrame::Panel | QFrame::Sunken);
+    wpm_label.setStyleSheet(statusLabelStyle());
     wpm_label.setAlignment(Qt::AlignCenter);
 }
 
@@ -2630,13 +2672,13 @@ void UI_Constructor::prepareSending(qint64 nowMS) {
 void UI_Constructor::updateClockUI(const QDateTime &now) {
     qint64 drift = DriftingDateTime::drift();
     QStringList parts;
+    parts << now.date().toString("yyyy MMM dd");
     parts
         << (now.time().toString() +
             (!drift
                  ? " "
                  : QString(" (%1%2ms)").arg(drift > 0 ? "+" : "").arg(drift)));
-    parts << now.date().toString("yyyy MMM dd");
-    ui->labUTC->setText(parts.join("\n"));
+    ui->labUTC->setText(parts.join(" "));
 }
 
 //------------------------------------------------------------- //guiUpdate()
@@ -2682,8 +2724,8 @@ void UI_Constructor::guiUpdate() {
         }
 
         if (m_transmitting) {
-            tx_status_label.setStyleSheet(
-                "QLabel{background-color: #ff2222; color:#000}");
+            tx_status_label.setStyleSheet(txStatusLabelStyle(TxStatusAppearance::Transmitting));
+
             if (m_tune) {
                 tx_status_label.setText("Tx: TUNE");
             } else {
@@ -2695,12 +2737,10 @@ void UI_Constructor::guiUpdate() {
             transmitDisplay(true);
         } else if (m_monitoring) {
             if (m_tx_watchdog) {
-                tx_status_label.setStyleSheet(
-                    "QLabel{background-color: #000; color:#fff}");
+                tx_status_label.setStyleSheet(txStatusLabelStyle(TxStatusAppearance::IdleTimeout));
                 tx_status_label.setText("Idle timeout");
             } else {
-                tx_status_label.setStyleSheet(
-                    "QLabel{background-color: #22ff22}");
+                tx_status_label.setStyleSheet(txStatusLabelStyle(TxStatusAppearance::Decoding));
                 tx_status_label.setText(m_decoderBusy ? "Decoding"
                                                       : "Receiving");
             }
@@ -4062,6 +4102,10 @@ void UI_Constructor::on_actionModeAutoreply_toggled(bool) {
     prepareHeartbeatMode(canCurrentModeSendHeartbeat() &&
                          ui->actionModeJS8HB->isChecked());
 
+    // Update the status label to reflect the auto reply state
+    const QString autoReplyState = ui->actionModeAutoreply->isChecked() ? "On" : "Off";
+    auto_reply_label.setText(QString("Auto Reply: %1").arg(autoReplyState));
+
     // then update the js8 mode
     setupJS8();
 }
@@ -4993,7 +5037,7 @@ void UI_Constructor::on_tableWidgetRXAll_cellDoubleClicked(int row, int col) {
     int offset = item->text().replace(" Hz", "").toInt();
 
     // switch to the offset of this row
-    setFreqOffsetForRestore(offset, false);
+    changeFreq(offset);
 
     // TODO: prompt mode switch?
 
@@ -5294,7 +5338,7 @@ void UI_Constructor::setXIT(int audio_freq) {
 
 void UI_Constructor::qsy(int const hzDelta) {
     setRig(m_freqNominal + hzDelta);
-    setFreqOffsetForRestore(m_wideGraph->centerFreq(), false);
+    changeFreq(m_wideGraph->centerFreq());
 
     // Adjust band activity frequencies.
 
@@ -5328,22 +5372,11 @@ void UI_Constructor::onDriftChanged(qint64 /*new_drift_ms*/) {
     m_detector->resetBufferPosition();
 }
 
-void UI_Constructor::setFreqOffsetForRestore(int freq, bool shouldRestore) {
-    changeFreq(freq);
-    if (shouldRestore) {
-        m_shouldRestoreFreq = true;
-    } else {
-        m_previousFreq = 0;
-        m_shouldRestoreFreq = false;
-    }
-}
-
 bool UI_Constructor::tryRestoreFreqOffset() {
-    if (!m_shouldRestoreFreq || m_previousFreq == 0) {
-        return false;
-    }
-
-    setFreqOffsetForRestore(m_previousFreq, false);
+    if (m_sliderFreqBeforeHB == 0) return false;
+    int restoreFreq = m_sliderFreqBeforeHB;
+    m_sliderFreqBeforeHB = 0;
+    changeFreq(restoreFreq);
     return true;
 }
 
@@ -5356,7 +5389,6 @@ void UI_Constructor::changeFreq(int const newFreq) {
 
     // TODO: jsherer - here's where we'd set minimum frequency again (later?)
 
-    m_previousFreq = freq();
     setFreq(std::max(0, newFreq));
 
     displayDialFrequency();
@@ -5611,6 +5643,30 @@ void UI_Constructor::updateModeButtonText() {
     }
 
     ui->modeButton->setText(modeText);
+    {
+        QString modeLabelText;
+        switch (m_nSubMode) {
+        case Varicode::JS8CallSlow:
+            modeLabelText = "JS8 Slow";
+            break;
+        case Varicode::JS8CallNormal:
+            modeLabelText = "JS8 Normal";
+            break;
+        case Varicode::JS8CallFast:
+            modeLabelText = "JS8 Fast";
+            break;
+        case Varicode::JS8CallTurbo:
+            modeLabelText = "JS8 40";
+            break;
+        case Varicode::JS8CallUltra:
+            modeLabelText = "JS8 60";
+            break;
+        default:
+            modeLabelText = "JS8";
+            break;
+        }
+        mode_label.setText(modeLabelText);
+    }
 }
 
 void UI_Constructor::updateButtonDisplay() {
@@ -6604,10 +6660,10 @@ void UI_Constructor::processTxQueue() {
         message.message.contains(" HEARTBEAT ") ||
         message.message.contains(" HB ") || message.message.contains(" ACK ") ||
         ui->actionModeAutoreply->isChecked()) {
-        // then try to set the frequency...
-        setFreqOffsetForRestore(f, true);
-
-        // then prepare to transmit...
+        if (m_sliderFreqBeforeHB == 0) {
+            m_sliderFreqBeforeHB = freq(); // save current freq before HB changes it
+        }
+        changeFreq(f);
         toggleTx(true);
     }
 
@@ -6873,8 +6929,9 @@ void UI_Constructor::tx_watchdog(bool triggered) {
         if (m_auto)
             auto_tx_mode(false);
         stopTx();
-        tx_status_label.setStyleSheet(
-            "QLabel{background-color: #000000; color:#ffffff; }");
+        {
+            tx_status_label.setStyleSheet(txStatusLabelStyle(TxStatusAppearance::IdleTimeout));
+        }
         tx_status_label.setText("Idle timeout");
 
         // if the watchdog is triggered...we're no longer active
@@ -6888,6 +6945,7 @@ void UI_Constructor::tx_watchdog(bool triggered) {
                                    "cqMacroButton from TX watchdog.";
         ui->hbMacroButton->setChecked(false);
         ui->cqMacroButton->setChecked(false);
+        auto_reply_label.setText(QString("Auto Reply: %1").arg("Off"));
 
         // clear the tx queues
         resetMessageTransmitQueue();
@@ -6904,6 +6962,10 @@ void UI_Constructor::tx_watchdog(bool triggered) {
                 [this, wasAuto, wasHB, wasCQ](int /*result*/) {
                     // restore the button states
                     ui->actionModeAutoreply->setChecked(wasAuto);
+                    {
+                        QString autoReplyState = ui->actionModeAutoreply->isChecked() ? "On" : "Off";
+                        auto_reply_label.setText(QString("Auto Reply: %1").arg(autoReplyState));
+                    }
                     ui->hbMacroButton->setChecked(wasHB);
                     ui->cqMacroButton->setChecked(wasCQ);
 

@@ -9,17 +9,109 @@
 #include "Varicode.h"
 
 #include <algorithm>
+#include <optional>
 #include <QRegularExpression>
 
 namespace {
+
+using CommandArgParser = std::optional<QString> (*)(QStringView token);
 
 struct PillCommandDef {
     const char *command;
     const char *tooltip;
     bool includesArg;
     bool allowsBare;
+    CommandArgParser argParser = nullptr;
     const char *missingArgText = nullptr;
 };
+
+const QRegularExpression &messageIdRe() {
+    static const QRegularExpression re(R"(^[0-9]+$)");
+    return re;
+}
+
+const QRegularExpression &gridTokenRe() {
+    static const QRegularExpression re(
+        R"(^[A-R]{2}[0-9]{2}(?:[A-X]{2}(?:[0-9]{2}(?:[A-X]{2}(?:[0-9]{2})?)?)?)?$)");
+    return re;
+}
+
+const QRegularExpression &callsignRe() {
+    static const QRegularExpression re(R"([@]?[A-Z0-9/]+)");
+    return re;
+}
+
+const QRegularExpression &relayChainRe() {
+    static const QRegularExpression re(
+        R"(^([@]?[A-Z0-9/]+)(\s*>\s*[@]?[A-Z0-9/]+)+)");
+    return re;
+}
+
+const QRegularExpression &partialRelayRe() {
+    static const QRegularExpression re(R"(^(\s*>\s*[@]?[A-Z0-9/]+)+)");
+    return re;
+}
+
+const QRegularExpression &runtimeRelayFollowHopStandaloneRe() {
+    static const QRegularExpression re(
+        R"(^\b(?<prefix>[A-Z0-9]{1,4}\/)?(?<base>([0-9A-Z])?([0-9A-Z])([0-9])([A-Z])?([A-Z])?([A-Z])?)(?<suffix>\/[A-Z0-9]{1,4})?\b$)");
+    return re;
+}
+
+int nextTokenEnd(const QString &text, int start) {
+    int end = start;
+    while (end < text.length() && text.at(end) != ' ')
+        end++;
+    return end;
+}
+
+std::optional<QString> parseCallsignArg(QStringView token) {
+    if (token.isEmpty())
+        return std::nullopt;
+
+    const QString tokenText = token.toString();
+    if (!Varicode::isValidCallsign(tokenText, nullptr))
+        return std::nullopt;
+
+    return tokenText;
+}
+
+std::optional<QString> parseQueryCallArg(QStringView token) {
+    if (token.isEmpty())
+        return std::nullopt;
+
+    if (token.endsWith(QLatin1Char('?')))
+        token.chop(1);
+
+    return parseCallsignArg(token);
+}
+
+std::optional<QString> parseMessageIdArg(QStringView token) {
+    if (token.isEmpty())
+        return std::nullopt;
+
+    const QString tokenText = token.toString();
+    if (!messageIdRe().match(tokenText).hasMatch())
+        return std::nullopt;
+
+    bool ok = false;
+    tokenText.toInt(&ok, 10);
+    if (!ok)
+        return std::nullopt;
+
+    return tokenText;
+}
+
+std::optional<QString> parseGridArg(QStringView token) {
+    if (token.isEmpty())
+        return std::nullopt;
+
+    const QString tokenText = token.toString();
+    if (!gridTokenRe().match(tokenText).hasMatch())
+        return std::nullopt;
+
+    return tokenText;
+}
 
 static const PillCommandDef s_commandDefs[] = {
     // Directed-message commands.
@@ -34,14 +126,14 @@ static const PillCommandDef s_commandDefs[] = {
      false},
     {"HEARING?", "Query: What stations do you hear?", false, false},
     {"MSG TO:", "Store message for later retrieval by %1", true, false,
-     "[target callsign is missing]"},
+     parseCallsignArg, "[target callsign is missing]"},
     {"HEARTBEAT SNR", "Heartbeat signal report", false, false},
     {"QUERY MSGS", "Query: Do you have stored messages for me?", false,
      false},
     {"QUERY CALL", "Query: Can you reach %1?", true, false,
-     "[target callsign is missing]"},
+     parseQueryCallArg, "[target callsign is missing]"},
     {"QUERY MSG", "Query: Deliver stored message %1", true, false,
-     "[message id is missing]"},
+     parseMessageIdArg, "[message id is missing]"},
     {"QUERY", "Generic query", false, false},
     {"DIT DIT", "Two dits - casual sign-off", false, false},
     {"STATUS", "Station status message", false, false},
@@ -53,7 +145,8 @@ static const PillCommandDef s_commandDefs[] = {
     {"SNR", "Signal report value", false, false},
     {"QSL", "Confirm: I received your message", false, false},
     {"INFO", "Station information", false, false},
-    {"GRID", "My grid locator is %1", true, false, "[grid locator is missing]"},
+    {"GRID", "My grid locator is %1", true, false, parseGridArg,
+     "[grid locator is missing]"},
     {"73", "Best regards - end of contact", false, false},
     {"YES", "Affirmative", false, false},
     {"NO", "Negative", false, false},
@@ -62,21 +155,32 @@ static const PillCommandDef s_commandDefs[] = {
     {"FB", "Fine business - excellent", false, false},
 
     // Bare-capable CQ/HB variants.
-    {"CQ CQ CQ", "Calling all stations. Your location is %1.", true, true, "not specified"},
-    {"CQ CONTEST", "Calling all stations (contest). Your location is %1.", true, true, "not specified"},
-    {"CQ FIELD", "Calling all stations (field day). Your location is %1.", true, true, "not specified"},
-    {"CQ DX", "Calling all stations (DX). Your location is %1.", true, true, "not specified"},
-    {"CQ QRP", "Calling all stations (low power). Your location is %1.", true, true, "not specified"},
-    {"CQ FD", "Calling all stations (field day). Your location is %1.", true, true, "not specified"},
-    {"CQ CQ", "Calling all stations. Your location is %1.", true, true, "not specified"},
-    {"CQ", "Calling all stations. Your location is %1.", true, true, "not specified"},
-    {"HB", "Heartbeat - automatic presence beacon. Your location is %1.", true, true, "not specified"},
-    {"HEARTBEAT", "Heartbeat - automatic presence beacon. Your location is %1.", true, true, "not specified"},
+    {"CQ CQ CQ", "Calling all stations. Your location is %1.", true, true,
+     parseGridArg, "not specified"},
+    {"CQ CONTEST", "Calling all stations (contest). Your location is %1.", true,
+     true, parseGridArg, "not specified"},
+    {"CQ FIELD", "Calling all stations (field day). Your location is %1.", true,
+     true, parseGridArg, "not specified"},
+    {"CQ DX", "Calling all stations (DX). Your location is %1.", true, true,
+     parseGridArg, "not specified"},
+    {"CQ QRP", "Calling all stations (low power). Your location is %1.", true,
+     true, parseGridArg, "not specified"},
+    {"CQ FD", "Calling all stations (field day). Your location is %1.", true,
+     true, parseGridArg, "not specified"},
+    {"CQ CQ", "Calling all stations. Your location is %1.", true, true,
+     parseGridArg, "not specified"},
+    {"CQ", "Calling all stations. Your location is %1.", true, true,
+     parseGridArg, "not specified"},
+    {"HB", "Heartbeat - automatic presence beacon. Your location is %1.", true,
+     true, parseGridArg, "not specified"},
+    {"HEARTBEAT", "Heartbeat - automatic presence beacon. Your location is %1.",
+     true, true, parseGridArg, "not specified"},
 };
 
 struct CommandMatch {
     const PillCommandDef *def = nullptr;
     QString commandText;
+    bool hasValidArg = false;
     QString argText;
     int start = 0;
     int finalLength = 0;
@@ -102,27 +206,6 @@ QList<const PillCommandDef *> sortedCommandDefs(const PillCommandDef (&defs)[N])
     return sorted;
 }
 
-const QRegularExpression &callsignRe() {
-    static const QRegularExpression re(R"([@]?[A-Z0-9/]+)");
-    return re;
-}
-
-const QRegularExpression &relayChainRe() {
-    static const QRegularExpression re(
-        R"(^([@]?[A-Z0-9/]+)(\s*>\s*[@]?[A-Z0-9/]+)+)");
-    return re;
-}
-
-const QRegularExpression &partialRelayRe() {
-    static const QRegularExpression re(R"(^(\s*>\s*[@]?[A-Z0-9/]+)+)");
-    return re;
-}
-
-const QRegularExpression &grid4Re() {
-    static const QRegularExpression re(R"(^[A-R]{2}[0-9]{2}$)");
-    return re;
-}
-
 const PillCommandDef *findCommandDef(const QString &cmd) {
     for (const auto &def : s_commandDefs) {
         if (cmd == QLatin1String(def.command))
@@ -139,12 +222,8 @@ bool commandNeedsWordBoundary(const QString &cmd) {
     return last != '?' && last != ':';
 }
 
-bool isHeartbeatCommand(const QString &cmd) {
-    return cmd == QLatin1String("HB") || cmd == QLatin1String("HEARTBEAT");
-}
-
 CommandMatch buildCommandMatch(const PillCommandDef *def, const QString &text,
-                               int start, bool bareOnly) {
+                               int start) {
     CommandMatch match;
     if (!def)
         return match;
@@ -165,20 +244,23 @@ CommandMatch buildCommandMatch(const PillCommandDef *def, const QString &text,
     if (argStart >= text.length())
         return match;
 
-    int argEnd = argStart;
-    while (argEnd < text.length() && text.at(argEnd) != ' ')
-        argEnd++;
-
-    const QString argText = text.mid(argStart, argEnd - argStart);
-    if (isHeartbeatCommand(cmd) &&
-        !grid4Re().match(argText).hasMatch()) {
-        if (bareOnly)
-            return CommandMatch{};
+    if (!def->argParser) {
+        const int argEnd = nextTokenEnd(text, argStart);
+        match.hasValidArg = true;
+        match.argText = text.mid(argStart, argEnd - argStart);
+        match.finalLength = argEnd - start;
         return match;
     }
 
-    match.argText = argText;
-    match.finalLength = argEnd - start;
+    const int argEnd = nextTokenEnd(text, argStart);
+    QStringView tokenView(text);
+    tokenView = tokenView.sliced(argStart, argEnd - argStart);
+
+    if (const auto parsedArg = def->argParser(tokenView)) {
+        match.hasValidArg = true;
+        match.argText = *parsedArg;
+        match.finalLength = argStart + tokenView.length() - start;
+    }
     return match;
 }
 
@@ -203,7 +285,7 @@ CommandMatch matchCommandAt(const QString &text, int start, bool bareOnly) {
         if (bareOnly && !def->allowsBare)
             return CommandMatch{};
 
-        return buildCommandMatch(def, text, start, bareOnly);
+        return buildCommandMatch(def, text, start);
     }
 
     if (!bareOnly && text.at(start) == '?') {
@@ -229,12 +311,12 @@ QString formatCommandTooltip(const CommandMatch &match,
                              bool usedImplicitTarget) {
     QString tip = commandTooltip(match.commandText);
     if (tip.contains(QLatin1String("%1"))) {
-        QString replacement = match.argText;
-        if (replacement.isEmpty()) {
-            replacement = (match.def && match.def->missingArgText)
-                              ? QString::fromUtf8(match.def->missingArgText)
-                              : QStringLiteral("[...]");
-        }
+        const QString replacement =
+            match.hasValidArg
+                ? match.argText
+                : ((match.def && match.def->missingArgText)
+                       ? QString::fromUtf8(match.def->missingArgText)
+                       : QStringLiteral("[...]"));
         tip = tip.arg(replacement);
     }
 
@@ -264,6 +346,54 @@ QList<QPair<int, int>> parseHops(const QString &chainText) {
             hops.append({callStart, scanPos - callStart});
     }
     return hops;
+}
+
+struct RelayChainValidation {
+    QList<QPair<int, int>> hops;
+    int validHopCount = 0;
+    int tokenLength = 0;
+};
+
+bool isRelayHopZeroValid(const QString &hopText) {
+    return !hopText.startsWith('@') &&
+           Varicode::isValidCallsign(hopText, nullptr);
+}
+
+bool isRuntimeRelayFollowHopValid(const QString &hopText) {
+    if (hopText.startsWith('@'))
+        return false;
+
+    return runtimeRelayFollowHopStandaloneRe().match(hopText).hasMatch();
+}
+
+RelayChainValidation validateRelayChain(const QString &chainText, bool partial,
+                                        const QString &implicitTarget) {
+    RelayChainValidation validation;
+    validation.hops = parseHops(chainText);
+    if (validation.hops.isEmpty())
+        return validation;
+
+    if (partial && !isRelayHopZeroValid(implicitTarget))
+        return validation;
+
+    for (int i = 0; i < validation.hops.size(); ++i) {
+        const auto hop = validation.hops.at(i);
+        const QString hopText = chainText.mid(hop.first, hop.second);
+        const bool valid =
+            (partial || i > 0) ? isRuntimeRelayFollowHopValid(hopText)
+                               : isRelayHopZeroValid(hopText);
+        if (!valid)
+            break;
+        validation.validHopCount++;
+    }
+
+    if (validation.validHopCount > 0) {
+        const auto lastHop = validation.hops.at(validation.validHopCount - 1);
+        validation.tokenLength = lastHop.first + lastHop.second;
+        validation.hops = validation.hops.mid(0, validation.validHopCount);
+    }
+
+    return validation;
 }
 
 QList<DirectedMessageParser::Token> parseTokensUpper(
@@ -300,30 +430,49 @@ QList<DirectedMessageParser::Token> parseTokensUpper(
 
     int pos = 0;
     bool explicitTargetPresent = false;
+    bool foundAddress = false;
+    int addressEndPos = -1;
 
     auto relayMatch = relayChainRe().match(content);
     if (relayMatch.hasMatch()) {
-        DirectedMessageParser::Token t;
-        t.start = 0;
-        t.length = relayMatch.capturedLength();
-        t.type = DirectedMessageParser::Token::RelayChain;
+        const QString chainText = relayMatch.captured();
+        const auto validation = validateRelayChain(chainText, false, QString());
 
-        QString chainText = relayMatch.captured();
-        t.hops = parseHops(chainText);
-        t.recipientHopIndex = t.hops.size() - 1;
-        t.tooltip = DirectedMessageTooltipUtils::relayTooltip(chainText,
-                                                              t.hops);
+        if (validation.validHopCount >= 2) {
+            DirectedMessageParser::Token t;
+            t.start = 0;
+            t.length = validation.tokenLength;
+            t.type = DirectedMessageParser::Token::RelayChain;
+            t.hops = validation.hops;
+            t.recipientHopIndex = t.hops.size() - 1;
+            t.tooltip = DirectedMessageTooltipUtils::relayTooltip(
+                chainText.left(validation.tokenLength), t.hops);
 
-        tokens.append(t);
-        pos = t.length;
-        explicitTargetPresent = true;
-    } else {
+            tokens.append(t);
+            foundAddress = true;
+            explicitTargetPresent = true;
+            addressEndPos = validation.tokenLength;
+        } else if (validation.validHopCount == 1) {
+            const auto hop = validation.hops.first();
+            const QString recipient = chainText.mid(hop.first, hop.second);
+
+            DirectedMessageParser::Token t;
+            t.start = hop.first;
+            t.length = hop.second;
+            t.type = DirectedMessageParser::Token::Recipient;
+            t.tooltip = QString("Directed to %1").arg(recipient);
+
+            tokens.append(t);
+            foundAddress = true;
+            explicitTargetPresent = true;
+            addressEndPos = hop.first + hop.second;
+        }
+    }
+
+    if (!foundAddress) {
         int firstSpace = content.indexOf(' ');
         QString addressPart =
             (firstSpace >= 0) ? content.left(firstSpace) : content;
-
-        bool foundAddress = false;
-        int addressEndPos = -1;
 
         if (!addressPart.isEmpty()) {
             if (addressPart.startsWith('@')) {
@@ -359,30 +508,33 @@ QList<DirectedMessageParser::Token> parseTokensUpper(
         if (!foundAddress && content.startsWith('>')) {
             auto partialMatch = partialRelayRe().match(content);
             if (partialMatch.hasMatch()) {
-                DirectedMessageParser::Token t;
-                t.start = 0;
-                t.length = partialMatch.capturedLength();
-                t.type = DirectedMessageParser::Token::RelayChain;
-                t.partial = true;
-
                 QString chainText = partialMatch.captured();
-                t.hops = parseHops(chainText);
-                t.recipientHopIndex = t.hops.size() - 1;
-                t.tooltip = DirectedMessageTooltipUtils::relayTooltip(
-                    chainText, t.hops);
+                const auto validation =
+                    validateRelayChain(chainText, true, implicitTarget);
+                if (validation.validHopCount >= 1) {
+                    DirectedMessageParser::Token t;
+                    t.start = 0;
+                    t.length = validation.tokenLength;
+                    t.type = DirectedMessageParser::Token::RelayChain;
+                    t.partial = true;
+                    t.hops = validation.hops;
+                    t.recipientHopIndex = t.hops.size() - 1;
+                    t.tooltip = DirectedMessageTooltipUtils::relayTooltip(
+                        chainText.left(validation.tokenLength), t.hops);
 
-                tokens.append(t);
-                foundAddress = true;
-                explicitTargetPresent = true;
-                addressEndPos = t.length;
+                    tokens.append(t);
+                    foundAddress = true;
+                    explicitTargetPresent = true;
+                    addressEndPos = validation.tokenLength;
+                }
             }
         }
+    }
 
-        if (foundAddress) {
-            pos = (addressEndPos >= 0)
-                      ? addressEndPos
-                      : ((firstSpace >= 0) ? firstSpace : content.length());
-        }
+    if (foundAddress) {
+        pos = (addressEndPos >= 0)
+                  ? addressEndPos
+                  : content.length();
     }
 
     if (!explicitTargetPresent) {

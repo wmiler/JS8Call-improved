@@ -245,6 +245,7 @@ target_sources(
   JS8_Audio/AudioDevice.cpp
   JS8_Audio/BWFFile.cpp
   JS8_Audio/NotificationAudio.cpp
+  JS8_Audio/NotificationSoundOutput.cpp
   JS8_Audio/SoundInput.cpp
   JS8_Audio/SoundOutput.cpp
   JS8_JSC/JSC.cpp
@@ -369,19 +370,6 @@ qt_add_resources(
   FILES
   JS8_Include/cty.dat
   JS8_Include/eclipse.txt
-)
-
-#------------------------------------------------------------------------------#
-# Up and down arrow image resources, used in the main window by the
-# frequency controls.
-#------------------------------------------------------------------------------#
-
-qt_add_resources(
-  ${TARGET} "images"
-  PREFIX   "/images"
-  FILES
-  artwork/up.png
-  artwork/down.png
 )
 
 #------------------------------------------------------------------------------#

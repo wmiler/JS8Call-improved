@@ -5,6 +5,7 @@
  */
 
 #include "JS8_UI/mainwindow.h"
+#include "JS8_UI/styles.h"
 
 int ms_minute_error() {
     auto const now = DriftingDateTime::currentDateTimeLocal();
@@ -50,7 +51,7 @@ UI_Constructor::UI_Constructor(QString const &program_info,
       m_appDir{QApplication::applicationDirPath()}, m_palette{"Linrad"},
       m_txFrameCountEstimate{0}, m_txFrameCount{0}, m_txFrameCountSent{0},
       m_txTextDirty{false}, m_driftMsMMA{0}, m_driftMsMMA_N{0},
-      m_previousFreq{0}, m_hbInterval{0}, m_cqInterval{0}, m_hbPaused{false},
+      m_hbInterval{0}, m_cqInterval{0}, m_hbPaused{false},
       m_msAudioOutputBuffered(0u),
       m_framesAudioInputBuffered(JS8_RX_SAMPLE_RATE / 10),
       m_audioThreadPriority(QThread::HighPriority),
@@ -69,6 +70,19 @@ UI_Constructor::UI_Constructor(QString const &program_info,
       m_aprsClient{new APRSISClient{"rotate.aprs2.net", 14580}},
       m_aprsInboundRelay{nullptr} {
     ui->setupUi(this);
+    ui->frame->setStyleSheet(logFrameStyle());
+    ui->logWidget->setStyleSheet(Styles::LogWidgetStyle);
+    ui->dialFreqUpButton->setStyleSheet(Styles::DialFreqUpDownButtonStyle);
+    ui->dialFreqDownButton->setStyleSheet(Styles::DialFreqUpDownButtonStyle);
+    ui->labCallsign->setStyleSheet(Styles::LabCallsignStyle);
+    ui->labUTC->setStyleSheet(Styles::LabUTCStyle);
+    ui->buttonGrid->setStyleSheet(Styles::ButtonGridStyle);
+    ui->monitorTxButton->setStyleSheet(Styles::MonitorTxButtonStyle);
+    ui->monitorButton->setStyleSheet(Styles::MonitorButtonStyle);
+    ui->logQSOButton->setStyleSheet(Styles::LogQSOButtonStyle);
+    ui->tuneButton->setStyleSheet(Styles::TuneButtonStyle);
+    ui->modeButton->setStyleSheet(Styles::ModeButtonStyle);
+    ui->spotButton->setStyleSheet(Styles::SpotButtonStyle);
 
     createStatusBar();
     add_child_to_event_filter(this);
@@ -433,7 +447,7 @@ UI_Constructor::UI_Constructor(QString const &program_info,
     // Hook up working frequencies.
 
     ui->currentFreq->setCursor(QCursor(Qt::PointingHandCursor));
-    ui->currentFreq->display("14.078 000");
+    ui->currentFreq->setText("14.078 000");
     ui->currentFreq->installEventFilter(new EventFilter::MouseButtonPress(
         [this](QMouseEvent *event) {
             QMenu *menu = new QMenu(ui->currentFreq);
@@ -443,13 +457,17 @@ UI_Constructor::UI_Constructor(QString const &program_info,
         },
         this));
 
-    ui->labDialFreqOffset->setCursor(QCursor(Qt::PointingHandCursor));
-    ui->labDialFreqOffset->installEventFilter(new EventFilter::MouseButtonPress(
-        [this](QMouseEvent *) {
-            on_actionSetOffset_triggered();
-            return true;
-        },
-        this));
+    freqOffsetWidget = new Styles::OffsetSliderWidget(nullptr);
+    QLayout *parentLayout = ui->labDialFreqOffset->parentWidget()->layout();
+    if (auto *vbox = qobject_cast<QVBoxLayout *>(parentLayout)) {
+        int index = vbox->indexOf(ui->labDialFreqOffset);
+        vbox->removeWidget(ui->labDialFreqOffset);
+        ui->labDialFreqOffset->hide();
+        vbox->insertWidget(index, freqOffsetWidget);
+    }
+    freqOffsetWidget->setOnValueChanged([this](int val) {
+        changeFreq(val);
+    });
 
     // Hook up callsign label click to open preferences
 
@@ -669,9 +687,6 @@ UI_Constructor::UI_Constructor(QString const &program_info,
         }
         ui->menuBar->removeAction(action);
     }
-
-    // auto f = findFreeFreqOffset(1000, 2000, 50);
-    // setFreqOffsetForRestore(f, false);
 
     ui->actionModeAutoreply->setChecked(m_config.autoreply_on_at_startup());
     ui->spotButton->setChecked(m_config.spot_to_reporting_networks());
@@ -960,7 +975,7 @@ UI_Constructor::UI_Constructor(QString const &program_info,
                     QString("Jump to %1Hz").arg(selectedOffset));
                 connect(qsyAction, &QAction::triggered, this,
                         [this, selectedOffset]() {
-                            setFreqOffsetForRestore(selectedOffset, false);
+                            changeFreq(selectedOffset);
                         });
 
                 if (m_wideGraph->filterEnabled()) {
@@ -1215,7 +1230,7 @@ UI_Constructor::UI_Constructor(QString const &program_info,
                         QString("Jump to %1Hz").arg(selectedOffset));
                     connect(qsyAction, &QAction::triggered, this,
                             [this, selectedOffset]() {
-                                setFreqOffsetForRestore(selectedOffset, false);
+                                changeFreq(selectedOffset);
                             });
 
                     if (m_wideGraph->filterEnabled()) {
