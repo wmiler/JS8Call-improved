@@ -94,6 +94,8 @@ jobs:
 # This could be done better if we expand to a non-cpu directory
     - name: Build JS8Call (x86_64)
       if: (runner.arch == 'X64')
+      env:
+        Boost_DIR: /tmp/js8lib3.0-Linux_x86_64_pkg/js8lib/lib/cmake/Boost-1.88.0
       run: |
         mkdir -p build && cd build
         cmake -DCMAKE_PREFIX_PATH="/tmp/Qt6.9.3_Linux_x86_64_pkg/QT;/tmp/js8lib3.0-Linux_x86_64_pkg/js8lib;/tmp/js8lib3.0-Linux_x86_64_pkg/js8lib/lib" ..
@@ -101,6 +103,8 @@ jobs:
 
     - name: Build JS8Call (ARM64)
       if: (runner.arch == 'ARM64')
+      env:
+        Boost_DIR: /tmp/js8lib3.0-Linux_x86_64_pkg/js8lib/lib/cmake/Boost-1.88.0
       run: |
         mkdir -p build && cd build
         cmake -DCMAKE_PREFIX_PATH="/tmp/Qt6.9.3_Linux_aarch64_pkg/QT;/tmp/js8lib3.0-Linux_aarch64_pkg/js8lib;/tmp/js8lib3.0-Linux_aarch64_pkg/js8lib/lib" ..
