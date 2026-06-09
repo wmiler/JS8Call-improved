@@ -91,10 +91,13 @@ jobs:
         cd /tmp/
         curl --location --output /tmp/js8lib3.0-Linux_x86_64_pkg.tar.gz https://github.com/JS8Call-improved/js8lib/releases/download/lib/3.0/js8lib3.0-Linux_x86_64_pkg.tar.gz
         tar zxf js8lib3.0-Linux_x86_64_pkg.tar.gz
-        sudo mv /tmp/js8lib /usr/local/
+
         curl --location --output /tmp/Qt6.9.3_Linux_x86_64_pkg.tar.gz https://github.com/JS8Call-improved/js8lib/releases/download/lib/3.0/Qt6.9.3_Linux_x86_64_pkg.tar.gz
-        tar zxf Qt6.9.3_Linux_x86_64_pkg.tar.gz /usr/local/
-        sudo mv /tmp/Qt /usr/local/js8lib
+        tar zxf Qt6.9.3_Linux_x86_64_pkg.tar.gz
+
+        sudo mv /tmp/js8lib /usr/local/js8lib
+        sudo mv /tmp/Qt/* /usr/local/js8lib/
+        ls -l /usr/local/js8lib
 
     - name: Build JS8Call (x86_64)
       if: (runner.arch == 'X64')
