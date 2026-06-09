@@ -107,7 +107,7 @@ jobs:
         cmake -DCMAKE_PREFIX_PATH="/usr/local/js8lib" \
               -DCMAKE_LIBRARY_PATH="/usr/local/js8lib/lib" \
               -DCMAKE_INCLUDE_PATH="/usr/local/js8lib/include" ..
-        make -j
+        make -j 4
 
     - name: Build JS8Call (ARM64)
       if: (runner.arch == 'ARM64')
@@ -116,7 +116,7 @@ jobs:
         cmake -DCMAKE_PREFIX_PATH="/usr/local/js8lib" \
               -DCMAKE_LIBRARY_PATH="/usr/local/js8lib/lib" \
               -DCMAKE_INCLUDE_PATH="/usr/local/js8lib/include" ..
-        make -j
+        make -j 4
 
 # AppImage
     - name: AppImage Directory Setup and File Copy
