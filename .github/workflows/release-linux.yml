@@ -100,6 +100,12 @@ jobs:
         sudo cp -R /tmp/js8lib /usr/local/js8lib
         sudo cp -R /tmp/Qt/* /usr/local/js8lib/
 
+    - name: Setup linker
+      run: |
+        echo "/usr/local/js8lib/lib" | sudo tee /etc/ld.so.conf.d/js8call.conf
+        echo "/usr/local/js8lib/lib" | sudo tee -a /etc/ld.so.conf.d/js8call.conf
+        sudo ldconfig
+
     - name: Build JS8Call (x86_64)
       if: (runner.arch == 'X64')
       run: |
