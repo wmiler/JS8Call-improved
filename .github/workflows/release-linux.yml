@@ -98,16 +98,16 @@ jobs:
         Boost_DIR: /tmp/js8lib3.0-Linux_x86_64_pkg/js8lib/lib/cmake/Boost-1.88.0
       run: |
         mkdir -p build && cd build
-        cmake -DCMAKE_PREFIX_PATH="/tmp/Qt6.9.3_Linux_x86_64_pkg/QT;/tmp/js8lib3.0-Linux_x86_64_pkg/js8lib;/tmp/js8lib3.0-Linux_x86_64_pkg/js8lib/lib" ..
+        cmake -DCMAKE_PREFIX_PATH="/tmp/Qt6.9.3_Linux_x86_64_pkg/QT;/tmp/js8lib3.0-Linux_x86_64_pkg/js8lib;/tmp/js8lib3.0-Linux_x86_64_pkg/js8lib/lib/cmake/Boost-1.88.0" ..
         make -j 4
 
     - name: Build JS8Call (ARM64)
       if: (runner.arch == 'ARM64')
       env:
-        Boost_DIR: /tmp/js8lib3.0-Linux_x86_64_pkg/js8lib/lib/cmake/Boost-1.88.0
+        Boost_DIR: /tmp/js8lib3.0-Linux_aarch64_pkg/js8lib/lib/cmake/Boost-1.88.0
       run: |
         mkdir -p build && cd build
-        cmake -DCMAKE_PREFIX_PATH="/tmp/Qt6.9.3_Linux_aarch64_pkg/QT;/tmp/js8lib3.0-Linux_aarch64_pkg/js8lib;/tmp/js8lib3.0-Linux_aarch64_pkg/js8lib/lib" ..
+        cmake -DCMAKE_PREFIX_PATH="/tmp/Qt6.9.3_Linux_aarch64_pkg/QT;/tmp/js8lib3.0-Linux_aarch64_pkg/js8lib;/tmp/js8lib3.0-Linux_aarch64_pkg/js8lib/lib/cmake/Boost-1.88.0" ..
         make -j 4
 
 # AppImage
