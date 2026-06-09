@@ -31,8 +31,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - {os: ubuntu-24.04, arch: X64, packages: build-essential autoconf curl git cmake pkg-config appstream libtool libxkbcommon-dev libudev-dev yasm libva-dev libpulse-dev libegl1-mesa-dev libgles2-mesa-dev libgbm-dev libgl1-mesa-dev libxkbcommon-x11-dev}
-          - {os: ubuntu-24.04-arm, arch: ARM64, packages: build-essential autoconf curl git cmake pkg-config appstream libtool libxkbcommon-dev libudev-dev yasm libva-dev libpulse-dev libegl1-mesa-dev libgles2-mesa-dev libgbm-dev libgl1-mesa-dev libxkbcommon-x11-dev}
+          - {os: ubuntu-24.04, arch: X64, packages: build-essential autoconf curl git cmake pkg-config appstream libtool libopengl-dev libxkbcommon-dev libudev-dev yasm libva-dev libpulse-dev libegl1-mesa-dev libgles2-mesa-dev libgbm-dev libgl1-mesa-dev libxkbcommon-x11-dev}
+          - {os: ubuntu-24.04-arm, arch: ARM64, packages: build-essential autoconf curl git cmake pkg-config appstream libtool libopengl-dev libxkbcommon-dev libudev-dev yasm libva-dev libpulse-dev libegl1-mesa-dev libgles2-mesa-dev libgbm-dev libgl1-mesa-dev libxkbcommon-x11-dev}
 
     steps:
     - uses: actions/checkout@v6
@@ -106,14 +106,14 @@ jobs:
       if: (runner.arch == 'X64')
       run: |
         mkdir -p build && cd build
-        cmake -DQT_DEBUG_FIND_PACKAGE=ON -DCMAKE_PREFIX_PATH="/usr/local/js8lib" ..
+        cmake --debug-find-pkg=WrapOpenGL -DCMAKE_PREFIX_PATH="/usr/local/js8lib" ..
         make -j 4
 
     - name: Build JS8Call (ARM64)
       if: (runner.arch == 'ARM64')
       run: |
         mkdir -p build && cd build
-        cmake -DQT_DEBUG_FIND_PACKAGE=ON -DCMAKE_PREFIX_PATH="/usr/local/js8lib" ..
+        cmake --debug-find-pkg=WrapOpenGL -DCMAKE_PREFIX_PATH="/usr/local/js8lib" ..
         make -j 4
 
 # AppImage
