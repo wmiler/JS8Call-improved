@@ -73,17 +73,17 @@ jobs:
         curl --location --output /tmp/linuxdeploy-plugin-qt-aarch64.AppImage https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-aarch64.AppImage
         chmod a+x /tmp/linuxdeploy-plugin-qt-aarch64.AppImage
 
-# Must expand this to /usr/local/js8lib
+# Must expand this to /usr/local/js8lib, requires sudo because it's under /usr/local
     - name: Fetch js8libs and expand (arm64)
       if: (runner.arch == 'ARM64')
       run: |
         cd /tmp/
         curl --location --output /tmp/js8lib3.0-Linux_aarch64_pkg.tar.gz https://github.com/JS8Call-improved/js8lib/releases/download/lib/3.0/js8lib3.0-Linux_aarch64_pkg.tar.gz
         tar zxf js8lib3.0-Linux_aarch64_pkg.tar.gz
-        mv /tmp/js8lib3.0-Linux_x86_64_pkg/js8lib /usr/local/
+        sudo mv /tmp/js8lib3.0-Linux_x86_64_pkg/js8lib /usr/local/
         curl --location --output /tmp/Qt6.9.3_Linux_aarch64_pkg.tar.gz https://github.com/JS8Call-improved/js8lib/releases/download/lib/3.0/Qt6.9.3_Linux_aarch64_pkg.tar.gz
         tar zxf Qt6.9.3_Linux_aarch64_pkg.tar.gz
-        mv /tmp/Qt6.9.3_Linux_aarch64_pkg/Qt /usr/local/js8lib
+        sudo mv /tmp/Qt6.9.3_Linux_aarch64_pkg/Qt /usr/local/js8lib
 
     - name: Fetch js8libs and expand (x86_64)
       if: (runner.arch == 'X64')
@@ -91,10 +91,10 @@ jobs:
         cd /tmp/
         curl --location --output /tmp/js8lib3.0-Linux_x86_64_pkg.tar.gz https://github.com/JS8Call-improved/js8lib/releases/download/lib/3.0/js8lib3.0-Linux_x86_64_pkg.tar.gz
         tar zxf js8lib3.0-Linux_x86_64_pkg.tar.gz
-        mv /tmp/js8lib /usr/local/
+        sudo mv /tmp/js8lib /usr/local/
         curl --location --output /tmp/Qt6.9.3_Linux_x86_64_pkg.tar.gz https://github.com/JS8Call-improved/js8lib/releases/download/lib/3.0/Qt6.9.3_Linux_x86_64_pkg.tar.gz
         tar zxf Qt6.9.3_Linux_x86_64_pkg.tar.gz /usr/local/
-        mv /tmp/Qt /usr/local/js8lib
+        sudo mv /tmp/Qt /usr/local/js8lib
 
     - name: Build JS8Call (x86_64)
       if: (runner.arch == 'X64')
