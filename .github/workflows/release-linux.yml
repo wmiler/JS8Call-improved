@@ -86,7 +86,6 @@ jobs:
         
         sudo cp -R /tmp/js8lib /usr/local/js8lib
         sudo cp -R /tmp/Qt/* /usr/local/js8lib/
-        ls -lR /usr/local/js8lib/lib/
 
     - name: Fetch js8libs and expand (x86_64)
       if: (runner.arch == 'X64')
@@ -100,21 +99,24 @@ jobs:
 
         sudo cp -R /tmp/js8lib /usr/local/js8lib
         sudo cp -R /tmp/Qt/* /usr/local/js8lib/
-        ls -lR /usr/local/js8lib/lib/
 
     - name: Build JS8Call (x86_64)
       if: (runner.arch == 'X64')
       run: |
         mkdir -p build && cd build
-        cmake --debug-find-pkg=WrapOpenGL -DCMAKE_PREFIX_PATH="/usr/local/js8lib" ..
-        make -j 4
+        cmake -DCMAKE_PREFIX_PATH="/usr/local/js8lib" \
+              -DCMAKE_LIBRARY_PATH="/usr/local/js8lib/lib" \
+              -DCMAKE_INCLUDE_PATH="/usr/local/js8lib/include" ..
+        make -j
 
     - name: Build JS8Call (ARM64)
       if: (runner.arch == 'ARM64')
       run: |
         mkdir -p build && cd build
-        cmake --debug-find-pkg=WrapOpenGL -DCMAKE_PREFIX_PATH="/usr/local/js8lib" ..
-        make -j 4
+        cmake -DCMAKE_PREFIX_PATH="/usr/local/js8lib" \
+              -DCMAKE_LIBRARY_PATH="/usr/local/js8lib/lib" \
+              -DCMAKE_INCLUDE_PATH="/usr/local/js8lib/include" ..
+        make -j
 
 # AppImage
     - name: AppImage Directory Setup and File Copy
