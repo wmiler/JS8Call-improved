@@ -111,7 +111,8 @@ jobs:
         mkdir -p build && cd build
         cmake -DCMAKE_PREFIX_PATH="/usr/local/js8lib" \
               -DCMAKE_LIBRARY_PATH="/usr/local/js8lib/lib" \
-              -DCMAKE_INCLUDE_PATH="/usr/local/js8lib/include" ..
+              -DCMAKE_INCLUDE_PATH="/usr/local/js8lib/include" \
+              -DCMAKE_FIND_ROOT_PATH="/usr/local/js8lib" ..
         LD_LIBRARY_PATH="/usr/local/js8lib/lib:$LD_LIBRARY_PATH" make -j 4
 
     - name: Build JS8Call (ARM64)
@@ -120,7 +121,8 @@ jobs:
         mkdir -p build && cd build
         cmake -DCMAKE_PREFIX_PATH="/usr/local/js8lib" \
               -DCMAKE_LIBRARY_PATH="/usr/local/js8lib/lib" \
-              -DCMAKE_INCLUDE_PATH="/usr/local/js8lib/include" ..
+              -DCMAKE_INCLUDE_PATH="/usr/local/js8lib/include" \
+              -DCMAKE_FIND_ROOT_PATH="/usr/local/js8lib" ..
         LD_LIBRARY_PATH="/usr/local/js8lib/lib:$LD_LIBRARY_PATH" make -j 4
 
 # AppImage
