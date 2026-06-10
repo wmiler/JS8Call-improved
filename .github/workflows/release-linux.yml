@@ -103,7 +103,6 @@ jobs:
     - name: Setup linker
       run: |
         echo "/usr/local/js8lib/lib" | sudo tee /etc/ld.so.conf.d/js8call.conf
-        echo "/usr/local/js8lib/lib" | sudo tee -a /etc/ld.so.conf.d/js8call.conf
         sudo ldconfig
 
     - name: Build JS8Call (x86_64)
@@ -113,7 +112,7 @@ jobs:
         cmake -DCMAKE_PREFIX_PATH="/usr/local/js8lib" \
               -DCMAKE_LIBRARY_PATH="/usr/local/js8lib/lib" \
               -DCMAKE_INCLUDE_PATH="/usr/local/js8lib/include" ..
-        make -j 4
+        LD_LIBRARY_PATH="/usr/local/js8lib/lib:$LD_LIBRARY_PATH" make -j 4
 
     - name: Build JS8Call (ARM64)
       if: (runner.arch == 'ARM64')
@@ -122,7 +121,7 @@ jobs:
         cmake -DCMAKE_PREFIX_PATH="/usr/local/js8lib" \
               -DCMAKE_LIBRARY_PATH="/usr/local/js8lib/lib" \
               -DCMAKE_INCLUDE_PATH="/usr/local/js8lib/include" ..
-        make -j 4
+        LD_LIBRARY_PATH="/usr/local/js8lib/lib:$LD_LIBRARY_PATH" make -j 4
 
 # AppImage
     - name: AppImage Directory Setup and File Copy
