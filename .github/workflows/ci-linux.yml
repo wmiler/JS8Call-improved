@@ -42,7 +42,7 @@ jobs:
         fetch-depth: 0
 
     - name: Build AppImage
-      run: bash tools/JS8Call-Build-AppImage.sh
+      run: bash .github/workflows/scripts/JS8Call-Build-AppImage.sh
 
     - name: Import signing key (Release only)
       if: ${{ inputs.environment == 'Release' }}
