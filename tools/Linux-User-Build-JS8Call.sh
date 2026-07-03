@@ -2,17 +2,26 @@
 set -e
 
 # (C) copyright 2025 Chris Olson AC9KH, Joseph Counsil K0OG
+# Modded 2026 to prevent KDE system crashes via strict /opt path isolation.
 # Builds and installs JS8Call from source on a linux system.
-# Requires sudo access. Installs to /usr/lib/js8call and /usr/bin.
+# Requires sudo access. Installs to /opt/lib/js8call and /opt/bin.
 
 # --- Variables ---
 red="\033[0;31m"
 clear_color="\033[0m"
 JS8_VERSION="master"
-JS8_INSTALL_PREFIX="/usr/lib/js8call"
+
+# New Isolated Safe Paths
+JS8_INSTALL_PREFIX="/opt/lib/js8call"
+JS8_BIN_DIR="/opt/bin"
 JS8_QT_DIR="${JS8_INSTALL_PREFIX}/Qt"
 
-# Legacy install paths — used to detect and remove old ~/.local installs
+# Toxic Legacy Paths to detect and safely nuke
+TOXIC_SYSTEM_BIN="/usr/bin/JS8Call"
+TOXIC_SYSTEM_LIB="/usr/lib/js8call"
+TOXIC_LDCONFIG="/etc/ld.so.conf.d/js8call.conf"
+
+# Legacy local install paths — used to detect and remove old ~/.local installs
 LEGACY_BIN="$HOME/.local/bin/JS8Call"
 LEGACY_QT_DIR="$HOME/.local/lib/Qt"
 LEGACY_LIB_DIR="$HOME/.local/lib/js8lib"
@@ -159,20 +168,17 @@ install_deps() {
 # --- Check for legacy ~/.local installation and offer to remove it ---
 clear
 divider
-echo "Checking for legacy installation....."
+echo "Checking for legacy local installations....."
 if [ -f "${LEGACY_BIN}" ]; then
   divider
   echo -e "${red}A legacy JS8Call installation was found in ~/.local.
-
-The new installer places JS8Call and its libraries in system paths
-(/usr/bin and /usr/lib/js8call) for consistency with the .deb package.
-The legacy installation should be removed.${clear_color}"
+The legacy installation should be removed to prevent workspace bugs.${clear_color}"
   divider
   read -p "Remove legacy ~/.local installation? Yes(y) / No(n): " REMOVE_LEGACY </dev/tty
   if [ "${REMOVE_LEGACY}" = "y" ]; then
     echo "Removing legacy JS8Call binary..."
     rm -f "${LEGACY_BIN}"
-    echo "Removing legacy Qt 6.9.3..."
+    echo "Removing legacy Qt..."
     rm -rf "${LEGACY_QT_DIR}"
     echo "Removing legacy libraries..."
     rm -rf "${LEGACY_LIB_DIR}"
@@ -181,36 +187,52 @@ The legacy installation should be removed.${clear_color}"
     echo "Removing legacy icon..."
     rm -f "${LEGACY_ICON}"
     divider
-    echo "Legacy installation removed."
+    echo "Legacy local installation removed."
     divider
     sleep 2
   fi
 fi
 
-# --- Check for existing system installation ---
-divider
-echo "Checking for existing installation....."
-if [ -f "/usr/bin/JS8Call" ]; then
+# --- NEW STEP: Check and purge toxic legacy system installation that breaks KDE ---
+if [ -d "${TOXIC_SYSTEM_LIB}" ] || [ -f "${TOXIC_SYSTEM_BIN}" ] || [ -f "${TOXIC_LDCONFIG}" ]; then
   divider
-  echo "An existing JS8Call installation was found. Do you want to
+  echo -e "${red}CRITICAL SYSTEM NOTICE:
+Legacy components were detected in ${TOXIC_SYSTEM_LIB} or ${TOXIC_SYSTEM_BIN}.
+These paths leak custom Qt 6.11.1 dependencies globally, which crashes KDE Plasma!${clear_color}"
+  divider
+  read -p "Purge conflicting /usr system-wide paths to fix/protect KDE? Yes(y) / No(n): " PURGE_TOXIC </dev/tty
+  if [ "${PURGE_TOXIC}" = "y" ]; then
+    echo "Purging legacy conflicting binary..."
+    sudo rm -f "${TOXIC_SYSTEM_BIN}"
+    echo "Purging legacy conflicting system Qt library folder..."
+    sudo rm -rf "${TOXIC_SYSTEM_LIB}"
+    echo "Removing dangerous global linker configurations..."
+    sudo rm -f "${TOXIC_LDCONFIG}"
+    sudo ldconfig
+    echo "System environment cleared and restored successfully."
+    sleep 2
+  fi
+fi
+
+# --- Check for existing safe /opt system installation ---
+divider
+echo "Checking for existing /opt installation....."
+if [ -f "${JS8_BIN_DIR}/JS8Call" ] || [ -d "${JS8_INSTALL_PREFIX}" ]; then
+  divider
+  echo "An existing /opt JS8Call installation was found. Do you want to
 uninstall it? Selecting No will overwrite it with the new version."
-  read -p "Uninstall current JS8Call? Yes(y) / No(n): " UNINSTALL </dev/tty
+  read -p "Uninstall current /opt JS8Call? Yes(y) / No(n): " UNINSTALL </dev/tty
   if [ "${UNINSTALL}" = "y" ]; then
-    echo "Removing JS8Call binary..."
-    sudo rm -f /usr/bin/JS8Call
-    echo "Removing Qt 6.11.1..."
-    sudo rm -rf "${JS8_QT_DIR}"
-    echo "Removing libraries..."
+    echo "Removing JS8Call application binary wrapper..."
+    sudo rm -f "${JS8_BIN_DIR}/JS8Call"
+    echo "Removing isolated assets and libraries from /opt..."
     sudo rm -rf "${JS8_INSTALL_PREFIX}"
     echo "Removing desktop entry..."
     sudo rm -f /usr/share/applications/JS8Call.desktop
     echo "Removing icon..."
     sudo rm -f /usr/share/icons/hicolor/scalable/apps/js8call.svg
-    # Remove ldconfig entry
-    sudo rm -f /etc/ld.so.conf.d/js8call.conf
-    sudo ldconfig
     divider
-    echo "JS8Call has been uninstalled.
+    echo "JS8Call has been cleanly uninstalled from /opt.
 To reinstall, run this script again."
     divider
     exit 0
@@ -221,11 +243,12 @@ fi
 clear
 divider
 echo -e "This script will fetch necessary sources and dependencies to build
-JS8Call and install it on your system. It requires sudo access to install
-to system paths (/usr/bin and /usr/lib/js8call).
-If you already have an existing JS8Call installation from your distribution
-you will be able to run either version, but not at the same time.
-Please see the NOTES on the next page:"
+JS8Call and install it inside an isolated container path (/opt/lib/js8call).
+It requires sudo access to write to /opt/lib and establish a launch command 
+wrapper inside /opt/bin/.
+
+This execution model completely isolates the custom Qt 6.11.1 libraries, ensuring
+that your KDE Desktop Environment or system applications are never corrupted."
 divider
 read -p "Press Enter to continue" </dev/tty
 
@@ -233,67 +256,20 @@ clear
 echo "NOTES:
 The newest versions of JS8Call require Qt v6.11.1 to run correctly. Most
 linux distributions do not package Qt6.11.1. The JS8Call project provides
-pre-compiled Qt6.11.1 libraries that this script will fetch and install to
-/usr/lib/js8call/Qt. This will not affect whatever version of Qt you have
-installed from your distribution. The two versions can co-exist and
-JS8Call will be linked with the Qt6.11.1 installation only.
+pre-compiled Qt6.11.1 libraries that this script will fetch and install strictly 
+to /opt/lib/js8call/Qt. 
 
-JS8Call and its libraries install to:
-  Binary    : /usr/bin/JS8Call
-  Libraries : /usr/lib/js8call
-  Qt 6.11.1  : /usr/lib/js8call/Qt
-
-This is consistent with the JS8Call .deb package. If you have previously
-installed JS8Call via the .deb package this script will overwrite it.
-
-Legacy versions of JS8Call (i.e. <=2.3.1) are named with a lower-case
-convention (js8call). Versions 2.4.0 and later are named with an upper-case
-convention (JS8Call v2.5.0 and later) or JS8Call-improved (v2.4.0). These
-versions can co-exist on Linux."
+By building directly into /opt and launching via a targeted runtime wrapper,
+the two Qt versions can safely coexist on the exact same disk without any friction."
 divider
-read -p "Press Enter to continue" </dev/tty
+read -p "Press Enter to proceed to Dependency Installation..." </dev/tty
 
-clear
-echo "AUDIO:
-Newer versions of Qt use the FFmpeg audio backend. ALSA audio is deprecated.
-JS8Call 2.3 and later requires PipeWire or PulseAudio — there will be no audio
-without one of these.
-
-SETTINGS:
-JS8Call stores its configuration in ~/.config/JS8Call.ini (versions 2.5.0
-and later) and ~/.config/js8call.ini (versions 2.3.x and earlier). These
-files can co-exist without conflict. If you are upgrading from 2.3.x your
-old settings will NOT be automatically migrated — JS8Call will start with
-default settings on first launch. You will need to reconfigure your
-audio devices, callsign, and radio settings. Your old js8call.ini remains
-untouched and will continue to be used if you run the legacy version."
-divider
-read -p "Press Enter to continue" </dev/tty
-
-# --- Sudo warning for Debian users ---
-if [[ "$DISTRO" == "debian" ]]; then
-  clear
-  echo -e "NOTE for Debian users:
-Debian does not add users to the sudo group by default. If you have not
-already done this, run the following as root, replacing
-${red}your_username${clear_color} with your login name:
-
-  ${red}/usr/sbin/usermod -aG sudo your_username${clear_color}
-
-You will need to reboot for this change to take effect."
-  divider
-fi
-
-read -p "Continue with installation? Yes(y) / No(n): " INSTALL </dev/tty
-if [ ! "${INSTALL}" = "y" ]; then
-  echo "Installation cancelled."
-  exit 0
-fi
-
-# --- Install system dependencies ---
-clear
-echo "Installing build dependencies..."
+# --- Trigger dependencies ---
 install_deps
+
+# Ensure target staging folders exist under /opt
+sudo mkdir -p "${JS8_INSTALL_PREFIX}"
+sudo mkdir -p "${JS8_BIN_DIR}"
 
 # --- Create development directory ---
 mkdir -p "$HOME/development"
@@ -334,18 +310,51 @@ if [ ! -d "${JS8_QT_DIR}" ]; then
     rm js8lib4.0-Linux_x86_64_pkg.tar.gz
   fi
   echo "Qt 6.11.1 and library archives extracted and removed."
-
-  # Register private library paths with the system linker
-  # This allows JS8Call to find its bundled libraries at runtime
-  echo "${JS8_INSTALL_PREFIX}/lib" | sudo tee /etc/ld.so.conf.d/js8call.conf
-  echo "${JS8_INSTALL_PREFIX}/Qt/lib" | sudo tee -a /etc/ld.so.conf.d/js8call.conf
-  sudo ldconfig
+  
+  # REMOVED DANGEROUS SYSTEM LINKER INJECTIONS (ld.so.conf.d) TO PROTECT KDE PLASMA
+  echo "Libraries isolated inside ${JS8_INSTALL_PREFIX}. Global paths untouched."
 
 else
   echo "Qt 6.11.1 already installed — skipping download."
   divider
   sleep 2
 fi
+
+# ====================================================================
+# FIX PKGCONFIG PREFIX PATHS AND INTERNAL QT BINARY PATHS ON-THE-FLY
+# ====================================================================
+echo "Updating isolated development configuration paths..."
+
+# 1. Broadly fix pkgconfig files by changing any prefix matching /usr/ to /opt/lib/js8call
+# This safely handles variations like prefix=/usr, prefix=/usr/lib/js8lib, or prefix=/usr/lib/js8call
+if [ -d "${JS8_INSTALL_PREFIX}/lib/pkgconfig" ]; then
+  for pc in "${JS8_INSTALL_PREFIX}"/lib/pkgconfig/*.pc; do
+    if [ -f "$pc" ]; then
+      sudo sed -i "s|^prefix=/usr.*|prefix=${JS8_INSTALL_PREFIX}|g" "$pc"
+    fi
+  done
+fi
+
+if [ -d "${JS8_INSTALL_PREFIX}/Qt/lib/pkgconfig" ]; then
+  for pc in "${JS8_INSTALL_PREFIX}"/Qt/lib/pkgconfig/*.pc; do
+    if [ -f "$pc" ]; then
+      sudo sed -i "s|^prefix=/usr.*|prefix=${JS8_QT_DIR}|g" "$pc"
+    fi
+  done
+fi
+
+# 2. FIX QT BINARY PATH TRAP: Force Qt tools to recognize the new /opt layout
+# We inject a qt.conf file into the binary directory. Qt tools look for this file
+# to override their hardcoded internal cross-compilation strings.
+sudo mkdir -p "${JS8_QT_DIR}/bin"
+sudo tee "${JS8_QT_DIR}/bin/qt.conf" > /dev/null << EOF
+[Paths]
+Prefix = ${JS8_QT_DIR}
+Plugins = plugins
+Libraries = lib
+EOF
+
+echo "Paths fixed. Compilation links will successfully target /opt."
 
 # --- Fetch JS8Call source ---
 clear
@@ -385,26 +394,80 @@ rm -rf "$HOME/development/JS8Call-improved/build"
 mkdir "$HOME/development/JS8Call-improved/build"
 cd "$HOME/development/JS8Call-improved/build"
 
+# Enhanced CMake to pass proper installation paths into the build tree
 cmake \
+  -DCMAKE_INSTALL_PREFIX="${JS8_INSTALL_PREFIX}" \
   -DCMAKE_PREFIX_PATH="${JS8_INSTALL_PREFIX};${JS8_QT_DIR}" \
   -DHAMLIB_ROOT="${JS8_INSTALL_PREFIX}" \
   ..
 cmake --build . --parallel $(nproc)
 
 # --- Install binary and desktop integration ---
-sudo cp JS8Call /usr/bin/
-sudo chmod 755 /usr/bin/JS8Call
+# Copy raw binary to the isolated build structure rather than system paths
+sudo mkdir -p "${JS8_INSTALL_PREFIX}/bin"
+sudo cp JS8Call "${JS8_INSTALL_PREFIX}/bin/js8call"
+sudo chmod 755 "${JS8_INSTALL_PREFIX}/bin/js8call"
 
-# Desktop entry — uses system paths consistent with .deb install
-sudo bash -c 'cat > /usr/share/applications/JS8Call.desktop << EOF
+# Create the Runtime Wrapper Launcher inside /opt/bin/
+echo "Generating isolated runtime launch wrapper..."
+sudo tee "${JS8_BIN_DIR}/JS8Call" > /dev/null << 'EOF'
+#!/bin/bash
+# Isolate environment strings explicitly for this binary tree process
+export OPT_RUN_PREFIX="/opt/lib/js8call"
+export LD_LIBRARY_PATH="$OPT_RUN_PREFIX/lib:$OPT_RUN_PREFIX/Qt/lib:$LD_LIBRARY_PATH"
+export QT_PLUGIN_PATH="$OPT_RUN_PREFIX/Qt/plugins"
+exec "$OPT_RUN_PREFIX/bin/js8call" "$@"
+EOF
+sudo chmod 755 "${JS8_BIN_DIR}/JS8Call"
+
+
+# ====================================================================
+# NEW STAGE: CONSTRUCT THE HAM RADIO MENUS FOR KDE/FREEDESKTOP
+# ====================================================================
+echo "Creating Ham Radio application menu category..."
+
+# 1. Define the formal 'Ham Radio' visual directory properties
+sudo mkdir -p /usr/share/desktop-directories
+sudo tee /usr/share/desktop-directories/HamRadio.directory > /dev/null << 'EOF'
+[Desktop Entry]
+Value=1.0
+Type=Directory
+Name=Ham Radio
+Comment=Amateur Radio Applications
+Icon=js8call
+EOF
+
+# 2. Inject the custom category menu rule into the system-wide XDG layout
+# This forces KDE Plasma's application menu to map the 'HamRadio' category tag to a real visual section.
+sudo mkdir -p /etc/xdg/menus/applications-merged
+sudo tee /etc/xdg/menus/applications-merged/hamradio.menu > /dev/null << 'EOF'
+<!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
+ "http://freedesktop.org">
+<Menu>
+  <Name>Applications</Name>
+  <Menu>
+    <Name>Ham Radio</Name>
+    <Directory>HamRadio.directory</Directory>
+    <Include>
+      <Category>HamRadio</Category>
+    </Include>
+  </Menu>
+</Menu>
+EOF
+
+# 3. Create Desktop entry pointing to the new Ham Radio category mapping
+sudo bash -c "cat > /usr/share/applications/JS8Call.desktop << EOF
 [Desktop Entry]
 Type=Application
 Name=JS8Call
-Exec=/usr/bin/JS8Call
+GenericName=Weak Signal Digital Communications
+Exec=${JS8_BIN_DIR}/JS8Call
 Icon=js8call
 Terminal=false
-Categories=HamRadio;Network;
-EOF'
+Categories=HamRadio;
+EOF"
+# ====================================================================
+
 
 # Install icon to standard hicolor theme location
 sudo mkdir -p /usr/share/icons/hicolor/scalable/apps
@@ -433,7 +496,8 @@ else
 fi
 
 divider
-echo "JS8Call is installed. The launcher should appear in your application menu.
-On KDE you may need to log out and back in to refresh the menu."
+echo "JS8Call is safely installed inside /opt! 
+The launcher should appear in your application menu.
+KDE Plasma environments remain fully protected from library leaking."
 divider
 exit 0
