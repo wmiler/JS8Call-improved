@@ -1,8 +1,8 @@
 # Building JS8Call on Linux
 
-Building JS8Call on linux is very easy with the `Linux-User-Build-JS8Call.sh` script you will find in the tools directory in the JS8Call source tree. It will fetch all the needed libraries and source code, build JS8Call and install it on your system automatically. This script can be found in JS8Call versions 3.0.2 and later in the release assets as well, and will build the version of JS8Call it is released for. It will build JS8call for Debian-based, Redhat/Fedora-based or Arch Linux-based distributions.
+Building JS8Call on linux is very easy with the `Linux-User-Build-JS8Call.sh` script you will find in the tools directory in the JS8Call source tree. It will fetch all the needed libraries and source code, build JS8Call and install it on your system automatically. It will build JS8call for Debian-based, Redhat/Fedora-based or Arch Linux-based distributions.
 
-For building JS8Call master simply clone the source code with `git clone https://github.com/JS8Call-improved/JS8Call-improved`, cd into the tools directory and run the script with `./Linux-User-Build-JS8Call.sh
+For building JS8Call master simply clone the source code with `git clone https://github.com/JS8Call-improved/JS8Call-improved`, cd into the tools directory and run the script with `./Linux-User-Build-JS8Call.sh`
 
 If you have an existing JS8Call installation performed by this script, or by the deprecated legacy scripts that used to be provided to build JS8Call for the local user only, this script will offer to uninstall it and clean up legacy installations. After installing with this script, running it a second time will offer to uninstall your JS8Call installation.
 
@@ -10,7 +10,7 @@ If you have an existing JS8Call installation performed by this script, or by the
 > Note: The instructions below apply to earlier versions of JS8Call but are largely deprecated and merely left here for reference. They may or may not work, depending on what version of JS8Call you are attempting to build, and do not link with and use the standarized libraries for JS8Call 3.0.2 and later. Builds done using these instructions are not supported if you encounter bugs.
 
 > [!note]
-> Note: We recommend building with QT 6.9.3 for all versions of JS8Call 2.4.0 or newer. While other versions of Qt down to 6.5 are possible to use, there is significant risk that unwanted audio or PTT bugs may be injected into your build. The Qt Group is deprecating use of native audio back ends in favor of standardizing on FFmpeg audio, which requires either PulseAudio or PipeWire on linux. Most linux distributions do not ship with Qt 6.9.3 with proper FFmpeg audio support. Instead of using distribution packaged Qt, you can download pre-built Qt 6.9.3 library packages with FFmpeg audio support built-in [here](https://github.com/JS8Call-improved/js8lib/releases/tag/lib%2F3.0) for both x86_64 and arm64.
+> Note: We recommend building with Qt 6.9.3 for all versions of JS8Call 2.4.0 or newer. While other versions of Qt down to 6.5 are possible to use, there is significant risk that unwanted audio or PTT bugs may be injected into your build. The Qt Group is deprecating use of native audio back ends in favor of standardizing on FFmpeg audio, which requires either PulseAudio or PipeWire on linux. Most linux distributions do not ship with Qt 6.9.3 with proper FFmpeg audio support. Instead of using distribution packaged Qt, you can download pre-built Qt 6.9.3 library packages with FFmpeg audio support built-in [here](https://github.com/JS8Call-improved/js8lib/releases/tag/lib%2F3.0) for both x86_64 and arm64.
 
 These Qt packages must be unpacked to /usr/lib/js8call/Qt), this will require using `-DCMAKE_PREFIX_PATH=/usr/lib/js8call/Qt` for build.
 
