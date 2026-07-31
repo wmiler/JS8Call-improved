@@ -15,7 +15,7 @@ Windows 11
 1) Download and install [CMake 4.1.1](https://www.kitware.com/cmake-4-1-1-available-for-download/) from Kitware.
 2) Download and install [git for Windows](https://git-scm.com/install/windows) from GitHub.
 3) Download and install the [Qt Online Installer](https://doc.qt.io/qt-6/qt-online-installation.html) from qt.io. To do this you must create a free account with Qt and log into your new account and you will be able to download it.
-4) After installation of Qt use the Qt Maintenance Tool to install Qt 6.11.1
+4) After installation of Qt use the Qt Maintenance Tool to install Qt 6.12.0
 
 ### Notes On Installation of Qt6
 
@@ -31,7 +31,7 @@ Windows 11
 
 ### Setting up Qt Creator
 
-- To get started with a CMake project in Qt Creator, open the program and select Open Project. Simply navigate to the CMakeLists.txt in `C:\development\JS8Call-improved` and select it. When the project window opens your available “kits” will be listed on the left side. Simply click the `+` button by the kits you want to use for this project (6.11.1). Qt Creator will create what is called an Initial Configuration. You can select to hide the inactive kits if you installed more than one version of Qt.
+- To get started with a CMake project in Qt Creator, open the program and select Open Project. Simply navigate to the CMakeLists.txt in `C:\development\JS8Call-improved` and select it. When the project window opens your available “kits” will be listed on the left side. Simply click the `+` button by the kits you want to use for this project (6.12.0). Qt Creator will create what is called an Initial Configuration. You can select to hide the inactive kits if you installed more than one version of Qt.
 - You can select Manage Kits at the top left to make sure you have a valid compiler (which should be LLVM-clang) for each one. The default build will be Debug. Under Build Settings select Add, and add a Release configuration and name it Release.
 - Qt Creator automatically creates a build folder in the source tree. Inside the build folder Creator makes folders for each kit and build type. DO NOT delete these. They contain your project build configuration settings for each build type. At present Creator will say there’s no configuration for Release found. Don’t worry about that. We’re going to fix it in the next step where we move to the CMake keys.
 - In the CMake configure settings pane (the center one) switch from Initial Configuration tab to Current Configuration. Then make the following changes:

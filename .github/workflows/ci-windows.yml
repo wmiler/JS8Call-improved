@@ -56,9 +56,9 @@ jobs:
     - name: Fetch Qt
       shell: pwsh
       run: |
-        curl -L -o qt611.zip "https://github.com/JS8Call-improved/js8lib/releases/download/lib%2F4.0/qt-6.11.1-windows-x64.zip"
-        Expand-Archive qt611.zip -DestinationPath qt611
-        echo "$env:GITHUB_WORKSPACE\qt611\bin" >> $env:GITHUB_PATH
+        curl -L -o qt612.zip "https://github.com/JS8Call-improved/js8lib/releases/download/lib%2F4.0/qt-6.12.0-windows-x64.zip"
+        Expand-Archive qt612.zip -DestinationPath qt612
+        echo "$env:GITHUB_WORKSPACE\qt612\bin" >> $env:GITHUB_PATH
 
     - name: Fetch js8lib
       shell: pwsh
@@ -81,8 +81,8 @@ jobs:
           -DCMAKE_C_COMPILER=x86_64-w64-mingw32-clang `
           -DCMAKE_CXX_COMPILER=x86_64-w64-mingw32-clang++ `
           -DCMAKE_RC_COMPILER=x86_64-w64-mingw32-windres `
-          -DQt6_DIR="$workspace/qt611/lib/cmake/Qt6" `
-          -DCMAKE_PREFIX_PATH="$workspace/qt611;$workspace/js8lib/boost-1.88;$workspace/js8lib/hamlib-4.7.2;$workspace/js8lib/fftw3;$workspace/js8lib/libusb-1.0.29" ..
+          -DQt6_DIR="$workspace/qt612/lib/cmake/Qt6" `
+          -DCMAKE_PREFIX_PATH="$workspace/qt612;$workspace/js8lib/boost-1.88;$workspace/js8lib/hamlib-4.7.2;$workspace/js8lib/fftw3;$workspace/js8lib/libusb-1.0.29" ..
 
     - name: Extract version
       shell: pwsh

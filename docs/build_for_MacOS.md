@@ -21,7 +21,7 @@ Below are the required libraries and tested versions for a JS8Call-improved buil
 
 * boost_1_88_0
 
-* Qt 6.11.1 - this one is non-trivial and is a monster. Failed builds are common and will likely discourage you from trying a JS8Call build. Recommendations below......
+* Qt 6.12.0 - this one is non-trivial and is a monster. Failed builds are common and will likely discourage you from trying a JS8Call build. Recommendations below......
 
 *   There is two ways to obtain the libraries and frameworks to compile JS8Call; either build them yourself or fetch the pre-built libraries.
 
@@ -52,7 +52,7 @@ If you obtain Qt using the online installer for an Intel build it is recommended
 
 Building Qt6 from source for Apple silicon is non-trivial. Consult the Qt documentation on how to build it with FFmpeg audio support. This will require building and installing FFmpeg first, as per the Qt documentation [here](https://doc.qt.io/archives/qt-6.9/qtmultimedia-building-ffmpeg-macos.html). Once FFmpeg is compiled and installed, you can then clone the Qt repository with a series of commands:
 ```
-mkdir ~/development/Qt6.11.1 && mkdir ~/development/Qt6_build
+mkdir ~/development/Qt6.12.0 && mkdir ~/development/Qt6_build
 ```
 Then fetch Qt 6 with:
 ```
@@ -60,7 +60,7 @@ cd  ~/development/Qt6_build && git clone https://github.com/qt/qt5.git Qt6
 ```
 Now you need to initialize your Qt6 repository:
 ```
-cd ~/development/Qt6_build/Qt6 && git checkout 6.11.1
+cd ~/development/Qt6_build/Qt6 && git checkout 6.12.0
 ```
 ```
 ./init-repository --module-subset=qtbase,qtshadertools,qtmultimedia,qtimageformats,qtwebsockets,qtserialport,qtsvg
@@ -71,19 +71,19 @@ cd .. && mkdir qt6-build && cd qt6-build
 ```
 Configure the build:
 ```
-../Qt6/configure -prefix ~/development/Qt611.1 -ffmpeg-dir /usr/local/ffmpeg -ffmpeg-deploy
+../Qt6/configure -prefix ~/development/Qt6.12.0 -ffmpeg-dir /usr/local/ffmpeg -ffmpeg-deploy
 ```
-Now build it and install it. This will install Qt in ~/development/Qt6.11.1
+Now build it and install it. This will install Qt in ~/development/Qt6.12.0
 ```
 cmake --build . --parallel && cmake --install .
 ```
 
-The Qt6.11.1 library that you just built can be used over and over again to build JS8Call. Since the Qt sources are huge, to conserve disk space you can delete the ~/development/Qt6-build source directory for Qt6.
+The Qt6.12.0 library that you just built can be used over and over again to build JS8Call. Since the Qt sources are huge, to conserve disk space you can delete the ~/development/Qt6-build source directory for Qt6.
 
 Now we can finally proceed with building JS8Call. The following command set will have to be modified depending on if you are doing an Intel build using Qt from the online installer, or are doing an Apple silicon build with Qt built from source code. The command as shown is for the Apple silicon build - note the location of the Qt library and adjust accordingly for an Intel build.
 ```
 cd ~/development/JS8Call/src && mkdir build && cd build \
-&& cmake -DCMAKE_PREFIX_PATH="/usr/local/js8lib;~/development/JS8Call/Qt6.11.1" -DCMAKE_BUILD_TYPE=Release .. \
+&& cmake -DCMAKE_PREFIX_PATH="/usr/local/js8lib;~/development/JS8Call/Qt6.12.0" -DCMAKE_BUILD_TYPE=Release .. \
 && cmake --build .
 ```
 If building using the pre-built library that contains Qt (Apple silicon only), then the command is as follows.

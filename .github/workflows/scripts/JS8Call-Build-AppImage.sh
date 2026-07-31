@@ -28,7 +28,7 @@ fi
 
 # --- Tarball URLs ---
 JS8LIB_URL="https://github.com/JS8Call-improved/js8lib/releases/download/lib%2F4.0/js8lib4.0-Linux_${JS8_ARCH}_pkg.tar.gz"
-QT_URL="https://github.com/JS8Call-improved/js8lib/releases/download/lib%2F4.0/Qt6.11.1_Linux_${JS8_ARCH}_pkg.tar.gz"
+QT_URL="https://github.com/JS8Call-improved/js8lib/releases/download/lib%2F4.0/Qt6.12.0_Linux_${JS8_ARCH}_pkg.tar.gz"
 
 # --- Directories ---
 BUILD_DIR="$HOME/js8call-appimage-build"
@@ -53,6 +53,7 @@ sudo apt-get install -y \
     zlib1g-dev libbrotli-dev libdbus-1-dev libglib2.0-dev \
     libatspi2.0-dev libgl-dev libegl-dev libgbm-dev \
     libdrm-dev libinput-dev libvulkan-dev \
+    libopengl-dev \
     libxkbcommon-dev libxkbcommon-x11-dev \
     libxcb-util-dev libxcb-image0-dev libxcb-keysyms1-dev \
     libxcb-render-util0-dev libxcb-icccm4-dev libxcb-cursor-dev \
@@ -235,7 +236,7 @@ cp "$BUILD_DIR/JS8Call-improved/.github/workflows/misc/JS8Call.appdata.xml" \
 #   - --output appimage calls appimagetool internally to produce the
 #     final compressed self-executing .AppImage file
 #
-# QMAKE points it at our private Qt 6.11.1, not the system Qt,
+# QMAKE points it at our private Qt 6.12.0, not the system Qt,
 # so it bundles the right version
 cd "$BUILD_DIR"
 export EXTRA_PLATFORM_PLUGINS="libqwayland.so;libqoffscreen.so;libqeglfs.so;libqlinuxfb.so;libqminimalegl.so;libqminimal.so"

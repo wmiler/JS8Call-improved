@@ -104,6 +104,7 @@ install_deps() {
       at-spi2-core-devel mesa-libGL-devel mesa-libEGL-devel \
       mesa-libgbm-devel libdrm-devel libinput-devel \
       vulkan-loader-devel \
+      libopengl-devel \
       libxkbcommon-devel libxkbcommon-x11-devel \
       xcb-util-devel xcb-util-image-devel xcb-util-keysyms-devel \
       xcb-util-renderutil-devel xcb-util-wm-devel xcb-util-cursor-devel \
@@ -122,6 +123,7 @@ install_deps() {
       libharfbuzz-dev libjpeg-dev libpng-dev \
       zlib1g-dev libbrotli-dev libdbus-1-dev libglib2.0-dev \
       libatspi2.0-dev libgl-dev libegl-dev libgbm-dev \
+      libopengl-dev \
       libdrm-dev libinput-dev libvulkan-dev \
       mesa-utils libglu1-mesa-dev freeglut3-dev mesa-common-dev \
       libxkbcommon-dev libxkbcommon-x11-dev \
@@ -198,7 +200,7 @@ if [ -d "${TOXIC_SYSTEM_LIB}" ] || [ -f "${TOXIC_SYSTEM_BIN}" ] || [ -f "${TOXIC
   divider
   echo -e "${red}CRITICAL SYSTEM NOTICE:
 Legacy components were detected in ${TOXIC_SYSTEM_LIB} or ${TOXIC_SYSTEM_BIN}.
-These paths leak custom Qt 6.11.1 dependencies globally, which crashes KDE Plasma!${clear_color}"
+These paths leak custom Qt 6.12.0 dependencies globally, which crashes KDE Plasma!${clear_color}"
   divider
   read -p "Purge conflicting /usr system-wide paths to fix/protect KDE? Yes(y) / No(n): " PURGE_TOXIC </dev/tty
   if [ "${PURGE_TOXIC}" = "y" ]; then
@@ -247,16 +249,16 @@ JS8Call and install it inside an isolated container path (/opt/lib/js8call).
 It requires sudo access to write to /opt/lib and establish a launch command 
 wrapper inside /opt/bin/.
 
-This execution model completely isolates the custom Qt 6.11.1 libraries, ensuring
+This execution model completely isolates the custom Qt 6.12.0 libraries, ensuring
 that your KDE Desktop Environment or system applications are never corrupted."
 divider
 read -p "Press Enter to continue" </dev/tty
 
 clear
 echo "NOTES:
-The newest versions of JS8Call require Qt v6.11.1 to run correctly. Most
-linux distributions do not package Qt6.11.1. The JS8Call project provides
-pre-compiled Qt6.11.1 libraries that this script will fetch and install strictly 
+The newest versions of JS8Call require Qt v6.12.0 to run correctly. Most
+linux distributions do not package Qt6.12.0. The JS8Call project provides
+pre-compiled Qt6.12.0 libraries that this script will fetch and install strictly 
 to /opt/lib/js8call/Qt. 
 
 By building directly into /opt and launching via a targeted runtime wrapper,
@@ -287,7 +289,7 @@ divider
 sleep 2
 
 # --- Fetch Qt6 and js8lib if not already installed ---
-echo "Checking for Qt 6.11.1..."
+echo "Checking for Qt 6.12.0..."
 divider
 sleep 2
 
@@ -295,27 +297,27 @@ cd "$HOME/development"
 
 if [ ! -d "${JS8_QT_DIR}" ]; then
   if [ "${JS8_ARCH}" = "aarch64" ]; then
-    wget -c https://github.com/JS8Call-improved/js8lib/releases/download/lib%2F4.0/Qt6.11.1_Linux_aarch64_pkg.tar.gz
+    wget -c https://github.com/JS8Call-improved/js8lib/releases/download/lib%2F4.0/Qt6.12.0_Linux_aarch64_pkg.tar.gz
     wget -c https://github.com/JS8Call-improved/js8lib/releases/download/lib%2F4.0/js8lib4.0-Linux_aarch64_pkg.tar.gz
-    sudo tar -xzvf Qt6.11.1_Linux_aarch64_pkg.tar.gz -C "${JS8_INSTALL_PREFIX}"
-    rm Qt6.11.1_Linux_aarch64_pkg.tar.gz
+    sudo tar -xzvf Qt6.12.0_Linux_aarch64_pkg.tar.gz -C "${JS8_INSTALL_PREFIX}"
+    rm Qt6.12.0_Linux_aarch64_pkg.tar.gz
     sudo tar -xzvf js8lib4.0-Linux_aarch64_pkg.tar.gz -C "${JS8_INSTALL_PREFIX}" --strip-components=1
     rm js8lib4.0-Linux_aarch64_pkg.tar.gz
   else
-    wget -c https://github.com/JS8Call-improved/js8lib/releases/download/lib%2F4.0/Qt6.11.1_Linux_x86_64_pkg.tar.gz
+    wget -c https://github.com/JS8Call-improved/js8lib/releases/download/lib%2F4.0/Qt6.12.0_Linux_x86_64_pkg.tar.gz
     wget -c https://github.com/JS8Call-improved/js8lib/releases/download/lib%2F4.0/js8lib4.0-Linux_x86_64_pkg.tar.gz
-    sudo tar -xzvf Qt6.11.1_Linux_x86_64_pkg.tar.gz -C "${JS8_INSTALL_PREFIX}"
-    rm Qt6.11.1_Linux_x86_64_pkg.tar.gz
+    sudo tar -xzvf Qt6.12.0_Linux_x86_64_pkg.tar.gz -C "${JS8_INSTALL_PREFIX}"
+    rm Qt6.12.0_Linux_x86_64_pkg.tar.gz
     sudo tar -xzvf js8lib4.0-Linux_x86_64_pkg.tar.gz -C "${JS8_INSTALL_PREFIX}" --strip-components=1
     rm js8lib4.0-Linux_x86_64_pkg.tar.gz
   fi
-  echo "Qt 6.11.1 and library archives extracted and removed."
+  echo "Qt 6.12.0 and library archives extracted and removed."
   
   # REMOVED DANGEROUS SYSTEM LINKER INJECTIONS (ld.so.conf.d) TO PROTECT KDE PLASMA
   echo "Libraries isolated inside ${JS8_INSTALL_PREFIX}. Global paths untouched."
 
 else
-  echo "Qt 6.11.1 already installed — skipping download."
+  echo "Qt 6.12.0 already installed — skipping download."
   divider
   sleep 2
 fi
@@ -382,7 +384,7 @@ BRANCH=$(git branch --show-current)
 clear
 divider
 echo "JS8Call Build Details:
-  Qt version : 6.11.1 with FFmpeg audio (requires PulseAudio or PipeWire)
+  Qt version : 6.12.0 with FFmpeg audio (requires PulseAudio or PipeWire)
   Branch     : JS8Call-improved ${BRANCH}
   Distro     : ${DISTRO} / ${JS8_ARCH}"
 divider
