@@ -1,11 +1,9 @@
 name: Build and Deploy Docs
-# Trigger only if we have labeled the PR, a Release has been published or a manual trigger
+# Trigger only if we have labeled the PR "documentation", or a manual trigger
 on:
   workflow_dispatch:
   pull_request:
     types: [labeled]
-  release:
-    types: [published]
 
 permissions:
   contents: write
@@ -15,8 +13,7 @@ permissions:
 jobs:
   build_docs:
     if: (contains(github.event.pull_request.labels.*.name, 'documentation') ||
-      (contains(github.event_name, 'workflow_dispatch')) ||
-      (contains(github.event_name, 'release')) )
+      (contains(github.event_name, 'workflow_dispatch')) )
     concurrency: ci-${{ github.ref }}
     runs-on: ubuntu-latest
     steps:
@@ -32,7 +29,7 @@ jobs:
         id: cache-doxy
         uses: actions/cache/restore@v5
         with:
-          path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/doxygen
+          path: /home/runner/work/JS8Call-improved/JS8Call-improved/local/doxygen1161
           key: ${{ runner.os }}-${{ runner.arch }}-doxygen1161
 
 ## doxygen
@@ -41,7 +38,7 @@ jobs:
         id: install-doxy
         run: |
           cd /tmp/
-          wget https://www.doxygen.nl/files/doxygen-1.16.1.src.tar.gz
+          wget https://github.com/doxygen/doxygen/releases/download/Release_1_16_1/doxygen-1.16.1.src.tar.gz
           tar zxf doxygen-1.16.1.src.tar.gz
           cd doxygen-1.16.1
           mkdir build
@@ -73,7 +70,7 @@ jobs:
 #    if: github.ref == 'refs/heads/master'
 # Try deploying on/from release branch or master. check paths afterwards
   deploy:
-    if: startsWith(github.ref, 'ref/head/release/') || contains(github.ref, '/tags/release') || contains(github.ref, 'refs/heads/master')
+    if: startsWith(github.ref, 'refs/heads/release/') || contains(github.ref, '/tags/release') || contains(github.ref, 'refs/heads/master')
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -83,3 +80,4 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
+
