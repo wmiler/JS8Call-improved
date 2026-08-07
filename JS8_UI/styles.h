@@ -155,7 +155,7 @@ static inline QString progress_bar_stylesheet(bool small = false) {
 }
 
 /**
- * @brief Returns a platform-native QPushButton stylesheet.
+ * @brief Returns a platform-native QPushButton/QToolButton stylesheet.
  *
  * Generates a stylesheet that approximates the native button conventions of the
  * specific platform, using system-appropriate fonts, geometry, and accent
@@ -164,22 +164,11 @@ static inline QString progress_bar_stylesheet(bool small = false) {
  *
  * @return A QSS QString suitable for use with @c QWidget::setStyleSheet(),
  *         or an empty default Qt style on unsupported platforms.
- *
- * @note A Linux variant targeting Ubuntu/Noto Sans with a neutral grey palette
- *       (@c #E0E0E0 background, @c #BDBDBD border) has been drafted but is
- * currently commented out pending a styling decision.
- *
- * @note On platforms other than Windows and macOS, Qt's built-in default button
- *       style is returned unchanged. This includes Linux until the pending
- * variant is defined
- *
- * @todo Evaluate and enable the Linux stylesheet when platform styling is
- * decided upon.
  */
 inline QString buttonStyle() {
 #if defined(Q_OS_WIN)
     return R"(
-        QPushButton {
+        QPushButton, QToolButton {
             background-color: #6699ff;
             color: black;
             border: none;
@@ -189,14 +178,14 @@ inline QString buttonStyle() {
             max-height: 15px;
             font-family: "Segoe UI";
         }
-        QPushButton:hover {
+        QPushButton:hover, QToolButton:hover {
             background-color: #4d7fff;
             color: white;
         }
-        QPushButton:pressed {
+        QPushButton:pressed, QToolButton:pressed {
             background-color: #003EAA;
         }
-        QPushButton:disabled {
+        QPushButton:disabled, QToolButton:disabled {
             background-color: #ececec;
             color: #888888;
         }
@@ -204,7 +193,7 @@ inline QString buttonStyle() {
 
 #elif defined(Q_OS_MACOS)
     return R"(
-        QPushButton {
+        QPushButton, QToolButton {
             background-color: #6699ff;
             color: black;
             border: none;
@@ -214,14 +203,14 @@ inline QString buttonStyle() {
             max-height: 15px;
             font-family: "-apple-system";
         }
-        QPushButton:hover {
+        QPushButton:hover, QToolButton:hover {
             background-color: #4d7fff;
             color: white;
         }
-        QPushButton:pressed {
+        QPushButton:pressed, QToolButton:pressed {
             background-color: #003EAA;
         }
-        QPushButton:disabled {
+        QPushButton:disabled, QToolButton:disabled {
             background-color: #ececec;
             color: #888888;
         }
@@ -229,21 +218,21 @@ inline QString buttonStyle() {
 
 #elif defined(Q_OS_LINUX)
     return R"(
-       QPushButton {
+       QPushButton, QToolButton {
            background-color: #6699ff;
            color: black;
            border: none;
            border-radius: 5px;
-           padding: px 9px;
+           padding: 3px 9px;
            font-family: "Ubuntu", "Noto Sans";
        }
-       QPushButton:hover {
+       QPushButton:hover, QToolButton:hover {
            background-color: #4d7fff;
        }
-       QPushButton:pressed {
+       QPushButton:pressed, QToolButton:pressed {
            background-color: #003EAA;
        }
-       QPushButton:disabled {
+       QPushButton:disabled, QToolButton:disabled {
            background-color: #ececec;
            color: #888888;
        }
