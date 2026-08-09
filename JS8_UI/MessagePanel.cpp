@@ -34,10 +34,12 @@ MessagePanel::MessagePanel(QString inboxPath, QWidget *parent)
   replyMenu = new QMenu(ui->replyPushButton);
   replyToPathAction = replyMenu->addAction(QString());
   replyToOriginalViaPathAction = replyMenu->addAction(QString());
+  replyToOriginalAction = replyMenu->addAction(QString());
 
   ui->replyPushButton->setDefaultAction(replyToPathAction);
   connect(replyToPathAction, &QAction::triggered, this, [this]() { emitReplyAction(replyToPathAction); });
   connect(replyToOriginalViaPathAction, &QAction::triggered, this, [this]() { emitReplyAction(replyToOriginalViaPathAction); });
+  connect(replyToOriginalAction, &QAction::triggered, this, [this]() { emitReplyAction(replyToOriginalAction); });
   resetReplyButton();
 
   // connect selection model changed
@@ -340,6 +342,11 @@ void MessagePanel::configureReplyButton(int row, const QString &messageText) {
   replyToOriginalViaPathAction->setText(tr("Reply to %1 via %2").arg(originalSender, path));
   replyToOriginalViaPathAction->setData(prepareStoreForwardReplyMessage(path, originalSender, placeholder));
   replyToOriginalViaPathAction->setEnabled(true);
+
+  replyToOriginalAction->setText(tr("Reply to %1").arg(originalSender));
+  replyToOriginalAction->setData(prepareReplyMessage(originalSender, placeholder));
+  replyToOriginalAction->setEnabled(true);
+
   ui->replyPushButton->setMenu(replyMenu);
   ui->replyPushButton->setPopupMode(QToolButton::MenuButtonPopup);
 }

@@ -49,6 +49,7 @@ private:
   QMenu *replyMenu;
   QAction *replyToPathAction;
   QAction *replyToOriginalViaPathAction;
+  QAction *replyToOriginalAction;
   QString call;
 };
 #endif // JS8CALL_MESSAGEPANEL_H
