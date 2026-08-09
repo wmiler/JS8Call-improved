@@ -189,6 +189,16 @@ inline QString buttonStyle() {
             background-color: #ececec;
             color: #888888;
         }
+        QToolButton#replyPushButton::menu-button {
+            width: 12px;
+        }
+        QToolButton#replyPushButton[popupMode="MenuButtonPopup"] {
+            padding-right: 21px;
+        }
+        QToolButton#replyPushButton[popupMode="MenuButtonPopup"][layoutDirection="RightToLeft"] {
+            padding-right: 9px;
+            padding-left: 21px;
+        }
     )";
 
 #elif defined(Q_OS_MACOS)
@@ -214,6 +224,16 @@ inline QString buttonStyle() {
             background-color: #ececec;
             color: #888888;
         }
+        QToolButton#replyPushButton::menu-button {
+            width: 12px;
+        }
+        QToolButton#replyPushButton[popupMode="MenuButtonPopup"] {
+            padding-right: 21px;
+        }
+        QToolButton#replyPushButton[popupMode="MenuButtonPopup"][layoutDirection="RightToLeft"] {
+            padding-right: 9px;
+            padding-left: 21px;
+        }
     )";
 
 #elif defined(Q_OS_LINUX)
@@ -235,6 +255,16 @@ inline QString buttonStyle() {
        QPushButton:disabled, QToolButton:disabled {
            background-color: #ececec;
            color: #888888;
+       }
+       QToolButton#replyPushButton::menu-button {
+           width: 12px;
+       }
+       QToolButton#replyPushButton[popupMode="MenuButtonPopup"] {
+           padding-right: 21px;
+       }
+       QToolButton#replyPushButton[popupMode="MenuButtonPopup"][layoutDirection="RightToLeft"] {
+           padding-right: 9px;
+           padding-left: 21px;
        }
    )";
 
@@ -862,4 +892,3 @@ constexpr const char *SpotButtonStyle =
 
 }
 #endif
-

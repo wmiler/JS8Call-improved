@@ -10,7 +10,9 @@
 #include <QDateTime>
 #include <QMenu>
 #include <QRegularExpression>
+#include <QStyle>
 #include <QTimeZone>
+#include <QToolButton>
 
 #include <algorithm>
 
@@ -21,6 +23,21 @@ auto pathSegs(QString const &path) {
   auto segs = path.split('>');
   std::reverse(segs.begin(), segs.end());
   return segs;
+}
+
+void setToolButtonMenu(QToolButton *button, QMenu *menu) {
+  button->setPopupMode(menu ? QToolButton::MenuButtonPopup
+                            : QToolButton::DelayedPopup);
+  // Qt style sheets cache property-selector matches. Re-polish after changing
+  // popupMode so the split-button padding rule is applied or removed now.
+  button->style()->unpolish(button);
+  button->style()->polish(button);
+
+  // setMenu() invalidates QToolButton's cached size hint. Keep it after the
+  // style refresh so the next hint uses the newly selected padding rule.
+  button->setMenu(menu);
+  button->updateGeometry();
+  button->update();
 }
 } // namespace
 
@@ -298,8 +315,7 @@ QString MessagePanel::prepareStoreForwardReplyMessage(QString path,
 }
 
 void MessagePanel::resetReplyButton() {
-  ui->replyPushButton->setMenu(nullptr);
-  ui->replyPushButton->setPopupMode(QToolButton::DelayedPopup);
+  setToolButtonMenu(ui->replyPushButton, nullptr);
 
   replyToPathAction->setText(tr("Reply"));
   replyToPathAction->setData(QVariant());
@@ -347,8 +363,7 @@ void MessagePanel::configureReplyButton(int row, const QString &messageText) {
   replyToOriginalAction->setData(prepareReplyMessage(originalSender, placeholder));
   replyToOriginalAction->setEnabled(true);
 
-  ui->replyPushButton->setMenu(replyMenu);
-  ui->replyPushButton->setPopupMode(QToolButton::MenuButtonPopup);
+  setToolButtonMenu(ui->replyPushButton, replyMenu);
 }
 
 void MessagePanel::emitReplyAction(QAction *action) {
