@@ -35,7 +35,6 @@ MessagePanel::MessagePanel(QString inboxPath, QWidget *parent)
   replyToPathAction = replyMenu->addAction(QString());
   replyToOriginalViaPathAction = replyMenu->addAction(QString());
 
-  ui->replyPushButton->setPopupMode(QToolButton::MenuButtonPopup);
   ui->replyPushButton->setDefaultAction(replyToPathAction);
   connect(replyToPathAction, &QAction::triggered, this, [this]() { emitReplyAction(replyToPathAction); });
   connect(replyToOriginalViaPathAction, &QAction::triggered, this, [this]() { emitReplyAction(replyToOriginalViaPathAction); });
@@ -298,6 +297,7 @@ QString MessagePanel::prepareStoreForwardReplyMessage(QString path,
 
 void MessagePanel::resetReplyButton() {
   ui->replyPushButton->setMenu(nullptr);
+  ui->replyPushButton->setPopupMode(QToolButton::DelayedPopup);
 
   replyToPathAction->setText(tr("Reply"));
   replyToPathAction->setData(QVariant());
@@ -341,6 +341,7 @@ void MessagePanel::configureReplyButton(int row, const QString &messageText) {
   replyToOriginalViaPathAction->setData(prepareStoreForwardReplyMessage(path, originalSender, placeholder));
   replyToOriginalViaPathAction->setEnabled(true);
   ui->replyPushButton->setMenu(replyMenu);
+  ui->replyPushButton->setPopupMode(QToolButton::MenuButtonPopup);
 }
 
 void MessagePanel::emitReplyAction(QAction *action) {
