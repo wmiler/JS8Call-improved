@@ -344,7 +344,7 @@ void MessagePanel::configureReplyButton(int row, const QString &messageText) {
   replyToPathAction->setData(prepareReplyMessage(path, placeholder));
   replyToPathAction->setEnabled(true);
 
-  static const QRegularExpression fromSignature(R"((?:^| )FROM (?<callsign>\S+)$)");
+  static const QRegularExpression fromSignature(R"((?:^| )FROM (?<callsign>\S+)(?: NEXT MSG ID \d+(?: \+\d+)?)?$)");
   const auto match = fromSignature.match(messageText);
   if (!match.hasMatch()) {
     return;
