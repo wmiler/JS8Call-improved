@@ -1,4 +1,4 @@
-name: Test Doxygen Fetch (Dry Run)
+name: Test Doxygen Build (Dry Run)
 
 # Manual dry run: fetches the prebuilt doxygen binary from the js8lib
 # release, verifies it, builds the docs, and uploads docs/html as a
