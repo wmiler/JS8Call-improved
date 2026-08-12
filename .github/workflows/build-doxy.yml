@@ -49,7 +49,7 @@ jobs:
         run: |
           set -euo pipefail
           ASSET="doxygen-${DOXY_VER}.tar.gz"
-          tar -C /tmp/doxy-install -czf "/tmp/${ASSET}"
+          tar -C /tmp/doxy-install -czf "/tmp/${ASSET}" .
           sha256sum "/tmp/${ASSET}" > "/tmp/${ASSET}.sha256"
           echo "ASSET_NAME=${ASSET}" >> "$GITHUB_ENV"
 
