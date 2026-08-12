@@ -57,7 +57,14 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: ${{ env.ASSET_NAME }}
-          path: |
-            /tmp/${{ env.ASSET_NAME }}
-            /tmp/${{ env.ASSET_NAME }}.sha256
+          path: /tmp/${{ env.ASSET_NAME }}
+          archive: false
+          retention-days: 14
+
+      - name: Upload checksum artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ env.ASSET_NAME }}.sha256
+          path: /tmp/${{ env.ASSET_NAME }}.sha256
+          archive: false
           retention-days: 14
