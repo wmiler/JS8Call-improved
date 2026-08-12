@@ -21,7 +21,7 @@ jobs:
       - name: Install build deps
         run: |
           sudo apt-get update
-          sudo apt-get install -y doxygen graphviz flex bison make cmake g++ wget libclang-dev
+          sudo apt-get install -y doxygen graphviz flex bison make cmake g++ wget
 
       - name: Build doxygen
         env:
@@ -34,7 +34,7 @@ jobs:
           tar zxf "doxygen-${DOXY_VER}.src.tar.gz"
           cd "doxygen-${DOXY_VER}"
           mkdir build && cd build
-          cmake -G "Unix Makefiles" -Duse_libclang=YES -DCMAKE_INSTALL_PREFIX=/tmp/doxy-install ..
+          cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/tmp/doxy-install ..
           make -j"$(nproc)"
           make install
 
