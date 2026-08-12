@@ -1,0 +1,45 @@
+name: Test Doxygen Fetch (Dry Run)
+
+# Manual dry run: fetches the prebuilt doxygen binary from the js8lib
+# release, verifies it, builds the docs, and uploads docs/html as a
+# plain artifact for inspection. Does NOT touch GitHub Pages.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build_docs_dry_run:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y graphviz
+
+      - name: Fetch prebuilt doxygen 1.16.1
+        run: |
+          set -euo pipefail
+          mkdir -p local/doxygen1161
+          curl -fsSL -o doxygen.tar.gz \
+            "https://github.com/JS8Call-improved/js8lib/releases/download/lib%2F4.0/doxygen-1.16.1.tar.gz"
+          curl -fsSL -o doxygen.tar.gz.sha256 \
+            "https://github.com/JS8Call-improved/js8lib/releases/download/lib%2F4.0/doxygen-1.16.1.tar.gz.sha256"
+          sha256sum -c doxygen.tar.gz.sha256
+          tar -C local/doxygen1161 -xzf doxygen.tar.gz
+          chmod +x local/doxygen1161/bin/doxygen
+
+      - name: Sanity-check doxygen binary
+        run: local/doxygen1161/bin/doxygen --version
+
+      - name: Build docs
+        run: (cat .github/workflows/misc/Doxyfile; echo "PROJECT_NUMBER=master";) | local/doxygen1161/bin/doxygen -
+
+      - name: Upload docs/html for inspection
+        uses: actions/upload-artifact@v7
+        with:
+          name: docs-html-dry-run
+          path: docs/html
+          retention-days: 7
