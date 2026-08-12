@@ -27,7 +27,9 @@ jobs:
             "https://github.com/JS8Call-improved/js8lib/releases/download/lib%2F4.0/doxygen-1.16.1.tar.gz"
           curl -fsSL -o doxygen.tar.gz.sha256 \
             "https://github.com/JS8Call-improved/js8lib/releases/download/lib%2F4.0/doxygen-1.16.1.tar.gz.sha256"
-          sha256sum -c doxygen.tar.gz.sha256
+          EXPECTED="$(awk '{print $1}' doxygen.tar.gz.sha256)"
+          ACTUAL="$(sha256sum doxygen.tar.gz | awk '{print $1}')"
+          [ "$EXPECTED" = "$ACTUAL" ] || { echo "checksum mismatch"; exit 1; }
           tar -C local/doxygen1161 -xzf doxygen.tar.gz
           chmod +x local/doxygen1161/bin/doxygen
 
