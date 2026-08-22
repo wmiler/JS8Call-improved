@@ -838,6 +838,34 @@ void UI_Constructor::processCommandActivity() {
             m->show();
 #endif
         }
+        
+        // PROCESS STORED MSG PUSH NOTIFICATIONS
+        // NOTE: "RETRIEVE" is not a real JS8 command, so this never
+        // matches a Varicode d.cmd. These arrive as plain directed freetext
+        // (d.cmd == " ") Code 31 with the payload "RETRIEVE MSG xxx" in d.text,
+        // and we check for that prefix here purely to fire a local alert.
+        else if (d.cmd == " " && !isAllCall &&
+                 d.text.startsWith("RETRIEVE MSG")) {
+            static QRegularExpression msgIdRe(R"(RETRIEVE MSG\s+(\d+))");
+            auto match = msgIdRe.match(d.text);
+            QString idText = match.hasMatch()
+                                  ? QString("QUERY MSG %1").arg(match.captured(1))
+                                  : d.text.trimmed(); // fallback if it doesn't parse
+
+            QMessageBox *m = new QMessageBox(
+                QMessageBox::Information,
+                "Stored Message Available",
+                QString("A stored message was announced at %1 UTC by %2 that you can retrieve:\n\n (%3)")
+                    .arg(d.utcTimestamp.time().toString())
+                    .arg(d.from)
+                    .arg(idText),
+                QMessageBox::Ok,
+                this);
+            m->show();
+
+            // make sure this is explicit
+            continue;
+        }
 
         // PROCESS ACKS
         else if (d.cmd == " ACK" && !isAllCall) {
@@ -845,24 +873,6 @@ void UI_Constructor::processCommandActivity() {
 
             // notification for ack
             tryNotify("ack");
-
-            // stored MSG push notifications use the format "ACK MSG ID"
-#define SHOW_ALERT_FOR_ACK_MSG 1
-#if SHOW_ALERT_FOR_ACK_MSG
-            if (d.text.startsWith("MSG ID")) {
-                QString idText = d.text.trimmed();
-                QMessageBox *m = new QMessageBox(
-                    QMessageBox::Information,
-                    "Stored Message Available",
-                    QString("A stored message was announced at %1 UTC by %2 (%3)")
-                        .arg(d.utcTimestamp.time().toString())
-                        .arg(d.from)
-                        .arg(idText),
-                    QMessageBox::Ok,
-                    this);
-                m->show();
-            }
-#endif
 
             // make sure this is explicit
             continue;

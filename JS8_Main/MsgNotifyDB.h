@@ -7,7 +7,7 @@
  * @class MsgNotifyDB
  * @brief Tracks stored message notification attempts, keyed by the inbox message id.
  *
- * Stores the last time we proactively sent a directed "<CALL> ACK MSG ID <mid>"
+ * Stores the last time we proactively sent a directed "<CALL> RETRIEVE MSG <mid>"
  * notification for a given stored message, in a dedicated SQLite database
  * (msg_notify.db3). This lets pushNotificationHandler() throttle
  * re-notification to no more than once every 8 hours per message, and

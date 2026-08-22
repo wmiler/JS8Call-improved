@@ -1,7 +1,7 @@
 /** @file
  * @brief member function of the UI_Constructor class
  *  periodically checks pending (STORE) inbox messages against recent call
- *  activity, and transmits a directed "<CALL> MSG ID <mid>" notification when
+ *  activity, and transmits a directed "<CALL> RETRIEVE MSG <mid>" notification when
  *  the recipient is heard on frequency rather than waiting for them to send an HB
  *  or QUERY MSGS and possibly miss our reply. Re-notification for a given message id
  *  is throttled to no more than once every 8 hours via MsgNotifyDB.
@@ -85,7 +85,7 @@ void UI_Constructor::pushNotificationHandler() {
             continue;
         }
 
-        // Throttle: don't re-notify inside the 12h window.
+        // Throttle: don't re-notify inside the 8h window.
         auto const lastSent = notifyDb.getLastSent(msgId);
         if (lastSent.isValid() &&
             lastSent.secsTo(now) < RENOTIFY_WINDOW_SECS) {
@@ -93,11 +93,11 @@ void UI_Constructor::pushNotificationHandler() {
         }
 
         qCDebug(mainwindow_js8)
-            << "opportunistic stored message notification to" << to
+            << "push stored message notification to" << to
             << "for msg id" << msgId;
 
         enqueueMessage(PriorityNormal,
-                       QString("%1 ACK MSG ID %2").arg(to).arg(msgId), -1,
+                       QString("%1 RETRIEVE MSG %2").arg(to).arg(msgId), -1,
                        nullptr);
 
         notifyDb.upsertSent(msgId, to, now);
