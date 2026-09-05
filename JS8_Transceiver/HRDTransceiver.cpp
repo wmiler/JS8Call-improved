@@ -1,5 +1,5 @@
 /**
- * @file HRD.cpp
+ * @file HRDTransceiver.cpp
  * @brief Implementation of the HRD class
  * Implements interface with Ham Radio Deluxe
  */
