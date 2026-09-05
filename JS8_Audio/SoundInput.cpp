@@ -1,5 +1,5 @@
 /**
- * @file soundin.cpp
+ * @file SoundInput.cpp
  * @brief Implementation of SoundInput class
  */
 #include "SoundInput.h"
