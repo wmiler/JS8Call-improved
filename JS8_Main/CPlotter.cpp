@@ -1,5 +1,5 @@
 /**
- * @file Cplotter.cpp
+ * @file CPlotter.cpp
  * @brief Implementation of the waterfall plotter
  */
 
