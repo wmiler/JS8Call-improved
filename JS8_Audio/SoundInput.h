@@ -1,4 +1,9 @@
 // -*- Mode: C++ -*-
+/**
+ * @file SoundInput.h
+ * @brief Capture audio from an input device and forward to an `AudioDevice` sink.
+ */
+
 #ifndef SOUNDIN_H__
 #define SOUNDIN_H__
 
@@ -12,7 +17,14 @@
 #include <QScopedPointer>
 #include <QString>
 
-// Gets audio data from sound sample source and passes it to a sink device
+
+/**
+ * @class SoundInput
+ * @brief Gets audio data from a `QAudioSource` and passes frames to a sink.
+ *
+ * The sink must outlive the active capture session. Start/stop/suspend
+ * operations control the underlying `QAudioSource` stream.
+ */
 class SoundInput : public QObject {
     Q_OBJECT;
 
@@ -21,13 +33,30 @@ class SoundInput : public QObject {
 
     ~SoundInput();
 
-    // sink must exist from the start call until the next start call or
-    // stop call
+    /**
+     * @brief Start capturing audio and forward it to `sink`.
+     * @param device Input audio device to use.
+     * @param framesPerBuffer Number of frames to request per buffer.
+     * @param sink Destination `AudioDevice` to receive frames.
+     * @param channel Channel selection for the sink.
+     */
     Q_SLOT void start(QAudioDevice const &, int framesPerBuffer,
                       AudioDevice *sink,
                       AudioDevice::Channel = AudioDevice::Mono);
+
+    /**
+     * @brief Temporarily suspend audio capture.
+     */
     Q_SLOT void suspend();
+
+    /**
+     * @brief Resume a suspended capture session.
+     */
     Q_SLOT void resume();
+
+    /**
+     * @brief Stop audio capture and release the sink.
+     */
     Q_SLOT void stop();
 
     Q_SIGNAL void error(QString message) const;
