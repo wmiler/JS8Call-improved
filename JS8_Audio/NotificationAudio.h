@@ -1,3 +1,8 @@
+/**
+ * @file NotificationAudio.h
+ * @brief High-level helper to play notification sounds with caching.
+ */
+
 #ifndef NOTIFICATIONAUDIO_H
 #define NOTIFICATIONAUDIO_H
 
@@ -12,6 +17,13 @@
 
 class SoundOutput;
 
+/**
+ * @class NotificationAudio
+ * @brief Plays short notification sounds using an internal output stream.
+ *
+ * The class maintains an in-memory cache of decoded PCM audio so that
+ * frequently used notification sounds play with minimal latency.
+ */
 class NotificationAudio : public QObject {
     Q_OBJECT
 
@@ -20,10 +32,31 @@ class NotificationAudio : public QObject {
     ~NotificationAudio();
 
   public slots:
+    /**
+     * @brief Emit a status message.
+     */
     void status(QString message);
+
+    /**
+     * @brief Emit an error message.
+     */
     void error(QString message);
+
+    /**
+     * @brief Set output device and optional buffering.
+     * @param device Audio output device to use.
+     * @param msBuffer Milliseconds of buffer to allocate for playback.
+     */
     void setDevice(const QAudioDevice &device, unsigned msBuffer = 0);
+
+    /**
+     * @brief Play a sound file referenced by path.
+     */
     void play(const QString &filePath);
+
+    /**
+     * @brief Stop any currently playing notification sound.
+     */
     void stop();
 
   private:
