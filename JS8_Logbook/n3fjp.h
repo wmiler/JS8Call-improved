@@ -1,6 +1,14 @@
 #ifndef N3FJP_H
 #define N3FJP_H
 
+/**
+ * @file n3fjp.h
+ * @brief Mapping from ADIF field names to N3FJP field identifiers.
+ *
+ * This static map is used when converting ADIF records to the N3FJP
+ * application field names for export or interoperability.
+ */
+
 // Mapping between ADIF field to N3FJP field
 static const QMap<QString, QString> N3FJP_ADIF_MAP = {
     {"AGE", "fldAge"},
