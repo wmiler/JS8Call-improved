@@ -1,3 +1,11 @@
+/**
+ * @file AudioDevice.h
+ * @brief Abstract base class for audio device sinks/sources.
+ *
+ * Provides common helpers for channel handling and frame storage for
+ * subclasses that implement audio input/output processing.
+ */
+
 #ifndef AUDIODEVICE_HPP__
 #define AUDIODEVICE_HPP__
 
@@ -5,11 +13,22 @@
 
 class QDataStream;
 
-//
-// abstract base class for audio devices
-//
+/**
+ * @class AudioDevice
+ * @brief Abstract base class for audio devices exposed as a `QIODevice`.
+ *
+ * Subclasses implement concrete audio sinks/sources. `AudioDevice` offers
+ * channel selection helpers, frame size calculation and convenience routines
+ * to store/load interleaved sample frames.
+ */
 class AudioDevice : public QIODevice {
   public:
+    /**
+     * @brief Audio channel selection used by the device.
+     *
+     * These values are mapped to UI combobox indexes elsewhere; do not
+     * reorder or renumber them without updating the UI mappings.
+     */
     enum Channel {
         Mono,
         Left,
@@ -43,14 +62,28 @@ class AudioDevice : public QIODevice {
             return Mono;
     }
 
+    /**
+     * @brief Initialize the device for the specified open mode and channel.
+     * @param mode QIODevice open mode (ReadOnly/WriteOnly/etc).
+     * @param channel Channel selection to use.
+     * @return true on successful initialization.
+     */
     bool initialize(OpenMode mode, Channel channel);
 
     bool isSequential() const override { return true; }
 
+    /**
+     * @brief Number of bytes per audio frame for the current channel setting.
+     *
+     * For mono devices this equals the sample size; for stereo it is double.
+     */
     size_t bytesPerFrame() const {
         return sizeof(qint16) * (Mono == m_channel ? 1 : 2);
     }
 
+    /**
+     * @brief Current channel selection.
+     */
     Channel channel() const { return m_channel; }
 
   protected:
