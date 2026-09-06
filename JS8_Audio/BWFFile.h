@@ -1,3 +1,14 @@
+/**
+ * @file BWFFile.h
+ * @brief Broadcast Wave Format (BWF) file helper and QIODevice wrapper.
+ *
+ * BWF is a WAV-compatible format with EBU 'bext' metadata. This class
+ * exposes the audio sample data as a `QIODevice` while providing access
+ * to the bext and LIST-INFO metadata chunks.
+ * @see https://tech.ebu.ch/docs/tech/tech3285.pdf
+ * @see https://tech.ebu.ch/docs/r/r098.pdf
+ */
+
 #ifndef BWF_FILE_HPP__
 #define BWF_FILE_HPP__
 
@@ -13,48 +24,14 @@ class QObject;
 class QString;
 class QAudioFormat;
 
-//
-// BWFFile - Broadcast Wave Format File (a.k.a. WAV file)
-//
-// The  BWF file  format is  a  backward compatible  variation of  the
-// Microsoft  WAV file  format. It  contains  an extra  chunk with  id
-// 'bext' that contains metadata defined by the EBU in:
-//
-//  https://tech.ebu.ch/docs/tech/tech3285.pdf
-//
-// Also relevant is the recommendation document:
-//
-//  https://tech.ebu.ch/docs/r/r098.pdf
-//
-// which suggests a format to the free text coding history field.
-//
-// This class also supports the LIST-INFO chunk type which also allows
-// metadata to be  added to a WAV  file, the defined INFO  tag ids are
-// documented here:
-//
-//  http://bwfmetaedit.sourceforge.net/listinfo.html
-//
-// These  ids  are not  enforced  but  they  are recommended  as  most
-// operating systems and audio applications  recognize some or more of
-// them. Notably Microsoft Windows is not one of the operating systems
-// that  does :(  In fact  there seems  to be  no documented  metadata
-// tagging format that Windows Explorer recognizes.
-//
-// Changes to  the 'bext' fields  and the LIST-INFO dictionary  may be
-// made right up  until the file is closed as  the relevant chunks are
-// saved to the end of the file after the end of the sample data.
-//
-// This class emulates the QFile class, in fact it uses a QFile object
-// instance internally and forwards many of its operations directly to
-// it.
-//
-// BWFFile  is a  QIODevice subclass  and the  implementation provides
-// access to  the audio sample  data contained in  the BWF file  as if
-// only that data were  in the file. I.e. the first  sample is at file
-// offset zero  and the  size of the  file is the  size of  the sample
-// data.  The headers,  trailers and  metadata are  hidden but  can be
-// accessed by the operations below.
-//
+/**
+ * @class BWFFile
+ * @brief QIODevice-style access to BWF/WAV sample data and metadata.
+ *
+ * The class hides header/trailer chunks and exposes only the sample data
+ * as a contiguous device. Metadata may be read and modified via the
+ * provided bext_* and list_info operations.
+ */
 class BWFFile : public QIODevice {
     Q_OBJECT
   public:
