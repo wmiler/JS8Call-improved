@@ -4,15 +4,16 @@
 <tbody>
 <tr class="odd">
 <td><img src="JS8Call_User_Guide_html_e18288a9.png" style="width:0.7465in;height:0.7465in" /></td>
-<td><p><span id="anchor"></span><span id="anchor-1"></span>JS8Call de KN4CRD</p><p>2026-03-12 - v3.0.0
+<td><p><span id="anchor"></span><span id="anchor-1"></span>JS8Call de the JS8Call-improved Team</p><p>2026-09-06 - v4.0
 <!-- TODO: change to User Guide release date following approval and remove 'partially updated' warning below | assignee: @Aqueum --> </p></td>
 </tr>
 </tbody>
 </table>
-<b>This is the User Guide from the repo master and contains items currently in development. We have marked items that have not been released yet.</b>
+<b>This is the User Guide from JS8Call-improved master and contains items currently in development. We have marked items that have not been released yet.</b>
 <hr>
 
 To save an offline copy of the User Guide as PDF download from [here](https://js8call-improved.github.io/downloads/JS8Call_User_Guide.pdf)
+<br> To participate in our online forum, post questions, comments or request support see [here](https://groups.google.com/g/js8call-improved)
 
 <hr>
 
@@ -27,8 +28,6 @@ To save an offline copy of the User Guide as PDF download from [here](https://js
 
 Read more on the original [design inspiration here.](https://github.com/jsherer/ft8call)
 
-For release announcements and discussion, join the JS8Call mailing list here: [https://groups.io/g/js8Call](https://groups.io/g/js8call)
-
 <hr>
 
 <center><img src="JS8Call_User_Guide_html_4c60ef75.jpg" style="width:5.1866in;height:3.7374in">
@@ -37,91 +36,13 @@ For release announcements and discussion, join the JS8Call mailing list here: [h
 </center>
 </div>
 
-
- ## History
-
-- **July 6, 2017** - The initial idea of using a modification to the FT8 protocol to support long-form QSOs was developed by Jordan, KN4CRD, and submitted to the WSJT-X mailing list: [https://sourceforge.net/p/wsjt/mailman/message/35931540/](https://sourceforge.net/p/wsjt/mailman/message/35931540/)
-
-- **August 31, 2017** - Jordan, KN4CRD, did a little development and modified WSJT-X to support long-form QSOs using the existing FT8 protocol: [https://sourceforge.net/p/wsjt/mailman/message/36020051/](https://sourceforge.net/p/wsjt/mailman/message/36020051/)
-
-  He sent a video example to the WSJT-X group: [https://widefido.wistia.com/medias/7bb1uq62ga](https://widefido.wistia.com/medias/7bb1uq62ga)
-
-- **January 8, 2018** - Jordan, KN4CRD, started working on the design of a long-form QSO application built on top of FT8 with a redesigned interface.
-
-- **February 9, 2018** - Jordan, KN4CRD, submitted question to the WSJT-X group to see if there was any interest in pursuing the idea: [https://sourceforge.net/p/wsjt/mailman/message/36221549/](https://sourceforge.net/p/wsjt/mailman/message/36221549/)
-
-- **February 10, 2018** - Jordan KN4CRD, Julian OH8STN, John N0JDS, and the Portable Digital QRP group did an experiment using FSQ. The idea of FT8Call, combining FT8, long-form QSOs, and FSQCall like features was born.
-
-- **February 11, 2018** - Jordan, KN4CRD, inquired about the idea of integrating long-form messages into WSJT-X: [https://sourceforge.net/p/wsjt/mailman/message/36223372/](https://sourceforge.net/p/wsjt/mailman/message/36223372/)
-
-- **February 12, 2018** - Joe Taylor, K1JT, wrote back: [https://sourceforge.net/p/wsjt/mailman/message/36224507/](https://sourceforge.net/p/wsjt/mailman/message/36224507/) saying no and "Please don't let my comment discourage you from proceeding as you wish, toward something new."
-
-- **March 4, 2018** - Jordan, KN4CRD, published a design document for FT8Call: [https://github.com/jsherer/ft8call](https://github.com/jsherer/ft8call)
-
-- **July 6, 2018** - Version 0.0.1 of FT8Call released to the development group
-
-- **July 15, 2018** - Version 0.1 released - a dozen testers
-
-- **July 21, 2018** - Version 0.2 released - 75 testers
-
-- **July 27, 2018** - Version 0.3 released - 150 testers
-
-- **August 12, 2018** - Version 0.4 released - (["leaked" on QRZ](https://forums.qrz.com/index.php?threads/a-new-ft8-with-qso-and-rag-chew-capabilities-called-ft8call.623882/)) - 500 testers
-
-- **September 2, 2018** - Version 0.5 released - 3000 testers
-
-- **September 14, 2018** - Version 0.6 released - 5000 testers
-
-- **October 8, 2018** - Version 0.7 released - 6000 testers, name changed to JS8 & JS8Call
-
-- **October 31, 2018** - Version 0.8 released - \~7000 testers
-
-- **November 15, 2018** - Version 0.9 released - \~7500 testers
-
-- **November 30, 2018** - Version 0.10 released - \~7800 testers
-
-- **December 18, 2018** - Version 0.11 released - \~8200 testers
-
-- **January 1, 2019** - Version 0.12 released - \~9000 testers
-
-- **January 23, 2019** - Version 0.13 released - \~9250 testers
-
-- **February 7, 2019** - Version 0.14 released - \~9600 testers
-
-- **February 21, 2019** - Version 1.0.0-RC1 released - \~10000 testers
-
-- **March 11, 2019** - Version 1.0.0-RC2 released - \>10000 testers
-
-- **March 26, 2019** - Version 1.0.0-RC3 released - \>11000 testers
-
-- **April 1, 2019** - Version 1.0.0 general availability - Public Release!
-
-- **June 6, 2019** - Version 1.1.0 general availability
-
-- **November 29, 2019** - Version 2.0.0 general availability - Fast and Turbo speeds introduced!
-
-- **December 22, 2019** - Version 2.1.0 general availability - Slow speed introduced!
-
-- **June 30, 2020** - Version 2.2.0 general availability
-
-- **November 3, 2025** - Version 2.4.0 released as JS8Call-improved, OmniRig deprecated on Windows, Fortran code removed
-  See [Release notes v2.4.0](https://github.com/JS8Call-improved/JS8Call-improved/releases/tag/release%2F2.4.0)
-
-- **January 6, 2026** - Version 2.5.0 released, renamed back to JS8Call. 
-  See [Release notes v2.5.0](https://github.com/JS8Call-improved/JS8Call-improved/releases/tag/release%2F2.5.0)
-
-- **TBD** - Version 3.0.0 - Feature and bug fix release.
-  See Release notes v3.0.0
-
-<!-- Remember to point to the 3.0.0 release tag when we release -->
-
 ## Notice
 
 JS8Call is a **derivative** of the WSJT-X application, restructured and redesigned for message passing using a custom FSK modulation called JS8. It is not supported by nor endorsed by the WSJT-X development group. While the WSJT-X group maintains copyright over the original work and code, JS8Call is a derivative work licensed under and in accordance with the terms of the [GPLv3 license](https://www.gnu.org/licenses/gpl-3.0.html). The source code modifications are public and can be found in `js8call-improved` repository of this GitHub organisation: [https://github.com/JS8Call-improved](https://github.com/JS8Call-improved)
 
-JS8Call is and will always be **open-source** and **free** software (free as in beer and free as in speech, do with it what you like, for the sum of exactly \$0).
+JS8Call is and will always be **open-source** and **free** software (free as in beer and free as in speech, do with it what you like, for the sum of exactly $0).
 
-You might be asking\...why is this named JS8Call? Why was it renamed from FT8Call? Why not something else, like BACON or HF Messenger? Good question! It is named this way as an homage to its heritage:
+You might be asking...why is this named JS8Call? Why was it renamed from FT8Call? Why not something else, like BACON or HF Messenger? Good question! It is named this way as an homage to its heritage:
 
 - JS8Call was previously named FT8Call.
 - JS8Call uses a custom FT8 modulation called JS8 (Jordan Sherer designed 8-FSK modulation). This is the base RF transport.
@@ -139,14 +60,14 @@ JS8Call currently comes in a variety of builds.
 - Linux (ARM64)
 - Linux (x86_64 - AMD64)
 - Windows (Windows x86_64) Windows 10 and 11 are the only officially supported Windows builds at this time, but the application has been confirmed to work all the way back to Windows XP.
-- Mac OS - ARM64 (Apple Silicon)
-- Mac OS - Universal (Intel + Apple Silicon) **See the note below**
+- Mac - ARM64 (Apple Silicon)
+- Mac - Universal (Intel + Apple Silicon) **See the note below**
 - [Android](https://github.com/JS8Call-improved/Android-port)
 
-Application downloads are available on the [Github release page](https://github.com/JS8Call-improved/JS8Call-improved/releases/) select the relevant *.AppImage for Linux, *installer.exe for Windows, *.AppleSilicon.dmg for Apple Silicon Mac or *.Intel.dmg for Intel Mac.
+Application downloads are available on the [Github release page](https://github.com/JS8Call-improved/JS8Call-improved/releases/) select the relevant *.AppImage for Linux, *installer.exe for Windows, *.dmg for Mac.
 
 > [!NOTE]
-> Mac OS Universal builds are being deprecated. Please use the *.Intel.dmg if you are on a Mac Intel machine.
+> Mac Intel builds are deprecated after JS8Call 3.0.2. There is a Universal build for JS8Call 3.0.3 that will work on legacy Intel Macs linked from the release assets for that version. After Sept 17, 2026 Mac builds are Apple silicon only. Apple no longer supports building for Intel architecture with MacOS 27 Golden Gate.
 
 Of course, you are always free to take a look at the [source code](https://github.com/JS8Call-improved) as well!
 
@@ -173,7 +94,7 @@ Make sure your rig is set to upper sideband (USB) mode for every band. If you ar
 The JS8 modulator is a constant envelope, full-duty modulation that transmits in 12.6 second frames in normal speed. Because of the dead air between transmission frames, multi-frame messages can be classified as 84% duty on a 15-second window (12.6 / 15 = 0.84) for normal and slow (25.28 / 30 = 0.84), 79% for fast on a 10-second window (7.9 / 10 = 0.79), 65% for JS8 40 (formerly "Turbo") on a 6-second window (3.95 / 6 = 0.653).
 
 > [!NOTE]
-JS8 60 is an experimental mode introduced in 3.0 and later; it uses a 3-second Tx on a 4-second frame interval, so is technically 75% duty cycle. However, these specs may change as JS8 60 is more cpu intensive than other modes and can be unreliable.
+> JS8 60 is an experimental mode introduced in 3.0.1 and later; it uses a 3-second Tx on a 4-second frame interval, so is technically 75% duty cycle. However, these specs may change as JS8 60 is more cpu intensive than other modes and can be unreliable.
 
 Please make note of the power restrictions your transceiver manufacturer recommends for full-duty digital transmissions. When in doubt, use only a maximum of 50% of your rig's power output to "save your finals".
 
@@ -205,7 +126,7 @@ JS8Call 2.0 introduced two new faster mode speeds for QSOs and 2.1 introduced a 
 |Fast   | 10 | 80  | 24 | -20|
 
 > [!NOTE]
-> JS 60 available in 3.0.0+, JS8 40 renamed from Turbo
+> JS 60 available in 3.0.1+, JS8 40 renamed from Turbo
 >
 > Faster but less reliable modes designated by transmission speed in wpm. Heartbeat networking is disabled with these modes.
 > |Name | Period/s | Bandwidth/Hz | Speed/WPM | Sensitivity/dB|
@@ -214,7 +135,7 @@ JS8Call 2.0 introduced two new faster mode speeds for QSOs and 2.1 introduced a 
 > |JS8 60 | 4 | 250  | 60 | -16|
 
 
-The intent of the faster speeds is to start your QSO in normal and \"upgrade\" to the faster speeds if conditions support it. Unless you have a weak computer with a slow CPU, you should enable MULTI from the mode menu, asking the decoder to decode all modes at once. Other users typically expect you have that set. Otherwise if they can't reach you on Normal and move to Slow, you will not decode their message.
+The intent of the faster speeds is to start your QSO in normal and "upgrade" to the faster speeds if conditions support it. Unless you have a weak computer with a slow CPU, you should enable MULTI from the mode menu, asking the decoder to decode all modes at once. Other users typically expect you have that set. Otherwise if they can't reach you on Normal and move to Slow, you will not decode their message.
 
 ### Band Activity
 
@@ -228,6 +149,10 @@ When a station is calling CQ, a ☎ indicator will be displayed next to their ca
 
 If a station has left you a message, a ⚑ indicator will be displayed next to their callsign. You can read that message by right clicking on the station and clicking "Show Message Inbox".
 
+If a station has been blocked, a x indicator will be displayed next to their callsign and decoded text from that station will not be displayed in the incoming message pane.
+
+Call activity and the RX text history are kept per band and stored in a database (activity.db3, alongside the message inbox), so what you have heard on each band is still there after a restart, an upgrade, or a power cut - not just after a clean shutdown. Switching bands shows that band's own activity, and a station heard on one band no longer appears under another. "Clear Call Activity" and "Clear RX Activity" clear - and delete from the store - the band you are on; "Clear All Activity" permanently deletes the stored history for every band, so it asks first. Turning on the reset-at-startup option asks first too. Cloning a configuration gives the clone its own copy of the stored activity, after which the two keep separate histories.
+
 Station distance and azimuth is computed from the first 6 digits of the maidenhead grid locators. This is an approximation describing an "area" on the map, not an exact point. JS8Call supports up to 12 digit locators for greater precision, but even then, the calculation will always remain an approximation.
 
 ### Waterfall
@@ -236,15 +161,15 @@ There is a waterfall at the bottom of the screen to show you the signals in your
 
 There is also an option to change your VFO frequency (QSY) to center your selected audio offset to the rig passband center. This allows you to use narrow filters easily and is helpful for rigs with non-linear passbands.
 
-By opening the waterfall controls (View-\>Show Waterfall Controls) you can configure your waterfall display, access a filtering feature (limiting which frequencies the decoder will try to decode), and the timing feature (allowing you to drift your local time sync to match a station).
+By opening the waterfall controls (View->Show Waterfall Controls) you can configure your waterfall display, access a filtering feature (limiting which frequencies the decoder will try to decode), and the timing feature (allowing you to drift your local time sync to match a station).
 
 ### Messages
 
-The top yellow text box shows you messages that are either on the frequency offset you're on or who have directed a message to you (they sent a message that included your callsign).
+The center incoming message pane shows you messages that are either on the frequency offset you're on or who have directed a message to you (they sent a message that included your callsign).
 
-You type into the white box on the bottom to prepare a message for transmission.
+You type into the message composition box on the bottom to prepare a message for transmission.
 
-Normal FT8 character restrictions **do not** apply! The extended character set includes all printable uppercase ASCII ```(A-Z 0-9 Space ./?+-`\~!@#\$%\^&\*()\_=\[\]\\}\|;':",\<\>)``` and Latin 1 ```(¡¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞ)```. The message structure is variable encoded, so the most common characters take the least amount of space, and special characters take longer to send.
+Normal FT8 character restrictions **do not** apply! The extended character set includes all printable uppercase ASCII ```(A-Z 0-9 Space ./?+-\`~!@#$%^&*()_={}[]|;':",<>)``` and Latin 1 ```(¡¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞ)```. The message structure is variable encoded, so the most common characters take the least amount of space, and special characters take longer to send.
 
 As you type your message you'll see the send button display the transmission time it'll take to send your complete message. All you have to do is click send (or hit enter) to start transmitting on the next interval. As each frame is transmitted one after the other, the button will update with the amount of time left to transmit the message. JS8Call 2.0 supports typeahead, so you can start transmitting and continue typing your message as each frame is transmitted. Checksummed messages like MSG or Relays cannot use typeahead.
 
@@ -272,7 +197,7 @@ Directed messages are special JS8Call transmissions that automatically prefix yo
 
 To send a directed message, all you need to do is include the callsign of the receiving station as the first word in the message or select a callsign in your heard list to have it automatically prefixed.
 
-You'll notice a special character at the end of the message, ala **♢** . This is a symbol to indicate the End of Transmission. JS8Call displays this as after the last frame of the message has been transmitted with nothing else to follow. This means you get a visual indicator that the transmission is done and you can begin transmitting a reply. This character can be customized in the Conﬁguration.
+You'll notice a special character at the end of the message, ala **♢** . This is a symbol to indicate the End of Transmission. JS8Call displays this as after the last frame of the message has been transmitted with nothing else to follow. This means you get a visual indicator that the transmission is done and you can begin transmitting a reply. This character can be customized in the Settings.
 
 Directed messages to you (and to @ALLCALL) are displayed in the top RX window.
 
@@ -292,9 +217,9 @@ There is a special "@ALLCALL" group callsign that you can use to send the messag
 
 #### Group Callsigns
 
-Group callsigns are a custom form of compound callsigns that begin with an "@" character, and can be up to 8 alpha-numeric (A-Z 0-9) characters in length.. If you modeled that in a regular expression, that would be:
+Group callsigns are a custom form of compound callsigns that begin with an "@" character, and can be up to 8 alpha-numeric (A-Z 0-9) characters in length. If you modeled that in a regular expression, that would be:
 
-``\[@\]\[A-Z0-9\\\]{0,3}\[\\\]?\[A-Z0-9\\\]{0,3}\[\\\]?\[A-Z0-9\\\]{0,3}``
+``[@][A-Z0-9/]{0,3}[/]?[A-Z0-9/]{0,3}[/]?[A-Z0-9/]{0,3}``
 
 Group callsign functionality allows you to direct your message to anybody who has "joined" the group. You join the group by adding the group name to your settings. All stations who want to receive group messages must add the group to their station configuration. Stations without the group will still be able to see the message received in the band activity, but those messages will not be directed to them.
 
@@ -343,19 +268,18 @@ To send a raw frame (say a direct APRS message to SMSGTE), we'd send:
 
 Everything after the CMD frame is forwarded in an APRS packet, like:
 
-`[KN4CRD](https://aprs.fi/?c=raw&limit&call=KN4CRD)\>APZJS8,qAS,KN4CRD::SMSGTE:@5551212 TEST`
+`KN4CRD>APZJS8,qAS,KN4CRD::SMSGTE:@5551212 TEST`
 
 #### Directed Commands:
 
-There are special directed messages that you can send to stations to have them automatically reply if they have AUTO enabled. They are comprised in the form of \[CALLSIGN\] \[COMMAND\].
+There are special directed messages that you can send to stations to have them automatically reply if they have AUTO enabled. They are comprised in the form of [CALLSIGN] [COMMAND].
 
 - SNR? - What is my SNR?
 - GRID? - What is your grid locator?
 - INFO? - What is your station information?
 - STATUS? - What is your station status message?
 - HEARING? - What stations are you HEARING?
-- 
-- \>\[MESSAGE\] - Please relay this message to its destination
+- >[MESSAGE] - Please relay this message to its destination
   - When received in its entirety, the destination station will send an `ACK` reply to the message
   - Optionally, this message can be relayed to its final destination through multiple relay stations by prefixing additional callsigns to the message:
 
@@ -367,27 +291,25 @@ There are special directed messages that you can send to stations to have them a
 
   - Stations will respond to a subset of commands issued through forwarded messages (SNR, INFO, GRID, MSG, MSG TO:, etc) and will reply using the relay path provided.
 
-  - Prefixing a directed MSG with the redirect \> symbol when sending to a station in the call list will request the destination station to send an ACK without the MSG going thru the user's Inbox.
-
-- MSG \[MESSAGE\] - Please store and display this message in your inbox
+ - Prefixing a directed MSG with the redirect `>` symbol when sending to a station in the call list will request the destination station to send an ACK without the MSG going thru the user's Inbox.
+ 
+- MSG [MESSAGE] - Please store and display this message in your inbox
   - Your inbox messages can be accessed by right clicking on the callsign and selecting "View Message Inbox..."
 
-- MSG TO:\[CALLSIGN\] \[MESSAGE\] - Please store this message at your station for later retrieval by \[CALLSIGN\]
+- MSG TO:[CALLSIGN] [MESSAGE] - Please store this message at your station for later retrieval by [CALLSIGN]
   - Stores a message in persistent storage (on disk) to be retrieved later using the "QUERY MSGS" command.
-  - \[CALLSIGN\] is the first word after the : and is the final recipient of the message.
+  - [CALLSIGN] is the first word after the : and is the final recipient of the message.
 
-- QUERY CALL \[CALLSIGN\]? - Can you communicate directly with CALLSIGN?
+- QUERY CALL [CALLSIGN]? - Can you communicate directly with CALLSIGN?
   - If a station can hear the callsign, they will send back "YES" and then an ACK to that callsign with an SNR report
 
-- QUERY MSG \[ID\] - Please deliver the complete message identified by ID
+- QUERY MSG [ID] - Please deliver the complete message identified by ID
 
 - QUERY MSGS - Please deliver any messages you have stored for me
   - Each response will contain the ID of oldest message yet to be delivered.
   - To retrieve the message text, issue a QUERY MSG command with the ID
 
 - AGN? - Have the station automatically retransmit their last message
-  
-- 
 
 - SNR - Send signal report
 - INFO - Send station information
@@ -441,12 +363,22 @@ You can also mix and match standard and free text messages, but most of the time
 
 Directed messaging allows three commands to be used for message storage and retrieval at intermediate stations:
 
-- MSG TO: \[CALLSIGN\] \[MESSAGE\] - Store this MESSAGE at an intermediate station for CALLSIGN
+- MSG TO: [CALLSIGN] [MESSAGE] - Store this MESSAGE at an intermediate station for CALLSIGN
 
 - QUERY MSGS - Query the destination for messages stored for your station callsign
 
-- QUERY MSG \[ID\] - Query for a specific message stored for your station callsign
-<!-- TODO: add message storage and retrieval examples | assignee: @Aqueum -->
+- QUERY MSG [ID] - Query for a specific message stored for your station callsign
+
+#### Push Notification Handler
+
+Ordinarily, a stored message just sits at the intermediate station until the recipient thinks to send a heartbeat or QUERY MSGS. To speed that up, JS8Call periodically checks your pending stored messages against who you've recently heard. If a message's recipient (or their base callsign) shows up in your call activity within the last 15 minutes and AUTO is enabled, your station will proactively transmit a directed notification to them (`<CALL> RETRIEVE MSG <id>`) rather than waiting for them to ask.
+
+To avoid re-announcing the same message over and over to a station that's sitting on frequency, each message id is only re-notified at most once every 8 hours, and only one notification is sent per 15-minute check.
+
+When your station receives one of these announcements from another operator, a small popup will let you know a stored message is available and who sent the notice.
+
+> [!NOTE]
+> Push notifications are only available in JS8Call 4 or later
 
 ### AUTO - Automatic Replies
 
@@ -458,7 +390,7 @@ If you would like to participate in `AUTO`, but would not like to be responsible
 
 There's a log item in the main menu of the application. You can also press F5 to start a log entry. The software will do its best effort to pre-populate log fields. However, you'll likely have to fill out some missing information manually since the QSO is free-text and not automated.
 
-The log is stored in JS8Call.log and JS8Call.adif in the log directory (which you can find by clicking "File -\> Open log directory" in the main menu).
+The log is stored in JS8Call.log and JS8Call.adif in the log directory (which you can find by clicking "File -> Open log directory" in the main menu).
 
 Currently, the logging function in JS8Call will log each contact, according to the ADIF spec, as MFSK mode and JS8 submode. There is also an option in the Logging settings to log the mode as DATA instead of MFSK and JS8.
 
@@ -482,7 +414,7 @@ When you have AUTO replies enabled and you've selected to Send Heartbeat Acknowl
 
 The intent of heartbeat is not to report on propagation. Instead it is to help populate your call activity (the heard list on the right) so you know who's likely to be reachable to make contact. You can't work them if you can't "hear" them (or if they cannot hear you).
 
-Keep in mind, though, that HBs are not designed to start conversations. When you turn HB on, you're "joining" the heartbeat network. This network allows for planning of relays and sending messages to be stored at those receiving stations. Think of HBs and ACKs as a way to plot network topology and relays (\"\>\") as a way to send messages to be read later (sort of like an SMS text message) through that network.
+Keep in mind, though, that HBs are not designed to start conversations. When you turn HB on, you're "joining" the heartbeat network. This network allows for planning of relays and sending messages to be stored at those receiving stations. Think of HBs and ACKs as a way to plot network topology and relays (">") as a way to send messages to be read later (sort of like an SMS text message) through that network.
 
 While heartbeating, if a station has a message to deliver to another station it hears heartbeating, it will announce that in a HEARTBEAT SNR, like so:
 
@@ -609,12 +541,12 @@ Most operators testing the application can be found +/- 4-8kHz from the standard
 
 You might notice a few of these being close to the JT9 frequencies. Don't grab your pitchforks! JS8Call blocks out transmitting within the lower 500Hz of the passband. This leaves enough room for 25 simultaneous JT9 signals.
 
->[!NOTE]
->You might also notice that there are a few bands missing from this list. JS8Call does not make a recommendation for calling frequencies on 2200m, 630m, 11m (CB), or higher than 2m, as many of these bands are special cases and have unique rules in many jurisdictions. It's up to the operator(s) to coordinate and determine the best frequency and operating pattern on these bands.
+> [!NOTE]
+> You might also notice that there are a few bands missing from this list. JS8Call does not make a recommendation for calling frequencies on 2200m, 630m, 11m (CB), or higher than 2m, as many of these bands are special cases and have unique rules in many jurisdictions. It's up to the operator(s) to coordinate and determine the best frequency and operating pattern on these bands.
 
 But also, please keep in mind these are only *suggested* frequencies. We all have VFOs, so please use them. Just remember to be good operators and prevent from interfering with other signals on our shared bands.
 
-You **CAN** type in any frequency. JS8Call will not limit which frequencies you can manually transmit on. You can use the groups.io mailing list to schedule on other frequencies with test operators.
+You **CAN** type in any frequency. JS8Call will not limit which frequencies you can manually transmit on. You can use the js8call-improved mailing list to schedule on other frequencies with test operators.
 
 If you want to transmit on a non-standard frequency (recommended) you can either modify the frequencies list in the settings, or you can type directly into the band dropdown box in the top left of the screen.
 
@@ -632,7 +564,7 @@ If you'd like to reset to the suggested frequencies, right click the frequencies
 
 There are a few quick saved message buttons for transmitting common messages. You can edit these in the settings window. Just be mindful that long messages will take a while to send.
 
-Saved messages have macro-like functionality. These are the macros variables (words that are surrounded by \<\> characters) that can be used in saved messages which will be replaced when sending the message:
+Saved messages have macro-like functionality. These are the macros variables (words that are surrounded by <> characters) that can be used in saved messages which will be replaced when sending the message:
 
 ```
   <MYCALL>     My Callsign
@@ -652,6 +584,24 @@ Saved messages have macro-like functionality. These are the macros variables (wo
 - These macros also apply to configured messages like CQ, Reply, INFO, etc.
 <!-- TODO: Add Notifications (Sound Alerts) section | assignee: @Aqueum -->
 <!-- TODO: Add UI (Customize Colors and Font) section | assignee: @Aqueum -->
+
+### Callsign Filtering (RX Blocklist)
+
+If there are stations you'd rather not see cluttering up your band activity window — a persistent QRM source, a station you'd simply rather ignore, etc. — you can hide their messages from the RX pane using the RX Callsign Blocklist.
+
+In Settings -> General -> Networking & Autoreply -> Callsign Filtering, enter one or more callsigns (comma separated) in the Hide messages from these callsigns in the RX pane field. Any station matching a blocked callsign — including its base callsign if you've entered one with a suffix, like KN4CRD/P — will have its transmissions suppressed from the RX display, including all frames of a multi-frame message.
+
+> [!NOTE]
+> This only affects what's displayed in the band activity window. Blocked stations are still decoded normally and will still show up in logs, spotting, and elsewhere — this is purely a display filter, not a decoder-level block.
+
+### Heartbeat ACK Rate Limiting
+
+If AUTO and HB Acknowledgements are enabled, your station will normally ACK any heartbeat it hears. Some stations, however, may heartbeat far more often than the recommended interval — whether by misconfiguration or a runaway script — which can flood your ACK traffic and clutter the band. Heartbeat ACK Rate Limiting protects against this automatically.
+
+In Settings -> General -> Networking & Autoreply, check Suppress ACK to stations that send heartbeats at less than 55 minute intervals to enable this feature (it is not on by default). Once enabled, JS8Call tracks the last time each station heartbeated. If a station heartbeats again within 55 minutes of its last heartbeat, your station will stop sending it ACKs — the offending callsign is automatically added to your HB Blacklist, so it stays suppressed until you remove it manually.
+
+> [!NOTE]
+> This only affects automatic ACK replies to heartbeats. It does not affect any other automatic replies, and does not stop you from hearing or logging the station's transmissions.
 
 ## Tips & Tricks
 
@@ -795,7 +745,7 @@ Saved messages have macro-like functionality. These are the macros variables (wo
 
           - This phrase is 6 words and takes 1 transmission cycle to send (15 seconds). That is 24 WPM.
 
-      - Morse code has a neat way of calculating WPM, timing how long it takes to transmit the word PARIS. In JS8Call, PARIS is encoded into 17 bits (3.4 bits/character). Each transmission cycle can pack up to 69 character bits. That equates to about 16 WPM. (69/17=4.05 words / (15 seconds \* 4))
+      - Morse code has a neat way of calculating WPM, timing how long it takes to transmit the word PARIS. In JS8Call, PARIS is encoded into 17 bits (3.4 bits/character). Each transmission cycle can pack up to 69 character bits. That equates to about 16 WPM. (69/17=4.05 words / (15 seconds * 4))
 
       - The app shows this in the status bar:
 
@@ -817,9 +767,9 @@ Saved messages have macro-like functionality. These are the macros variables (wo
 
       - For example, this is what the outgoing and incoming messages could be:
 
-        - ``KN4CRD\>LB9YH\>VK1MIC QSL?``
+        - ``KN4CRD>LB9YH>VK1MIC QSL?``
 
-        - ``VK1MIC\>LB9YH\>KN4CRD QSL``
+        - ``VK1MIC>LB9YH>KN4CRD QSL``
 
     - Does Heartbeat (HB) mode violate FCC 97.221 Automatically Controlled Digital Station rules in the United States?
 
@@ -833,7 +783,7 @@ Saved messages have macro-like functionality. These are the macros variables (wo
 
       - It is recommended that operators to turn off HB repetition when not at the station control point, but, they should feel comfortable leaving AUTO on while they are away since their station would only be responding to queries initiated by a non-automatic station.
 
-  - Do message relays (\>) violate FCC 97.113.d rules in the United States?
+  - Do message relays (>) violate FCC 97.113.d rules in the United States?
 
       - For operators in the United States, here's a reference to the rules: [http://www.arrl.org/part-97-text](http://www.arrl.org/part-97-text)
 
@@ -863,11 +813,11 @@ Saved messages have macro-like functionality. These are the macros variables (wo
 
   - Can I run multiple copies of JS8Call side-by-side?
 
-      - Yes! There is a -r/\--rig-name flag you can pass on the command line to give each instance a unique name. This creates a separate directory for your configuration and log files, so you can run multiple rigs at the same time.
+      - Yes! There is a -r/--rig-name flag you can pass on the command line to give each instance a unique name. This creates a separate directory for your configuration and log files, so you can run multiple rigs at the same time.
 
         - You can do this by running js8call from the command line with this parameter, like:
 
-          - js8call \--rig-name FT817
+          - js8call --rig-name FT817
 
         - Or, if you are on Windows, create a shortcut for each unique name/config:
 
@@ -875,11 +825,11 @@ Saved messages have macro-like functionality. These are the macros variables (wo
 
           - Right click and select properties.
 
-          - Under the \"General\" tab edit the name of the shortcut with a unique name, like \"JS8Call FT817\".
+          - Under the "General" tab edit the name of the shortcut with a unique name, like "JS8Call FT817".
 
-          - Under the \"Shortcut\" tab add this to the target line.
+          - Under the "Shortcut" tab add this to the target line.
 
-          - Leave a space after .exe then \--rig-name=FT817 (replace FT817 with anything that uniquely identifies your rig)
+          - Leave a space after .exe then --rig-name=FT817 (replace FT817 with anything that uniquely identifies your rig)
 
           - Something like: ``C:\Program Files (x86)\js8call\bin\js8call.exe --rig-name=FT817``
 
@@ -903,11 +853,8 @@ Saved messages have macro-like functionality. These are the macros variables (wo
 
         - (4x) Four Decode Passes - The decoder will perform four subtraction passes using belief propagation with ordered statistics.
 
-      > [!NOTE]
-      > You may have to run with a lower sensitivity if you have a low power machine or if your CPU cannot keep up with the decoder.
-
-      > [!NOTE]
-      > Higher sensitivity levels that use ordered statistics have a higher chance of producing a "false decode" (i.e., noise that matches the sync pattern and passes the checksum process). This tradeoff is intentional. If you would like to avoid false decodes, you can decrease your sensitivity to 1x or 2x.
+> [!NOTE]
+> You may have to run with a lower sensitivity if you have a low power machine or if your CPU cannot keep up with the decoder. With JS8Call 2.3.1 or later the decoder is completely overhauled, changed from a separate spawned process written in FORTRAN to a new C++ implementation. The sensitivity setting is no longer used.
 
   - I love what you're doing. Do you have a PayPal or Patreon where I can send you a donation as a "Thank you?"
 
@@ -925,7 +872,7 @@ via [https://sourceforge.net/p/wsjt/mailman/message/36224507/](https://sourcefor
 
 ## Troubleshooting
 
-If you're having trouble, head over to the troubleshooting chatroom for help: [JS8Call email list](https://js8call.groups.io/g/main), [Github Discussions](https://github.com/orgs/JS8Call-improved/discussions) or email Jordan directly: [kn4crd@gmail.com](mailto:kn4crd@gmail.com)
+If you're having trouble, head over to the troubleshooting chatroom for help: [JS8Call email list](https://groups.google.com/g/js8call-improved), or [Github Discussions](https://github.com/orgs/JS8Call-improved/discussions)
 
 > [!NOTE]
 > Starting with the 3.0.0 release, there is a new `Diagnostics` tab on the main Settings screen. Information from this sreen may be requested when you are submitting an issue or bug report.
@@ -1101,7 +1048,7 @@ Callsigns are encoded in 28-bits as described in: EME 2000 - [http://www.ka9q.ne
 
 Compound callsigns are a 50-bit encoding of 11 characters following the format:
 
-``\[@A-Z0-9/\]\[A-Z0-9/\]\[A-Z0-9/\]\[/\]\[A-Z0-9/\]\[A-Z0-9/\]\[A-Z0-9/\]\[/\]\[A-Z0-9/\]\[A-Z0-9/\]\[A-Z0-9/\]``
+``[@A-Z0-9/][A-Z0-9/][A-Z0-9/][/][A-Z0-9/][A-Z0-9/][A-Z0-9/][/][A-Z0-9/][A-Z0-9/][A-Z0-9/]``
 
 Since normal callsigns are 28-bits in length, and compound callsigns are 50-bits in length, and the payload size is only 75 bits, there's no way to transmit both in a single frame. So, when addressing a station with a compound call, the transmission is split into two frames, with any directed command included in the extra space of the second frame.
 
@@ -1180,3 +1127,77 @@ There are many opportunities to explore reliable messaging in the future with th
 ### (s,c)-Dense Code:
 
 A whitepaper article is being written on this topic. In the meantime, see jsc.h, jsc.cpp, & jsc_map.cpp in the source repository for the complete dense code table.
+
+## History
+
+- **July 6, 2017** - The initial idea of using a modification to the FT8 protocol to support long-form QSOs was developed by Jordan, KN4CRD, and submitted to the WSJT-X mailing list: [https://sourceforge.net/p/wsjt/mailman/message/35931540/](https://sourceforge.net/p/wsjt/mailman/message/35931540/)
+
+- **August 31, 2017** - Jordan, KN4CRD, did a little development and modified WSJT-X to support long-form QSOs using the existing FT8 protocol: [https://sourceforge.net/p/wsjt/mailman/message/36020051/](https://sourceforge.net/p/wsjt/mailman/message/36020051/)
+
+  He sent a video example to the WSJT-X group: [https://widefido.wistia.com/medias/7bb1uq62ga](https://widefido.wistia.com/medias/7bb1uq62ga)
+
+- **January 8, 2018** - Jordan, KN4CRD, started working on the design of a long-form QSO application built on top of FT8 with a redesigned interface.
+
+- **February 9, 2018** - Jordan, KN4CRD, submitted question to the WSJT-X group to see if there was any interest in pursuing the idea: [https://sourceforge.net/p/wsjt/mailman/message/36221549/](https://sourceforge.net/p/wsjt/mailman/message/36221549/)
+
+- **February 10, 2018** - Jordan KN4CRD, Julian OH8STN, John N0JDS, and the Portable Digital QRP group did an experiment using FSQ. The idea of FT8Call, combining FT8, long-form QSOs, and FSQCall like features was born.
+
+- **February 11, 2018** - Jordan, KN4CRD, inquired about the idea of integrating long-form messages into WSJT-X: [https://sourceforge.net/p/wsjt/mailman/message/36223372/](https://sourceforge.net/p/wsjt/mailman/message/36223372/)
+
+- **February 12, 2018** - Joe Taylor, K1JT, wrote back: [https://sourceforge.net/p/wsjt/mailman/message/36224507/](https://sourceforge.net/p/wsjt/mailman/message/36224507/) saying no and "Please don't let my comment discourage you from proceeding as you wish, toward something new."
+
+- **March 4, 2018** - Jordan, KN4CRD, published a design document for FT8Call: [https://github.com/jsherer/ft8call](https://github.com/jsherer/ft8call)
+
+- **July 6, 2018** - Version 0.0.1 of FT8Call released to the development group
+
+- **July 15, 2018** - Version 0.1 released - a dozen testers
+
+- **July 21, 2018** - Version 0.2 released - 75 testers
+
+- **July 27, 2018** - Version 0.3 released - 150 testers
+
+- **August 12, 2018** - Version 0.4 released - (["leaked" on QRZ](https://forums.qrz.com/index.php?threads/a-new-ft8-with-qso-and-rag-chew-capabilities-called-ft8call.623882/)) - 500 testers
+
+- **September 2, 2018** - Version 0.5 released - 3000 testers
+
+- **September 14, 2018** - Version 0.6 released - 5000 testers
+
+- **October 8, 2018** - Version 0.7 released - 6000 testers, name changed to JS8 & JS8Call
+
+- **October 31, 2018** - Version 0.8 released - ~7000 testers
+
+- **November 15, 2018** - Version 0.9 released - ~7500 testers
+
+- **November 30, 2018** - Version 0.10 released - ~7800 testers
+
+- **December 18, 2018** - Version 0.11 released - ~8200 testers
+
+- **January 1, 2019** - Version 0.12 released - ~9000 testers
+
+- **January 23, 2019** - Version 0.13 released - ~9250 testers
+
+- **February 7, 2019** - Version 0.14 released - ~9600 testers
+
+- **February 21, 2019** - Version 1.0.0-RC1 released - ~10000 testers
+
+- **March 11, 2019** - Version 1.0.0-RC2 released - >10000 testers
+
+- **March 26, 2019** - Version 1.0.0-RC3 released - >11000 testers
+
+- **April 1, 2019** - Version 1.0.0 general availability - Public Release!
+
+- **June 6, 2019** - Version 1.1.0 general availability
+
+- **November 29, 2019** - Version 2.0.0 general availability - Fast and Turbo speeds introduced!
+
+- **December 22, 2019** - Version 2.1.0 general availability - Slow speed introduced!
+
+- **June 30, 2020** - Version 2.2.0 general availability
+
+- **November 3, 2025** - Version 2.4.0 released as JS8Call-improved, OmniRig deprecated on Windows, Fortran code removed
+  See [Release notes v2.4.0](https://github.com/JS8Call-improved/JS8Call-improved/releases/tag/release%2F2.4.0)
+
+- **January 6, 2026** - Version 2.5.0 released, renamed back to JS8Call. 
+  See [Release notes v2.5.0](https://github.com/JS8Call-improved/JS8Call-improved/releases/tag/release%2F2.5.0)
+
+- **May 17, 2026** - Version 3.0.1 and later, JS8Call is now developed by the JS8Call-improved team with over 17 contributors and has been brought up to modern standards to support the newest versions of Qt and Hamlib. 
