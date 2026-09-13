@@ -1,3 +1,8 @@
+/**
+ * @file whitening_processor.h
+ * @brief Noise whitening and LLR normalization helper used by the JS8 decoder.
+ */
+
 #pragma once
 
 #include <QDebug>
@@ -25,16 +30,45 @@ namespace js8 {
  */
 template <int NROWS, int ND, int N> class WhiteningProcessor {
   public:
+    /**
+     * @brief Result of a whitening/LRR normalization pass.
+     *
+     * `llr0` and `llr1` are populated in column order (three outputs per
+     * symbol) to match the decoder's expectations. The boolean flags indicate
+     * whether whitening and/or erasure were applied; `erasures` counts the
+     * number of individual LLR elements that were set to zero. The `avgAbs*`
+     * fields contain sum-like metrics collected during processing to aid
+     * debugging and tuning.
+     */
     struct Result {
-        std::array<float, 3 * ND> llr0;
-        std::array<float, 3 * ND> llr1;
-        bool whiteningApplied;
-        bool erasureApplied;
-        std::size_t erasures;
-        double avgAbsPre;
-        double avgAbsPost;
+        std::array<float, 3 * ND> llr0;    ///< LLR values for the 0-hypothesis
+        std::array<float, 3 * ND> llr1;    ///< LLR values for the 1-hypothesis
+        bool whiteningApplied;             ///< True when whitening was applied
+        bool erasureApplied;               ///< True when erasure was applied
+        std::size_t erasures;              ///< Number of LLR elements erased
+        double avgAbsPre;                  ///< Aggregate |LLR| before whitening
+        double avgAbsPost;                 ///< Aggregate |LLR| after whitening
     };
 
+    /**
+     * @brief Compute normalized LLR arrays for a single candidate frame.
+     *
+     * The template parameters describe the matrix dimensions used by the
+     * decoder: `NROWS` is the number of tones (rows), `ND` is the number of
+     * symbols (columns) and `N` is a helper parameter used by the decoder
+     * (kept for API parity). The input `s1` is an array of `NROWS` rows,
+     * each containing `ND` magnitudes (per-symbol). For each symbol column
+     * the routine computes three LLR entries (placed into contiguous slots
+     * of `llr0`/`llr1`) and optionally applies noise whitening and erasure.
+     *
+     * @param s1 Per-tone arrays of symbol magnitudes; index as `s1[row][col]`.
+     * @param symbolWinners For each symbol column, the index [0..NROWS-1]
+     *        identifying the winning tone.
+     * @param erasureThreshold When > 0.0, magnitudes below this threshold
+     *        (after whitening) are erased (set to zero).
+     * @param debug When true, emits extra debug logging about noise metrics.
+     * @return A `Result` containing `llr0`, `llr1` and processing statistics.
+     */
     static Result process(std::array<std::array<float, ND>, NROWS> const &s1,
                           std::array<int, ND> const &symbolWinners,
                           float erasureThreshold, bool debug) {
