@@ -5,6 +5,23 @@
  * BWF is a WAV-compatible format with EBU 'bext' metadata. This class
  * exposes the audio sample data as a `QIODevice` while providing access
  * to the bext and LIST-INFO metadata chunks.
+ *
+ * The InfoDictionary used by some constructors should contain valid WAV
+ * LIST-INFO identifiers as keys; a list of common identifiers is
+ * available at:
+ * http://bwfmetaedit.sourceforge.net/listinfo.html
+ *
+ * For files opened ReadOnly the dictionary is not written back. For files
+ * opened ReadWrite, any existing LIST-INFO tags are merged into the
+ * dictionary when the file is opened and the merged dictionary will be
+ * written back to the file if the file is modified.
+ *
+ * The sample data may not be in the native endian. Callers are
+ * responsible for any required endian conversions; internally the
+ * class presents data in native endian and performs conversions
+ * automatically. Use the `format()` accessor and
+ * `QAudioFormat::byteOrder()` to determine byte ordering.
+ *
  * @see https://tech.ebu.ch/docs/tech/tech3285.pdf
  * @see https://tech.ebu.ch/docs/r/r098.pdf
  */
@@ -46,25 +63,7 @@ class BWFFile : public QIODevice {
     explicit BWFFile(QAudioFormat const &, QString const &name,
                      QObject *parent = nullptr);
 
-    // The  InfoDictionary should  contain  valid  WAV format  LIST-INFO
-    // identifiers as keys, a list of them can be found here:
-    //
-    // http://bwfmetaedit.sourceforge.net/listinfo.html
-    //
-    // For  files  opened for  ReadOnly  access  the dictionary  is  not
-    // written to  the file.  For  files opened ReadWrite,  any existing
-    // LIST-INFO tags will  be merged into the dictionary  when the file
-    // is opened and if the file  is modified the merged dictionary will
-    // be written back to the file.
-    //
-    // Note that the sample  data may no be in the  native endian, it is
-    // the   callers   responsibility   to  do   any   required   endian
-    // conversions. The  internal data is  always in native  endian with
-    // conversions  being handled  automatically. Use  the BWF::format()
-    // operation     to    access     the    format     including    the
-    // QAudioFormat::byteOrder()  operation to  determine the  data byte
-    // ordering.
-    //
+    
     explicit BWFFile(QAudioFormat const &, QString const &name,
                      InfoDictionary const &, QObject *parent = nullptr);
 
@@ -179,7 +178,7 @@ class BWFFile : public QIODevice {
 
   private:
     class impl;
-    pimpl<impl> m_;
+    pimpl<impl> m_; ///< Private implementation pointer.
 };
 
 #endif
