@@ -1,3 +1,13 @@
+/**
+ * @file WSJTXMessageClient.h
+ * @brief UDP client for sending and receiving WSJT‑X protocol messages.
+ *
+ * The class handles sending various WSJT‑X message types (Status, Decode,
+ * QSOLogged, etc.) and exposes signals for incoming messages from the UDP
+ * socket. It also manages schema negotiation and multicast interface
+ * selection.
+ */
+
 #ifndef WSJTX_MESSAGE_CLIENT_HPP__
 #define WSJTX_MESSAGE_CLIENT_HPP__
 
@@ -14,8 +24,12 @@ class QByteArray;
 class QHostAddress;
 class QColor;
 
+/**
+ * @class WSJTXMessageClient
+ * @brief Implements a WSJT‑X compatible UDP message client.
+ */
 class WSJTXMessageClient : public QObject {
-    Q_OBJECT;
+  Q_OBJECT;
 
   public:
     using Frequency = Radio::Frequency;

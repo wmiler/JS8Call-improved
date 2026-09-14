@@ -1,3 +1,8 @@
+/**
+ * @file SemiSortableHeader.h
+ * @brief Header view that selectively disables sorting on specified columns.
+ */
+
 #ifndef JS8CALL_SEMISORTABLEHEADER_H
 #define JS8CALL_SEMISORTABLEHEADER_H
 
@@ -11,14 +16,23 @@
 #include <QTableWidget>
 #include <QVariant>
 
-//
-// Class SemiSortableHeader
-//
-// QHeaderView derivative that allow selective disabling of sorting on specified columns.
-//
+
+/**
+ * @class SemiSortableHeader
+ * @brief QHeaderView derivative that allows selective disabling of sorting.
+ *
+ * The header can be attached to a `QTableWidget` and configured with a set of
+ * non-sortable columns. Clicks on non-sortable columns are ignored and the
+ * header is painted without a sort indicator for those columns.
+ */
 class SemiSortableHeader : public QHeaderView {
 
 public:
+  /**
+   * @brief Construct the header with the given orientation.
+   * @param ori Header orientation (Horizontal/Vertical).
+   * @param parent Optional parent widget.
+   */
   explicit SemiSortableHeader(Qt::Orientation ori, QWidget *parent = nullptr)
       : QHeaderView(ori, parent) {
     setSectionsClickable(true);
@@ -27,6 +41,10 @@ public:
     setMouseTracking(true);
   }
 
+  /**
+   * @brief Attach this header to a QTableWidget and initialize sorting state.
+   * @param table Target table to attach to.
+   */
   void attachTo(QTableWidget *table) {
     table_ = table;
     table_->setHorizontalHeader(this);
@@ -47,13 +65,19 @@ public:
             &SemiSortableHeader::onSectionClicked, Qt::UniqueConnection);
   }
 
-  // New multi-column API
+  /**
+   * @brief Set the set of non-sortable columns.
+   * @param cols Set of column indexes that should not be sortable.
+   */
   void setNonSortableColumns(const QSet<int> &cols) {
     nonSortable_ = cols;
     normalizeSortIfNeeded();
     viewport()->update();
   }
 
+  /**
+   * @brief Mark a specific column as non-sortable.
+   */
   void addNonSortableColumn(int col) {
     if (col >= 0) {
       nonSortable_.insert(col);
@@ -62,17 +86,28 @@ public:
     }
   }
 
+  /**
+   * @brief Remove non-sortable marking from a column.
+   */
   void removeNonSortableColumn(int col) {
     nonSortable_.remove(col);
     normalizeSortIfNeeded();
     viewport()->update();
   }
 
+  /**
+   * @brief Check whether a column is sortable.
+   * @return true if the column is sortable.
+   */
   bool isSortableColumn(int col) const {
     return col >= 0 && !nonSortable_.contains(col);
   }
 
 private slots:
+  /**
+   * @brief Handle clicks on sections and perform toggled sorting.
+   * @param column Clicked column index.
+   */
   void onSectionClicked(int column) {
     if (!table_)
       return;
@@ -100,6 +135,9 @@ private slots:
   }
 
 protected:
+  /**
+   * @brief Custom painting to avoid drawing sort indicators for non-sortable columns.
+   */
   void paintSection(QPainter *painter, const QRect &rect,
                     int logicalIndex) const override {
     // Normal columns: keep Qt default painting
@@ -152,6 +190,9 @@ protected:
     style()->drawControl(QStyle::CE_Header, &opt, painter, this);
   }
 
+  /**
+   * @brief Intercept mouse presses to ignore clicks on non-sortable columns.
+   */
   void mousePressEvent(QMouseEvent *e) override {
     const int col = logicalIndexAt(e->pos());
     if (!isSortableColumn(col)) {

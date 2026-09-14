@@ -1,3 +1,13 @@
+/**
+ * @file NetworkServerLookup.h
+ * @brief Blocking DNS / address lookup utility used by network setup code.
+ *
+ * The `network_server_lookup()` function parses a user-style `query` (which
+ * may include an explicit port and/or IPv4/IPv6 address) and returns a
+ * tuple of the resolved `QHostAddress` and the service port to use. If no
+ * matching address is found the returned `QHostAddress` is `Null`.
+ */
+
 #ifndef NETWORK_SERVER_LOOKUP_HPP__
 #define NETWORK_SERVER_LOOKUP_HPP__
 
@@ -8,27 +18,24 @@
 
 class QString;
 
-//
-// Do a blocking DNS lookup using query as a destination host address
-// and port.
-//
-// query can be one of:
-//
-// 1) "" (empty string) - use defaults
-// 2) ":nnnnn" - override default service port with port nnnnn
-// 3) "<valid-host-name>" - override default host address with DNS lookup
-// 4) "nnn.nnn.nnn.nnn" - override default host address with the IPv4 address
-// given by nnn.nnn.nnn.nnn 5) "[<valid-IPv6-address]" - override default host
-// address with the given IPv6 address 6) "<valid-host-name>:nnnnn" - use as per
-// (3) & (2) 7) "nnn.nnn.nnn.nnn:nnnnn" - use as per (4) & (2) 8)
-// "[<valid-IPv6-address]:nnnnn" - use as per (5) & (2)
-//
-// The first host address matching the protocol and the service port
-// number are returned.
-//
-// If no suitable host address is found QHostAddress::Null will be
-// returned in the first member of the result tuple.
-//
+/**
+ * @brief Parse `query` and perform a blocking lookup for host and port.
+ *
+ * `query` supports several shorthand forms:
+ * - "" (empty) — use the supplied defaults.
+ * - ":nnnnn" — override the default service port.
+ * - "<hostname>" — resolve hostname via DNS.
+ * - "nnn.nnn.nnn.nnn" — use explicit IPv4 address.
+ * - "[<ipv6>]" — use explicit IPv6 address.
+ * - Each address form may append `:port` to override the port.
+ *
+ * @param query User-specified host[:port] or special shorthand.
+ * @param default_service_port Port number used when none is specified.
+ * @param default_host_address Host address used when `query` is empty.
+ * @param protocol Network protocol preference (IPv4/IPv6/Any).
+ * @return Tuple of (`QHostAddress`, `quint16` port). If resolution fails the
+ *         returned `QHostAddress` will be `QHostAddress::Null`.
+ */
 std::tuple<QHostAddress, quint16> network_server_lookup(
     QString query, quint16 default_service_port,
     QHostAddress default_host_address = QHostAddress::LocalHost,
@@ -36,3 +43,4 @@ std::tuple<QHostAddress, quint16> network_server_lookup(
         QAbstractSocket::AnyIPProtocol);
 
 #endif
+

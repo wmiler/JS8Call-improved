@@ -1,4 +1,9 @@
-#ifndef WSJTX_MESSAGE_MAPPER_HPP__
+/**
+ * @file WSJTXMessageMapper.h
+ * @brief Translate JS8Call events into WSJT‑X UDP protocol messages.
+ */
+
+ #ifndef WSJTX_MESSAGE_MAPPER_HPP__
 #define WSJTX_MESSAGE_MAPPER_HPP__
 
 #include "JS8_Main/Radio.h"
@@ -19,7 +24,7 @@ class UI_Constructor;
  * other applications that support the WSJT-X protocol.
  */
 class WSJTXMessageMapper : public QObject {
-    Q_OBJECT
+  Q_OBJECT
 
   public:
     /**

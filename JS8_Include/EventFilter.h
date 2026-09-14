@@ -1,3 +1,13 @@
+/**
+ * @file EventFilter.h
+ * @brief Custom event filters for Qt applications.
+ *
+ * This header defines several custom event filter classes that can be used
+ * to handle specific events in Qt applications, such as focus out, key presses,
+ * and mouse button events. Each filter class allows the user to specify a
+ * callback function that will be invoked when the corresponding event occurs.
+ */
+
 #ifndef EVENTFILTER_HPP__
 #define EVENTFILTER_HPP__
 
@@ -9,6 +19,13 @@
 #include <functional>
 
 namespace EventFilter {
+/**
+ * @class FocusOut
+ * @brief Event filter that triggers a callback on focus out events.
+ *
+ * This filter can be installed on a QObject to invoke a user-defined
+ * callback function whenever the object loses focus.
+ */
 class FocusOut final : public QObject {
   public:
     using Filter = std::function<void()>;
@@ -26,6 +43,13 @@ class FocusOut final : public QObject {
     Filter filter_;
 };
 
+/**
+ * @class FocusIn
+ * @brief Event filter that triggers a callback on focus in events.
+ *
+ * This filter can be installed on a QObject to invoke a user-defined
+ * callback function whenever the object gains focus.
+ */
 class EscapeKeyPress final : public QObject {
   public:
     using Filter = std::function<bool(QKeyEvent *)>;
@@ -47,6 +71,13 @@ class EscapeKeyPress final : public QObject {
     Filter filter_;
 };
 
+/**
+ * @class EnterKeyPress
+ * @brief Event filter that triggers a callback on Enter/Return key presses.
+ *
+ * This filter can be installed on a QObject to invoke a user-defined
+ * callback function whenever the Enter or Return key is pressed.
+ */
 class EnterKeyPress final : public QObject {
   public:
     using Filter = std::function<bool(QKeyEvent *)>;
@@ -69,6 +100,13 @@ class EnterKeyPress final : public QObject {
     Filter filter_;
 };
 
+/**
+ * @class MouseButtonPress
+ * @brief Event filter that triggers a callback on mouse button press events.
+ *
+ * This filter can be installed on a QObject to invoke a user-defined
+ * callback function whenever a mouse button is pressed.
+ */
 class MouseButtonPress final : public QObject {
   public:
     using Filter = std::function<bool(QMouseEvent *)>;
@@ -87,6 +125,13 @@ class MouseButtonPress final : public QObject {
     Filter filter_;
 };
 
+/**
+ * @class MouseButtonDblClick
+ * @brief Event filter that triggers a callback on mouse button double-click events.
+ *
+ * This filter can be installed on a QObject to invoke a user-defined
+ * callback function whenever a mouse button is double-clicked.
+ */
 class MouseButtonDblClick final : public QObject {
   public:
     using Filter = std::function<bool(QMouseEvent *)>;

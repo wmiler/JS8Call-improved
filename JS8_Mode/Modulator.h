@@ -1,3 +1,8 @@
+/**
+ * @file Modulator.h
+ * @brief Audio modulator device that generates PCM frames for transmission.
+ */
+
 #ifndef MODULATOR_HPP__
 #define MODULATOR_HPP__
 
@@ -9,13 +14,14 @@
 class SoundOutput;
 
 /**
- * Audio device that generates PCM audio frames that encode a message.
+ * @class Modulator
+ * @brief Audio device which synthesizes JS8 waveform samples for TX.
  *
- * Output can be muted while underway, preserving waveform timing when
- * transmission is resumed.
- *
- * This is intended to run in a thread different from the GUI thread.
- * It is **not** generally thread-safe, see remarks below.
+ * The `Modulator` implements a `QIODevice` audio source that produces
+ * PCM samples encoding an outgoing message. Output may be muted while
+ * keeping timing intact to allow resuming without disrupting the
+ * transmission schedule. The device is intended to run in a worker
+ * thread and is not generally safe to call from arbitrary threads.
  */
 class Modulator final : public AudioDevice {
     Q_OBJECT;
@@ -23,28 +29,32 @@ class Modulator final : public AudioDevice {
   public:
     enum class State { Synchronizing, Active, Idle };
 
-    // Constructor
-
+    /**
+     * @brief Construct a modulator instance.
+     * @param parent Optional parent QObject.
+     */
     explicit Modulator(QObject *parent = nullptr) : AudioDevice{parent} {}
 
-    // Inline accessors
-
     /**
-     * Whether the device is idle.
+     * @brief Whether the device is currently idle.
+     * @return true when idle.
      *
-     * This method is thread-safe, i.e., can be called from a different thread.
+     * This accessor is thread-safe and can be queried from other threads.
      */
     bool isIdle() const { return m_state.load() == State::Idle; }
 
     // Manipulators
 
+    /**
+     * @brief Close the device and stop generating samples.
+     */
     void close() override;
 
     /**
-     * Sets the audio frequency.
+     * @brief Set the base audio frequency used for modulation.
+     * @param audioFrequency Frequency in Hz.
      *
-     * This is **not** by itself thread-safe, but ok if fed
-     * via the Qt signalling mechanism.
+     * Not thread-safe by itself; use Qt signals to invoke from other threads.
      */
     Q_SLOT void setAudioFrequency(double const audioFrequency) {
         m_audioFrequency = audioFrequency;
@@ -52,27 +62,45 @@ class Modulator final : public AudioDevice {
 
     // Slots
 
+    /**
+     * @brief Start transmission with the given parameters.
+     */
     Q_SLOT void start(double audioFrequency, int submode, double tx_delay,
                       SoundOutput *stream, Channel channel);
+
+    /**
+     * @brief Stop transmission.
+     * @param quick If true, perform a quick stop.
+     */
     Q_SLOT void stop(bool quick = false);
+
+    /**
+     * @brief Enter or leave tuning state.
+     */
     Q_SLOT void tune(bool state = true);
 
   protected:
     // QIODevice protocol
 
     qint64 readData(char *, qint64) override;
-    qint64 writeData(char const *, qint64) override {
-        return -1; // we don't consume data
-    }
+    qint64 writeData(char const *, qint64) override { return -1; }
 
-    // In current Qt versions, bytesAvailable() must return a size
-    // that exceeds some threshold in order for the AudioSink to go
-    // into Active state and start pulling data. This behavior began
-    // on Windows with the 6.4 release, on Mac with 6.8, and on Linux
-    // with 6.9.
-    //
-    // See: https://bugreports.qt.io/browse/QTBUG-108672
-
+    /**
+     * @brief Bytes available hint for QAudioSink; ensures Active state.
+     *
+     * Qt audio backends require that a source report a minimum number of
+     * bytes available in order to transition the sink into the Active
+     * state and begin pulling data. Different Qt releases/platforms
+     * changed this behavior; to remain compatible we provide a
+     * conservative bytes-available hint here.
+     *
+     * @note Observed version/platform behavior:
+     * - Windows: behavior change observed starting in Qt 6.4
+     * - macOS: behavior change observed starting in Qt 6.8
+     * - Linux: behavior change observed starting in Qt 6.9
+     *
+     * @see https://bugreports.qt.io/browse/QTBUG-108672
+     */
     qint64 bytesAvailable() const override { return 8000; }
 
   private:

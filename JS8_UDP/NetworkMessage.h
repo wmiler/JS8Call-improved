@@ -1,3 +1,14 @@
+/**
+ * @file NetworkMessage.h
+ * @brief WSJT‑X UDP message format and helper utilities.
+ *
+ * This header documents the binary UDP protocol used by WSJT‑X and
+ * provides helpers for building and parsing network messages. Messages
+ * use a fixed header (magic + schema) followed by a QDataStream-encoded
+ * payload. The file contains information about schema versions, message
+ * types and backward-compatibility rules.
+ */
+
 #ifndef NETWORK_MESSAGE_HPP__
 #define NETWORK_MESSAGE_HPP__
 

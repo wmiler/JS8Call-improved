@@ -1,3 +1,14 @@
+/**
+ * @file Detector.h
+ * @brief Audio sink that collects, down-samples and provides buffered samples.
+ *
+ * `Detector` is an `AudioDevice` sink that accumulates incoming PCM samples
+ * into an internal, de-interleaved buffer sized for one JS8 period. The
+ * class exposes thread-safe access to the buffer via a mutex and emits
+ * notifications when frames are written so downstream consumers (the
+ * decoder) can process fixed-size chunks.
+ */
+
 #ifndef DETECTOR_HPP__
 #define DETECTOR_HPP__
 
@@ -15,37 +26,38 @@
 class Detector : public AudioDevice {
     Q_OBJECT;
 
-    // We downsample the input data from 48kHz to 12kHz through this
-    // lowpass FIR filter.
-
+    /**
+     * @brief Lowpass FIR filter used to down-sample 48kHz input to 12kHz.
+     *
+     * The nested `Filter` class provides an efficient small FIR down-sampler
+     * using Eigen vectors. It is configured with a fixed number of taps
+     * (`NTAPS`) and performs a decimation by `NDOWN` producing one output
+     * sample per `NDOWN` inputs.
+     */
     class Filter final {
       public:
-        // Amount we're going to downsample; a factor of 4, i.e., 48kHz to
-        // 12kHz, and number of taps in the FIR lowpass filter we're going
-        // to use for the downsample process. These together result in the
-        // amount to shift data in the FIR filter each time we input a new
-        // sample.
-
+        /** Down-sample factor (48k -> 12k = 4). */
         static constexpr std::size_t NDOWN = 48 / 12;
+        /** Number of FIR taps. */
         static constexpr std::size_t NTAPS = 49;
+        /** Amount to shift the internal tap buffer on each new input. */
         static constexpr std::size_t SHIFT = NTAPS - NDOWN;
-
-        // Our FIR is constructed of a pair of Eigen vectors, each NTAPS in
-        // size. Loading in a sample consists of mapping it to a read-only
-        // view of an Eigen vector, NDOWN in size.
 
         using Vector = Eigen::Vector<float, NTAPS>;
         using Sample = Eigen::Map<Eigen::Vector<short, NDOWN> const>;
 
-        // Constructor; we require an array of lowpass FIR coefficients,
-        // equal in size to the number of taps.
-
+        /**
+         * @brief Construct a filter with the provided low-pass coefficients.
+         * @param lowpass Array of FIR coefficients sized `NTAPS`.
+         */
         explicit Filter(std::array<Vector::value_type, NTAPS> const &lowpass)
             : m_w(lowpass.data()), m_t(Vector::Zero()) {}
 
-        // Shift existing data in the lowpass FIR to make room for a new
-        // sample and load it in; downsample through the filter.
-
+        /**
+         * @brief Consume NDOWN input samples and return a single down-sampled value.
+         * @param data Pointer to `NDOWN` input samples.
+         * @return Down-sampled output sample.
+         */
         auto downSample(Sample::value_type const *const data) {
             m_t.head(SHIFT) = m_t.segment(NDOWN, SHIFT);
             m_t.tail(NDOWN) = Sample(data).cast<Vector::value_type>();
@@ -54,70 +66,74 @@ class Detector : public AudioDevice {
         }
 
       private:
-        // Data members
-
-        Eigen::Map<Vector const> m_w;
-        Vector m_t;
+        Eigen::Map<Vector const> m_w; ///< FIR coefficient view
+        Vector m_t;                   ///< Tap buffer
     };
 
-    // Size of a maximally-sized buffer.
-
+    /** Maximum buffer size (samples per input signals-worth). */
     static constexpr std::size_t MaxBufferSize = 7 * 512;
 
-    // A De-interleaved sample buffer big enough for all the
-    // samples for one increment of data (a signals worth) at
-    // the input sample rate.
-
+    /** De-interleaved sample buffer covering one period at input rate. */
     using Buffer = std::array<short, MaxBufferSize * Filter::NDOWN>;
 
   public:
-    // Constructor
-
+    /**
+     * @brief Construct a Detector.
+     * @param frameRate Input sampling rate (Hz).
+     * @param periodLengthInSeconds Period length (seconds) used to size buffers.
+     * @param parent Optional parent QObject.
+     */
     Detector(unsigned frameRate, unsigned periodLengthInSeconds,
              QObject *parent = nullptr);
 
-    // Inline accessors
-
+    /** Return configured period length in seconds. */
     unsigned period() const { return m_period; }
 
-    // Inline manipulators
-
+    /** Return pointer to the internal mutex protecting buffer operations. */
     QMutex *getMutex() { return &m_lock; }
+
+    /** Set the transmit/receive period used for timing adjustments. */
     void setTRPeriod(unsigned p) { m_period = p; }
 
-    // Accessors
-
+    /**
+     * @brief Return how many seconds into the current period we are.
+     */
     unsigned secondInPeriod() const;
 
-    // Manipulators
-
+    /** Clear buffered samples and reset buffer position. */
     void clear();
+
+    /** Reset device state and buffers. */
     bool reset() override;
+
+    /** Reset buffer contents to their initial state. */
     void resetBufferContent();
+
+    /** Reset buffer write position to the beginning. */
     void resetBufferPosition();
 
-    // Signals and slots
-
+    /** Emitted when `writeData` has appended frames into the internal buffer. */
     Q_SIGNAL void framesWritten(qint64) const;
+
+    /** Set the internal block size used when aggregating frames. */
     Q_SLOT void setBlockSize(unsigned);
 
   protected:
-    // We don't produce data; we're a sink for it.
-
+    /** We are a sink; `readData` is unused. */
     qint64 readData(char *, qint64) override { return -1; }
+
+    /** Write input PCM bytes into the internal buffer. */
     qint64 writeData(char const *, qint64) override;
 
   private:
-    // Data members
-
-    unsigned m_frameRate;
-    unsigned m_period;
-    QMutex m_lock;
-    Filter m_filter;
-    Buffer m_buffer;
-    Buffer::size_type m_bufferPos = 0;
-    std::size_t m_samplesPerFFT = MaxBufferSize;
-    qint32 m_ns = 999;
+    unsigned m_frameRate;               ///< Input frame rate in Hz
+    unsigned m_period;                  ///< Period length in seconds
+    QMutex m_lock;                      ///< Protects buffer and position
+    Filter m_filter;                    ///< Down-sampling filter instance
+    Buffer m_buffer;                    ///< De-interleaved sample buffer
+    Buffer::size_type m_bufferPos = 0;  ///< Current write position in buffer
+    std::size_t m_samplesPerFFT = MaxBufferSize; ///< FFT window size in samples
+    qint32 m_ns = 999;                  ///< Small-number sentinel / debug
 };
 
 #endif

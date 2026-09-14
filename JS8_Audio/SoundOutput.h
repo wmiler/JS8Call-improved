@@ -1,4 +1,8 @@
-// -*- Mode: C++ -*-
+/**
+ * @file SoundOutput.h
+ * @brief Send audio data to a configured soundcard/output device.
+ */
+
 #ifndef SOUNDOUT_H__
 #define SOUNDOUT_H__
 
@@ -8,47 +12,126 @@
 #include <QObject>
 #include <QString>
 
-// An instance of this sends audio data to a specified soundcard.
-
+/**
+ * @class SoundOutput
+ * @brief Manages audio output format, buffering and the underlying sink.
+ *
+ * Responsible for configuring a `QAudioSink`, managing buffering latency,
+ * and applying attenuation for playback. Typical usage is to call
+ * `setFormat()` or `setDeviceFormat()` and then `restart()` with a
+ * prepared `QIODevice` for streaming audio.
+ */
 class SoundOutput : public QObject {
     Q_OBJECT;
 
   public:
+    /**
+     * @brief Default-construct a SoundOutput helper.
+     */
     SoundOutput() = default;
 
+    /**
+     * @brief Current attenuation (volume multiplier).
+     * @return Attenuation factor where 1.0 is unity gain.
+     */
     qreal attenuation() const;
+
+    /**
+     * @brief Active audio format used by the output.
+     * @return The `QAudioFormat` currently configured for playback.
+     */
     QAudioFormat format() const;
 
   public Q_SLOTS:
+    /**
+     * @brief Configure format based on device and channel count.
+     * @param device Output device to use.
+     * @param channels Number of channels (1 or 2).
+     * @param msBuffered Milliseconds of buffering to set up (0 = default).
+     */
     void setFormat(QAudioDevice const &device, unsigned channels,
                    unsigned msBuffered = 0u);
+
+    /**
+     * @brief Set device and explicit format to use for playback.
+     * @param device Output device to use.
+     * @param format Exact audio format to use for the sink.
+     * @param msBuffered Milliseconds of buffering to set up (0 = default).
+     */
     void setDeviceFormat(QAudioDevice const &device, QAudioFormat const &format,
                          unsigned msBuffered = 0u);
-    void restart(QIODevice *);
+
+    /**
+     * @brief Restart output streaming from the given `QIODevice` source.
+     * @param source The device providing audio samples for playback.
+     */
+    void restart(QIODevice *source);
+
+    /**
+     * @brief Temporarily suspend output streaming.
+     */
     void suspend();
+
+    /**
+     * @brief Resume output after a suspend.
+     */
     void resume();
+
+    /**
+     * @brief Reset internal state and stop any active stream.
+     */
     void reset();
+
+    /**
+     * @brief Stop playback immediately.
+     */
     void stop();
-    void setAttenuation(qreal); /* unsigned */
-    void resetAttenuation();    /* to zero */
+
+    /**
+     * @brief Set attenuation (volume multiplier) for playback.
+     * @param value Attenuation factor where 1.0 is no attenuation.
+     */
+    void setAttenuation(qreal value);
+
+    /**
+     * @brief Reset attenuation to default (unity) value.
+     */
+    void resetAttenuation();
 
   Q_SIGNALS:
+    /**
+     * @brief Emitted when an error occurs related to audio output.
+     * @param message Human-readable error description.
+     */
     void error(QString message) const;
+
+    /**
+     * @brief Emitted to report informational status updates.
+     * @param message Status text.
+     */
     void status(QString message) const;
 
   private:
+    /**
+     * @brief Verify the configured stream/sink is healthy and ready.
+     * @return true if the stream is configured and usable.
+     */
     bool checkStream() const;
 
   private Q_SLOTS:
-    void handleStateChanged(QAudio::State) const;
+    /**
+     * @brief Internal handler for QAudioSink state changes.
+     * @param state New sink state.
+     */
+    void handleStateChanged(QAudio::State state) const;
 
   private:
-    QAudioDevice m_device;
-    QScopedPointer<QAudioSink> m_stream;
-    QAudioFormat m_format;
-    unsigned m_msBuffered = 0u;
-    qreal m_volume = 1.0;
-    bool m_error = false;
+    QAudioDevice m_device;                   ///< Selected output device.
+    QScopedPointer<QAudioSink> m_stream;    ///< Owned sink for playback.
+    QAudioFormat m_format;                  ///< Configured audio format.
+    unsigned m_msBuffered = 0u;             ///< Milliseconds of buffering.
+    qreal m_volume = 1.0;                   ///< Current volume multiplier.
+    bool m_error = false;                   ///< Last error flag.
 };
 
 #endif

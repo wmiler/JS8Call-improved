@@ -1,3 +1,31 @@
+/**
+ * @file BWFFile.h
+ * @brief Broadcast Wave Format (BWF) file helper and QIODevice wrapper.
+ *
+ * BWF is a WAV-compatible format with EBU 'bext' metadata. This class
+ * exposes the audio sample data as a `QIODevice` while providing access
+ * to the bext and LIST-INFO metadata chunks.
+ *
+ * The InfoDictionary used by some constructors should contain valid WAV
+ * LIST-INFO identifiers as keys; a list of common identifiers is
+ * available at:
+ * http://bwfmetaedit.sourceforge.net/listinfo.html
+ *
+ * For files opened ReadOnly the dictionary is not written back. For files
+ * opened ReadWrite, any existing LIST-INFO tags are merged into the
+ * dictionary when the file is opened and the merged dictionary will be
+ * written back to the file if the file is modified.
+ *
+ * The sample data may not be in the native endian. Callers are
+ * responsible for any required endian conversions; internally the
+ * class presents data in native endian and performs conversions
+ * automatically. Use the `format()` accessor and
+ * `QAudioFormat::byteOrder()` to determine byte ordering.
+ *
+ * @see https://tech.ebu.ch/docs/tech/tech3285.pdf
+ * @see https://tech.ebu.ch/docs/r/r098.pdf
+ */
+
 #ifndef BWF_FILE_HPP__
 #define BWF_FILE_HPP__
 
@@ -13,48 +41,14 @@ class QObject;
 class QString;
 class QAudioFormat;
 
-//
-// BWFFile - Broadcast Wave Format File (a.k.a. WAV file)
-//
-// The  BWF file  format is  a  backward compatible  variation of  the
-// Microsoft  WAV file  format. It  contains  an extra  chunk with  id
-// 'bext' that contains metadata defined by the EBU in:
-//
-//  https://tech.ebu.ch/docs/tech/tech3285.pdf
-//
-// Also relevant is the recommendation document:
-//
-//  https://tech.ebu.ch/docs/r/r098.pdf
-//
-// which suggests a format to the free text coding history field.
-//
-// This class also supports the LIST-INFO chunk type which also allows
-// metadata to be  added to a WAV  file, the defined INFO  tag ids are
-// documented here:
-//
-//  http://bwfmetaedit.sourceforge.net/listinfo.html
-//
-// These  ids  are not  enforced  but  they  are recommended  as  most
-// operating systems and audio applications  recognize some or more of
-// them. Notably Microsoft Windows is not one of the operating systems
-// that  does :(  In fact  there seems  to be  no documented  metadata
-// tagging format that Windows Explorer recognizes.
-//
-// Changes to  the 'bext' fields  and the LIST-INFO dictionary  may be
-// made right up  until the file is closed as  the relevant chunks are
-// saved to the end of the file after the end of the sample data.
-//
-// This class emulates the QFile class, in fact it uses a QFile object
-// instance internally and forwards many of its operations directly to
-// it.
-//
-// BWFFile  is a  QIODevice subclass  and the  implementation provides
-// access to  the audio sample  data contained in  the BWF file  as if
-// only that data were  in the file. I.e. the first  sample is at file
-// offset zero  and the  size of the  file is the  size of  the sample
-// data.  The headers,  trailers and  metadata are  hidden but  can be
-// accessed by the operations below.
-//
+/**
+ * @class BWFFile
+ * @brief QIODevice-style access to BWF/WAV sample data and metadata.
+ *
+ * The class hides header/trailer chunks and exposes only the sample data
+ * as a contiguous device. Metadata may be read and modified via the
+ * provided bext_* and list_info operations.
+ */
 class BWFFile : public QIODevice {
     Q_OBJECT
   public:
@@ -69,25 +63,7 @@ class BWFFile : public QIODevice {
     explicit BWFFile(QAudioFormat const &, QString const &name,
                      QObject *parent = nullptr);
 
-    // The  InfoDictionary should  contain  valid  WAV format  LIST-INFO
-    // identifiers as keys, a list of them can be found here:
-    //
-    // http://bwfmetaedit.sourceforge.net/listinfo.html
-    //
-    // For  files  opened for  ReadOnly  access  the dictionary  is  not
-    // written to  the file.  For  files opened ReadWrite,  any existing
-    // LIST-INFO tags will  be merged into the dictionary  when the file
-    // is opened and if the file  is modified the merged dictionary will
-    // be written back to the file.
-    //
-    // Note that the sample  data may no be in the  native endian, it is
-    // the   callers   responsibility   to  do   any   required   endian
-    // conversions. The  internal data is  always in native  endian with
-    // conversions  being handled  automatically. Use  the BWF::format()
-    // operation     to    access     the    format     including    the
-    // QAudioFormat::byteOrder()  operation to  determine the  data byte
-    // ordering.
-    //
+    
     explicit BWFFile(QAudioFormat const &, QString const &name,
                      InfoDictionary const &, QObject *parent = nullptr);
 
@@ -202,7 +178,7 @@ class BWFFile : public QIODevice {
 
   private:
     class impl;
-    pimpl<impl> m_;
+    pimpl<impl> m_; ///< Private implementation pointer.
 };
 
 #endif
