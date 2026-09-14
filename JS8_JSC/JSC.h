@@ -31,7 +31,7 @@
  * bit-vector representation and the second is the associated unsigned
  * integer.
  */
-typedef QPair<QVector<bool>, quint32> CodewordPair; /**< Tuple(Codeword, N) where N is the number of characters */ */
+typedef QPair<QVector<bool>, quint32> CodewordPair; /**< Tuple(Codeword, N) where N is the number of characters */
 
 /**
  * @typedef Codeword
