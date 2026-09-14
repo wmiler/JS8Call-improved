@@ -1,3 +1,14 @@
+/**
+ * @file NetworkAccessManager.h
+ * @brief Subclass of `QNetworkAccessManager` that manages SSL-error exceptions.
+ *
+ * This helper captures SSL errors presented by remote servers and caches
+ * user-approved exceptions so subsequent requests to the same host do not
+ * repeatedly prompt. The class exposes the same API surface as
+ * `QNetworkAccessManager` but overrides request creation to inject the cache
+ * of allowed SSL errors.
+ */
+
 #ifndef NETWORK_ACCESS_MANAGER_HPP__
 #define NETWORK_ACCESS_MANAGER_HPP__
 
@@ -13,11 +24,24 @@ class QNetworkRequest;
 class QIODevice;
 class QWidget;
 
-// sub-class QNAM to keep a list of accepted SSL errors and allow
-// them in future replies
+// Subclass QNAM to keep a list of accepted SSL errors and allow
+// them in future replies.
+/**
+ * @brief QNetworkAccessManager subclass that remembers allowed SSL errors.
+ *
+ * When the underlying network stack emits `sslErrors`, this manager will
+ * prompt the user (via `JS8MessageBox`) to ignore specific errors and cache
+ * the user's decision. The cached exceptions are then applied to subsequent
+ * replies produced by `createRequest()` so the user experience is smoother
+ * when connecting to servers with known-but-acceptable certificate issues.
+ */
 class NetworkAccessManager : public QNetworkAccessManager {
   public:
-    NetworkAccessManager(QWidget *parent) : QNetworkAccessManager(parent) {
+        /**
+         * @brief Construct a NetworkAccessManager with a parent widget used for prompts.
+         * @param parent Parent widget shown when prompting the user about SSL errors.
+         */
+        NetworkAccessManager(QWidget *parent) : QNetworkAccessManager(parent) {
         // handle SSL errors that have not been cached as allowed
         // exceptions and offer them to the user to add to the ignored
         // exception cache
@@ -59,9 +83,15 @@ class NetworkAccessManager : public QNetworkAccessManager {
     }
 
   protected:
-    QNetworkReply *createRequest(Operation operation,
-                                 QNetworkRequest const &request,
-                                 QIODevice *outgoing_data = nullptr) override {
+        /**
+         * @brief Intercept request creation and apply cached allowed SSL errors.
+         *
+         * Overrides `QNetworkAccessManager::createRequest` to attach the
+         * previously accepted SSL error exceptions to the produced `QNetworkReply`.
+         */
+        QNetworkReply *createRequest(Operation operation,
+                                                                 QNetworkRequest const &request,
+                                                                 QIODevice *outgoing_data = nullptr) override {
         auto reply = QNetworkAccessManager::createRequest(operation, request,
                                                           outgoing_data);
         // errors are usually certificate specific so passing all cached
