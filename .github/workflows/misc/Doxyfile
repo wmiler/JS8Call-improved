@@ -23,7 +23,7 @@ TIMESTAMP              = DATE
 
 # The defines.dox contains grouping commands and such
 INPUT = docs/build_for_Linux.md docs/build_for_MacOS.md docs/build_for_Windows.md \
-        docs/CONTRIBUTOR_GUIDE.md docs/user_guide/JS8Call_User_Guide.md \
+        CONTRIBUTING.md docs/user_guide/JS8Call_User_Guide.md \
         docs/API.md docs/defines.dox .
 
 # Exclude vendor directory(eigen, sqlite3, and crc) and the docker directory
