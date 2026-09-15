@@ -1,5 +1,5 @@
 /**
- * @file pimpl_impl.hpp
+ * @file pimpl_impl.h
  * @brief Out-of-line template definitions for the pimpl compilation firewall helper.
  *
  * This file contains the implementation details for the pimpl class template. It handles 
