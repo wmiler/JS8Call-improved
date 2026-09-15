@@ -1,5 +1,5 @@
 /**
- * @file pimpl.h
+ * @file pimpl_h.h
  * @brief An implementation-hiding utility class template leveraging the Pimpl idiom.
  *
  * This file provides a generic wrapper around a modern pointer structure to abstract 
