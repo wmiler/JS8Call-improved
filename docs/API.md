@@ -1,4 +1,4 @@
-# JS8Call API Documentation v3.0.0
+# JS8Call API Documentation
 
 This document provides documention of the API to control JS8Call.
 
@@ -29,43 +29,49 @@ The steps above are
 
 ``{"params":xxx}`` is **required** in both directions and forms the overall packet
 
+> [!WARNING]
+> `STATION.SET_MULTI_DECODER` is deprecated in the unreleased (current master) version 4.0. This has also been removed from the
+> response json for `STATION.GET_CONFIG`.
+
 > [!NOTE]
 > In the table below, most of the API calls listed as version 2.3 also existed in earlier versions of JS8Call.
 
-| Commands                                 | Version |
-|------------------------------------------|---------|
-| [PING](#ping)                                | 2.3 |
-| [RIG.GET_FREQ](#rigget_freq)                 | 2.3 |
-| [RIG.SET_FREQ](#rigset_freq)                 | 2.3 |
-| [RIG.GET_PTT](#rigget_ptt)                   | 3.0 |
-| [RIG.SET_TUNE](#rigset_tune)                 | 3.0 |
-| [RIG.TX_HALT](#rigtx_halt)                   | 3.0 |
-| [STATION.GET_CALLSIGN](#stationget_callsign) | 2.3 |
-| [STATION.GET_GRID](#stationget_grid)         | 2.3 |
-| [STATION.SET_GRID](#stationset_grid)         | 2.3 |
-| [STATION.GET_INFO](#stationget_info)         | 2.3 |
-| [STATION.SET_INFO](#stationset_info)         | 2.3 |
-| [STATION.GET_STATUS](#stationget_status)     | 2.3 |
-| [STATION.SET_STATUS](#stationset_status)     | 2.3 |
-| [STATION.VERSION](#stationversion)           | 3.0 |
-| [STATION.GET_OS](#stationget_os)             | 3.0 |
-| [STATION.SET_STATUS](#stationset_status)     | 2.3 |
-| [STATION.GET_SPOT](#stationget_spot)         | 3.0 |
-| [STATION.SET_SPOT](#stationset_spot)         | 3.0 |
-| [RX.GET_CALL_ACTIVITY](#rxget_call_activity) | 2.3 |
-| [RX.GET_CALL_SELECTED](#rxget_call_selected) | 2.3 |
-| [RX.GET_BAND_ACTIVITY](#rxget_band_activity) | 2.3 |
-| [RX.GET_TEXT](#rxget_text)                   | 2.3 |
-| [RX.GET_FREE_OFFSETS](#rxget_free_offsets)   | 3.0 |
-| [TX.GET_TEXT](#txget_text)                   | 2.3 |
-| [TX.SET_TEXT](#txset_text)                   | 2.3 |
-| [TX.SEND_MESSAGE](#txsend_message)           | 2.3 |
-| [TX.GET_QUEUE_DEPTH](#txget_queue_depth)     | 3.0 |
-| [MODE.GET_SPEED](#modeget_speed)             | 2.3 |
-| [MODE.SET_SPEED](#modeset_speed)             | 2.3 |
-| [INBOX.GET_MESSAGES](#inboxget_messages)     | 2.3 |
-| [INBOX.STORE_MESSAGE](#inboxstore_message)   | 2.3 |
-| [WINDOW.RAISE](#windowraise)                 | 2.3 |
+| Commands                                 | Version | Removed |
+|------------------------------------------|---------|---------|
+| [PING](#ping)                                | 2.3 ||
+| [RIG.GET_FREQ](#rigget_freq)                 | 2.3 ||
+| [RIG.SET_FREQ](#rigset_freq)                 | 2.3 ||
+| [RIG.GET_PTT](#rigget_ptt)                   | 3.0 ||
+| [RIG.SET_TUNE](#rigset_tune)                 | 3.0 ||
+| [RIG.TX_HALT](#rigtx_halt)                   | 3.0 ||
+| [STATION.GET_CALLSIGN](#stationget_callsign) | 2.3 ||
+| [STATION.GET_GRID](#stationget_grid)         | 2.3 ||
+| [STATION.SET_GRID](#stationset_grid)         | 2.3 ||
+| [STATION.GET_INFO](#stationget_info)         | 2.3 ||
+| [STATION.SET_INFO](#stationset_info)         | 2.3 ||
+| [STATION.GET_STATUS](#stationget_status)     | 2.3 ||
+| [STATION.SET_STATUS](#stationset_status)     | 2.3 ||
+| [STATION.VERSION](#stationversion)           | 3.0 ||
+| [STATION.GET_CONFIG](#stationget_config)     | 3.0 ||
+| [STATION.GET_OS](#stationget_os)             | 3.0 ||
+| [STATION.SET_STATUS](#stationset_status)     | 2.3 ||
+| [STATION.GET_SPOT](#stationget_spot)         | 3.0 ||
+| [STATION.SET_SPOT](#stationset_spot)         | 3.0 ||
+| [STATION.SET_MULTI_DECODER](#stationset_multi_decoder)| 3.0 | 4.0 |
+| [RX.GET_CALL_ACTIVITY](#rxget_call_activity) | 2.3 ||
+| [RX.GET_CALL_SELECTED](#rxget_call_selected) | 2.3 ||
+| [RX.GET_BAND_ACTIVITY](#rxget_band_activity) | 2.3 ||
+| [RX.GET_TEXT](#rxget_text)                   | 2.3 ||
+| [RX.GET_FREE_OFFSETS](#rxget_free_offsets)   | 3.0 ||
+| [TX.GET_TEXT](#txget_text)                   | 2.3 ||
+| [TX.SET_TEXT](#txset_text)                   | 2.3 ||
+| [TX.SEND_MESSAGE](#txsend_message)           | 2.3 ||
+| [TX.GET_QUEUE_DEPTH](#txget_queue_depth)     | 3.0 ||
+| [MODE.GET_SPEED](#modeget_speed)             | 2.3 ||
+| [MODE.SET_SPEED](#modeset_speed)             | 2.3 ||
+| [INBOX.GET_MESSAGES](#inboxget_messages)     | 2.3 ||
+| [INBOX.STORE_MESSAGE](#inboxstore_message)   | 2.3 ||
+| [WINDOW.RAISE](#windowraise)                 | 2.3 ||
 
 ## _ID Number
 The ID number is the epoch time of 1499299200000 (July 6, 2017) plus current epoch time.
@@ -389,6 +395,25 @@ Gets JS8Call version. Use to check for API changes or compatiblity.
 |----------|
 |{"params":{"VERSION":"2.6.0-NOT_FOR_RELEASE","_ID":269908381596},"type":"STATION.VERSION","value":""}|
 
+# STATION.GET_CONFIG
+`API >= 3.0`
+
+Gets JS8Call config.
+
+| End Point |
+|-----------|
+|{"params":{},"type":"STATION.GET_CONFIG","value":""}|
+
+| Requirements | |
+|--------------|-|
+| value        | empty string |
+
+| Response |
+|----------|
+|{"params":{"VERSION":"2.6.0-NOT_FOR_RELEASE","_ID":269908381596},"type":"STATION.VERSION","value":""}|
+**FIXME** Auto reply, js8hb, hback, HB interval, HB timer active, monitor, tx enabled, speed, can HB, autoreply confirm, my groups, avoid allcall
+
+
 # STATION.GET_OS
 `API >= 3.0`
 
@@ -442,6 +467,23 @@ Sets status of SPOT setting
 |----------|
 |{"params":{"_ID":270409737648,"value":true},"type":"STATION.SPOT","value":""}|
 
+# STATION.SET_MULTI_DECODER
+`API >= 3.0` **Removed in 4.0**
+
+Set the mode to decode all speeds.
+
+| End Point |
+|-----------|
+|{"params":{},"type":"STATION.SET_MULTI_DECODER","value":"true"}|
+
+| Requirements | |
+|--------------|-|
+| value        | true/false |
+
+| Response |
+|----------|
+|{"params":{"_ID":270409737648,"value":true},"type":"STATION.MULTI_DECODER","value":""}|
+**FIXME** Verify current response json
 
 # RX.GET_CALL_ACTIVITY
 `API >= 2.3`
