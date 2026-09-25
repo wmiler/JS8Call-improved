@@ -468,7 +468,7 @@ Sets status of SPOT setting
 |{"params":{"_ID":270409737648,"value":true},"type":"STATION.SPOT","value":""}|
 
 # STATION.SET_MULTI_DECODER
-`API >= 3.0` **Removed in 4.0**
+`API >= 3.0` `@deprecated **Removed in 4.0**`
 
 Set the mode to decode all speeds.
 
